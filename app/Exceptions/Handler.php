@@ -71,7 +71,7 @@ class Handler extends ExceptionHandler
                     'data' => $e->getMessage(),
                     'msg' => [
                         'summary' => 'Credenciales no validas',
-                        'detail' => 'Tu usuario o contraseña no son correctos',
+                        'detail' => 'Su usuario o contraseña no son correctos',
                         'code' => '401',
                     ]], 401);
             }

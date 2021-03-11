@@ -9,7 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
+
 use App\Models\App\Catalogue;
 use App\Models\App\Institution;
 
@@ -19,7 +19,7 @@ class Role extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.roles';

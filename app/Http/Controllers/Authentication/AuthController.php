@@ -13,6 +13,7 @@ use App\Http\Requests\Authentication\Auth\AuthUnlockUserRequest;
 use App\Models\Authentication\PasswordReset;
 use App\Models\Authentication\PassworReset;
 use App\Models\App\Status;
+use App\Models\Authentication\System;
 use App\Models\Authentication\TransactionalCode;
 use App\Models\Authentication\UserUnlock;
 use App\Models\Authentication\User;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Ramsey\Uuid\Type\Integer;
+
 
 class  AuthController extends Controller
 {
@@ -50,17 +51,17 @@ class  AuthController extends Controller
             return response()->json([
                 'data' => null,
                 'msg' => [
-                    'summary' => 'Oops! tu usuario ha sido bloqueado',
+                    'summary' => 'Oops! Su usuario ha sido bloqueado!',
                     'detail' => 'Demasiados intentos de inicio de sesión',
                     'code' => '429'
                 ]], 429);
         }
         return response()->json(['data' => $user->attempts,
             'msg' => [
-                'summary' => 'Oops! te quedan ' . $user->attempts . ' intentos',
-                'detail' => 'Vuleva a intentar',
-                'code' => '201',
-            ]], 201);
+                'summary' => 'Contrasaña incorrecta',
+                'detail' => 'Oops! te quedan ' . $user->attempts . ' intentos',
+                'code' => '401',
+            ]], 401);
     }
 
     public function resetAttempts($username)
@@ -150,6 +151,7 @@ class  AuthController extends Controller
 
     public function forgotPassword(AuthForgotPasswordRequest $request)
     {
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         $user = User::where('username', $request->username)
             ->orWhere('email', $request->username)
             ->orWhere('personal_email', $request->username)
@@ -163,13 +165,13 @@ class  AuthController extends Controller
                     'code' => '404'
                 ]], 404);
         }
-        $token = Str::random(70);
+        $token = Str::random(100);
         PasswordReset::create([
             'username' => $user->username,
             'token' => $token
         ]);
-
-        Mail::send('mails.forgot', ['token' => $token, 'user' => $user], function (Message $message) use ($user) {
+        $system = System::firstWhere('code', $catalogues['system']['code']);
+        Mail::send('mails.forgot', ['token' => $token, 'user' => $user, 'system' => $system], function (Message $message) use ($user) {
             $message->to($user->email);
             $message->subject('Notificación de restablecimiento de contraseña');
         });
@@ -186,6 +188,7 @@ class  AuthController extends Controller
 
     public function unlockUser(AuthUnlockUserRequest $request)
     {
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         $user = User::where('username', $request->username)
             ->orWhere('email', $request->username)
             ->orWhere('personal_email', $request->username)
@@ -199,7 +202,7 @@ class  AuthController extends Controller
                     'code' => '404'
                 ]], 404);
         }
-        $token = Str::random(70);
+        $token = Str::random(100);
         UserUnlock::create([
             'username' => $user->username,
             'token' => $token
@@ -207,12 +210,14 @@ class  AuthController extends Controller
 
 //        $data = ['token' => $token, 'user' => $user];
 //        $pdf = \PDF::loadView('mails.unlock', $data);
+        $system = System::firstWhere('code', $catalogues['system']['code']);
 
-        Mail::send('mails.unlock', ['token' => $token, 'user' => $user], function (Message $message) use ($user) {
-            $message->to($user->email);
-            $message->subject('Notificación de desbloqueo de usuario');
+        Mail::send('mails.unlock', ['token' => $token, 'user' => $user, 'system' => $system],
+            function (Message $message) use ($user) {
+                $message->to($user->email);
+                $message->subject('Notificación de desbloqueo de usuario');
 //             $message->attachData($pdf->output(), 'test.pdf');
-        });
+            });
         $domainEmail = strlen($user->email) - strpos($user->email, "@");
 
         return response()->json([
@@ -304,14 +309,13 @@ class  AuthController extends Controller
         }
 
         $user->password = Hash::make($request->password);
-        $user->attempts = User::ATTEMPTS;
         $user->save();
         $passworReset->update(['is_valid' => false]);
         return response()->json([
             'data' => null,
             'msg' => [
-                'summary' => 'Tu contraseña fue restablecida',
-                'detail' => 'Regresa al Login',
+                'summary' => 'Su contraseña fue restablecida',
+                'detail' => 'Regrese al Login',
                 'code' => '201'
             ]], 201);
     }
@@ -367,8 +371,8 @@ class  AuthController extends Controller
         return response()->json([
             'data' => null,
             'msg' => [
-                'summary' => 'Tu usuario fue desbloqueado',
-                'detail' => 'Regresa al Login',
+                'summary' => 'Su usuario fue desbloqueado',
+                'detail' => 'Regrese al Login',
                 'code' => '201'
             ]], 201);
     }

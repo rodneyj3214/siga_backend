@@ -8,14 +8,14 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 use App\Models\App\Catalogue;
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
+
 
 class Question extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
 
     protected $connection = 'pgsql-teacher-eval';
 

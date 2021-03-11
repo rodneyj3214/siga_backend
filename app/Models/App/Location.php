@@ -8,14 +8,14 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Tratis State
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
+
 
 class Location extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
 
     protected $connection = 'pgsql-app';
     protected $table = 'app.locations';

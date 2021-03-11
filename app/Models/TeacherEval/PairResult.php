@@ -8,13 +8,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 use App\Models\App\Authority;
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
+
 
 class PairResult extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
     use HasFactory;
 
     protected $connection = 'pgsql-teacher-eval';

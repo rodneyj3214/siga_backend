@@ -240,7 +240,7 @@ class AttendanceController extends Controller
             return response()->json([
                 'data' => null,
                 'msg' => [
-                    'summary' => 'Tu usuario no tiene asignado un profesor',
+                    'summary' => 'Su usuario no tiene asignado un profesor',
                     'detail' => 'Comunicate con el administrador',
                     'code' => '404',
                 ]], 404);

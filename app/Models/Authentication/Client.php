@@ -9,14 +9,14 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Traits State
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
+
 
 class Client extends PassportClient implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
 
     public function username()
     {

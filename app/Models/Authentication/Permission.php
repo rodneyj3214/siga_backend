@@ -9,7 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
+
 use App\Models\App\Institution;
 
 class Permission extends Model implements Auditable
@@ -17,7 +17,7 @@ class Permission extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.permissions';

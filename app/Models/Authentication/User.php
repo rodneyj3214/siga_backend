@@ -11,21 +11,20 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
 use App\Models\App\AdministrativeStaff;
 
-use App\Models\App\Career;
 use App\Models\App\Catalogue;
 use App\Models\App\Image;
 use App\Models\App\Institution;
 use App\Models\App\Teacher;
+use App\Models\App\Status;
 
 class User extends Authenticatable implements Auditable
 {
     use HasApiTokens, Notifiable, HasFactory;
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.users';

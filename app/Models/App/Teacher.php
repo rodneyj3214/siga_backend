@@ -9,7 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Traits State
 use App\Traits\StatusActiveTrait;
-use App\Traits\StatusDeletedTrait;
+
 
 // Models
 use App\Models\Authentication\User;
@@ -20,7 +20,7 @@ class Teacher extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
-    use StatusDeletedTrait;
+
 
     protected $connection = 'pgsql-app';
     protected $table = 'app.teachers';

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Authentication\User;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -22,7 +21,7 @@ class CheckAttempts
             return response()->json([
                 'data' => null,
                 'msg' => [
-                    'summary' => 'Oops! tu usuario ha sido bloqueado',
+                    'summary' => 'Oops! Su usuario ha sido bloqueado! (check-attempts)',
                     'detail' => 'Demasiados intentos de inicio de sesión',
                     'code' => '429'
                 ]

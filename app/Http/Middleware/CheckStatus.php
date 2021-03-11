@@ -18,13 +18,12 @@ class CheckStatus
      */
     public function handle(Request $request, Closure $next)
     {
-
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         if ($request->user()->state === false) {
             return response()->json([
                 'data' => null,
                 'msg' => [
-                    'summary' => 'Tu usuario se encuentra Eliminado!',
+                    'summary' => 'Su usuario se encuentra Eliminado!',
                     'detail' => 'Comunicate con el administrador',
                     'code' => '4040'
                 ]
@@ -34,7 +33,7 @@ class CheckStatus
             return response()->json([
                 'data' => null,
                 'msg' => [
-                    'summary' => 'Tu usuario se encuentra Inactivo',
+                    'summary' => 'Su usuario se encuentra Inactivo',
                     'detail' => 'Comunicate con el administrador',
                     'code' => '4030'
                 ]
@@ -45,7 +44,7 @@ class CheckStatus
             return response()->json([
                 'data' => null,
                 'msg' => [
-                    'summary' => 'Tu usuario se encuentra Bloqueado',
+                    'summary' => 'Su usuario se encuentra Bloqueado',
                     'detail' => 'Haz click en Desbloquear Usuario',
                     'code' => '423'
                 ]

@@ -16,7 +16,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('unlock', [AuthController::class, 'unlock'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
     Route::get('attempts/{username}', [AuthController::class, 'attempts'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
     Route::put('change_password', [AuthController::class, 'changePassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::get('reset_attempts/{username}', [AuthController::class, 'resetAttempts'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
+    Route::get('reset_attempts/{username}', [AuthController::class, 'resetAttempts'])->withoutMiddleware(['check-institution', 'check-role', 'check-permissions']);
 });
 
 Route::group(['prefix' => 'users'], function () {
