@@ -7,6 +7,7 @@ use App\Models\Authentication\Permission;
 use App\Models\Authentication\Role;
 use App\Models\Authentication\Route;
 use App\Models\App\Status;
+use App\Models\Authentication\SecurityQuestion;
 use App\Models\Authentication\System;
 use App\Models\App\Authority;
 use App\Models\App\AuthorityType;
@@ -65,6 +66,9 @@ class DatabaseSeeder extends Seeder
 
         // Users con instituciones
         $this->createUsersInstitutions();
+
+        // Security Questions
+        $this->createSecurityQuestions();
     }
 
     private function createSystem()
@@ -693,8 +697,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create(
             [
                 'username' => '1234567890',
-                'email' => 'cesar.tamayo0204@gmail.com',
-                'avatar' => 'avatars/1234567890.png'
+                'email' => 'cesar.tamayo0204@gmail.com'
             ]);
     }
 
@@ -704,7 +707,7 @@ class DatabaseSeeder extends Seeder
 
         foreach (Role::all() as $role) {
             $user->roles()->attach($role->id);
-            }
+        }
     }
 
     private function createUsersInstitutions()
@@ -714,6 +717,20 @@ class DatabaseSeeder extends Seeder
         foreach (Institution::all() as $institution) {
             $user->institutions()->syncWithoutDetaching($institution->id);
         }
+    }
+
+    private function createSecurityQuestions()
+    {
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su padre?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su madre?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su mascota?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su mejor amigo de la infancia?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su color favorito?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su fruta favorita?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su abuela materna?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su abuela paterna?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es su marca de auto favorito?']);
+        SecurityQuestion::factory()->create(['name' => '¿Cuál es el nombre de su canción favorita?']);
     }
 }
 /*

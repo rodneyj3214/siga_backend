@@ -18,6 +18,7 @@ use App\Models\App\Image;
 use App\Models\App\Institution;
 use App\Models\App\Teacher;
 use App\Models\App\Status;
+use App\Models\App\File;
 
 class User extends Authenticatable implements Auditable
 {
@@ -59,6 +60,11 @@ class User extends Authenticatable implements Auditable
     public function findForPassport($username)
     {
         return $this->where('username', $username)->first();
+    }
+
+    public function securityQuestions()
+    {
+        $this->belongsToMany(SecurityQuestion::class)->withPivot('answer')->withTimestamps();
     }
 
     public function status()
@@ -114,6 +120,11 @@ class User extends Authenticatable implements Auditable
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 
     public function institutions()

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilesTable extends Migration
+class CreateAppFilesTable extends Migration
 {
     public function up()
     {
@@ -12,10 +12,9 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->morphs('fileable');
             $table->string('name');
-            $table->text('description');
-            $table->text('uri');
+            $table->text('description')->nullable();
+            $table->text('uri')->nullable();
             $table->string('extension');
-            $table->string('type');
             $table->boolean('state')->default(true);
             $table->timestamps();
         });

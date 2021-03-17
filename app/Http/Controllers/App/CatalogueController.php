@@ -18,14 +18,12 @@ class CatalogueController extends Controller
             $catalogues = Catalogue::where('type', $request->type)->get();
         }
         return response()->json([
-            'data' => [
-                'catalogues' => $catalogues
-            ],
+            'data' => $catalogues,
             'msg' => [
                 'summary' => 'success',
                 'detail' => '',
                 'code' => '200'
-            ]]);
+            ]], 200);
     }
 
     public function show(Catalogue $catalogue)

@@ -1,11 +1,4 @@
 {
-    "state": {
-        "type": {
-            "type": "STATE_TYPE",
-            "active": "1",
-            "deleted": "0"
-        }
-    },
     "status": {
         "type": "STATUS_TYPE",
         "active": "1",
@@ -15,8 +8,6 @@
         "maintenance": "5"
     },
     "role": {
-        "name": {
-            "type": "ROLE_NAME",
             "admin": "ADMIN",
             "teacher": "TEACHER",
             "student": "STUDENT",
@@ -28,7 +19,6 @@
             "community_coordinator": "COMMUNITY_COORDINATOR",
             "investigation_coordinator": "INVESTIGATION_COORDINATOR",
             "administrative_coordinator": "ADMINISTRATIVE_COORDINATOR"
-        }
     },
     "module": {
         "authentication": "AUTHENTICATION",

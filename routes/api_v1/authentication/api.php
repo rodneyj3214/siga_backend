@@ -40,7 +40,7 @@ Route::group(['prefix' => 'users'], function () {
     Route::post('filters', [UserController::class, 'index']);
     Route::post('roles', [UserController::class, 'getRoles'])->withoutMiddleware(['check-permissions']);
     Route::post('permissions', [UserController::class, 'getPermissions']);
-    Route::post('avatar', [UserController::class, 'uploadAvatarUri']);
+    Route::post('avatars', [UserController::class, 'uploadAvatar']);
     Route::get('export/', [UserController::class, 'export']);
 });
 
@@ -56,3 +56,18 @@ Route::get('test', function () {
     return \App\Models\Authentication\Route::with('image')->get();
 //    return response()->json(\App\Models\Authentication\User::withoutGlobalScope('isActive')->get());
 })->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
+
+Route::post('upload', function (\Illuminate\Http\Request $request) {
+    $file = \App\Models\App\File::create([
+        'code'=>'',
+        'name'=>'',
+        'description'=>'',
+        'extension'=>'',
+        'code'=>'',
+    ]);
+    foreach ($request->file('files') as $file) {
+        $name = $file->getClientOriginalName();
+        $file->storePubliclyAs('public/files', $name);
+    }
+    return $request;
+});

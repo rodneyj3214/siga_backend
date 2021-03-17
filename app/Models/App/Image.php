@@ -26,8 +26,8 @@ class Image extends Model implements Auditable
         'code',
         'name',
         'description',
-        'uri',
         'extension',
+        'uri',
     ];
 
     public function imageable()

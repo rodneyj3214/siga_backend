@@ -6,6 +6,7 @@ use App\Http\Controllers\App\CatalogueController;
 use App\Http\Controllers\App\ImageController;
 use App\Http\Controllers\App\TeacherController;
 use App\Http\Controllers\App\InstitutionController;
+use App\Http\Controllers\App\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,8 @@ Route::group(['prefix' => 'institutions'], function () {
     Route::post('assign_institution', [InstitutionController::class, 'assignInstitution']);
     Route::post('remove_institution', [InstitutionController::class, 'removeInstitution']);
 });
+
+Route::post('upload', [FileController::class, 'upload']);
 
 Route::get('test', function () {
     return 'hola mundo';

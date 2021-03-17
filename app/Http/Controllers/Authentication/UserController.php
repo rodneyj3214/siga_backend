@@ -109,6 +109,7 @@ class  UserController extends Controller
             ->with('identificationType')
             ->with('sex')
             ->with('gender')
+            ->with('bloodType')
             ->with(['institutions' => function ($institutions) {
                 $institutions->orderBy('name');
             }])
@@ -218,17 +219,18 @@ class  UserController extends Controller
             ]], 201);
     }
 
-    public function uploadAvatarUri(Request $request)
+    public function uploadAvatar(Request $request)
     {
-        if ($request->file('file_avatar')) {
-            $user = User::findOrFail($request->user_id);
+        $file = $request->file('file');
+        if ($file) {
+            $user = User::findOrFail($request->user);
             Storage::delete($user->avatar);
-            $pathFile = $request->file('file_avatar')->storeAs('private/avatar',
-                $user->id . '.png');
-//            $path = storage_path() . '/app/' . $pathFile;
-            $user->update(['avatar' => $pathFile]);
+
+            $filePath = $file->storeAs('avatars', $user->id . '.' . $file->getClientOriginalExtension(), 'public');
+
+            $user->update(['avatar' => $filePath]);
             return response()->json([
-                'data' => $user,
+                'data' => $user->avatar,
                 'msg' => [
                     'summary' => 'upload',
                     'detail' => '',

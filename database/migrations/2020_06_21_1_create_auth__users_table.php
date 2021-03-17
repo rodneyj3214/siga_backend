@@ -20,6 +20,7 @@ class CreateAuthUsersTable extends Migration
             $table->foreignId('blood_type_id')->nullable()->constrained('app.catalogues');
             $table->foreignId('civil_status_id')->nullable()->constrained('app.catalogues');
             $table->string('avatar')->nullable()->unique();
+            $table->string('security_image')->nullable();
             $table->string('username', 50)->unique();
             $table->string('identification', 20);
             $table->string('first_name', 1000)->nullable();
@@ -30,7 +31,7 @@ class CreateAuthUsersTable extends Migration
             $table->date('birthdate')->nullable();
             $table->string('email', 100)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 200);
+            $table->string('password');
             $table->boolean('change_password')->default(false);
             $table->integer('attempts')->default(\App\Models\Authentication\User::ATTEMPTS);
             $table->rememberToken();
