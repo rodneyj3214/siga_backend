@@ -22,8 +22,8 @@ class Location extends Model implements Auditable
 
     protected $fillable = [
         'code',
-        'short_name',
         'name',
+        'short_name',
         'state'
     ];
 

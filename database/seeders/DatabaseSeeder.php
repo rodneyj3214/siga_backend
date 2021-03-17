@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->createGenderCatalogues();
         $this->createCareerModality();
         $this->createCareerType();
+        $this->createLocationCatalogues();
         $this->createMenus();
 
         // Sistemas
@@ -119,58 +120,58 @@ class DatabaseSeeder extends Seeder
         $institution = Institution::find(1);
 
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['admin'],
+            'code' => $catalogues['role']['admin'],
             'name' => 'ADMINISTRADOR',
             'system_id' => $system->id,
             'institution_id' => $institution->id
         ]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['student'],
+            'code' => $catalogues['role']['student'],
             'name' => 'ESTUDIANTE',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['teacher'],
+            'code' => $catalogues['role']['teacher'],
             'name' => 'PROFESOR',
             'system_id' => $system->id,
             'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['chancellor'],
+            'code' => $catalogues['role']['chancellor'],
             'name' => 'RECTOR',
             'system_id' => $system->id,
             'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['vice_chancellor'],
+            'code' => $catalogues['role']['vice_chancellor'],
             'name' => 'VICERRECTOR',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['concierge'],
+            'code' => $catalogues['role']['concierge'],
             'name' => 'CONSERJE',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['career_coordinator'],
+            'code' => $catalogues['role']['career_coordinator'],
             'name' => 'COORD. CARRERA',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['academic_coordinator'],
+            'code' => $catalogues['role']['academic_coordinator'],
             'name' => 'COORD. ACADEMICO',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['community_coordinator'],
+            'code' => $catalogues['role']['community_coordinator'],
             'name' => 'COORD. VINCULACION',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['investigation_coordinator'],
+            'code' => $catalogues['role']['investigation_coordinator'],
             'name' => 'COORD. INVESTIGACION',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
         Role::factory()->create([
-            'code' => $catalogues['role']['name']['administrative_coordinator'],
+            'code' => $catalogues['role']['administrative_coordinator'],
             'name' => 'COORD. ADMINISTRATIVO',
             'system_id' => $system->id
             , 'institution_id' => $institution->id]);
@@ -568,6 +569,35 @@ class DatabaseSeeder extends Seeder
             'name' => 'DISTANCIA',
             'type' => $catalogues['catalogue']['career_modality']['type']
         ]);
+    }
+
+    private function createLocationCatalogues()
+    {
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['location']['country'],
+            'name' => 'PAIS',
+            'type' => $catalogues['catalogue']['location']['type'],
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['location']['province'],
+            'name' => 'PROVINCIA',
+            'type' => $catalogues['catalogue']['location']['type'],
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['location']['canton'],
+            'name' => 'CANTON',
+            'type' => $catalogues['catalogue']['location']['type'],
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['location']['parish'],
+            'name' => 'PARISH',
+            'type' => $catalogues['catalogue']['location']['type'],
+        ]);
+    }
+
+    private function createLocations(){
+
     }
 
     private function createCareerType()

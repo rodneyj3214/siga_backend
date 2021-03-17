@@ -148,6 +148,13 @@
             "type": "CAREER_TYPE",
             "technology": "TECHNOLOGY",
             "technical": "TECHNICAL"
+        },
+        "location": {
+            "type": "LOCATION",
+            "country": "COUNTRY",
+            "province": "PROVINCE",
+            "canton": "CANTON",
+            "parish": "PARISH"
         }
     }
 }

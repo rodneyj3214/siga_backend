@@ -12,10 +12,11 @@ class CreateAppLocationsTable extends Migration
             $table->id();
             $table->foreignId('type_id')->nullable()->constrained('app.catalogues');
             $table->foreignId('parent_id')->nullable()->constrained('app.locations');
-            $table->string('code')->unique();
-            $table->string('name')->unique();
-            $table->string('short_name')->unique();
+            $table->string('code');
+            $table->string('name');
+            $table->string('short_name')->nullable();
             $table->boolean('state')->default(true);
+            $table->unique(['code','name']);
             $table->timestamps();
         });
     }

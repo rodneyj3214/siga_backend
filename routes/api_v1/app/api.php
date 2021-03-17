@@ -7,6 +7,7 @@ use App\Http\Controllers\App\ImageController;
 use App\Http\Controllers\App\TeacherController;
 use App\Http\Controllers\App\InstitutionController;
 use App\Http\Controllers\App\FileController;
+use App\Http\Controllers\App\LocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,8 @@ use App\Http\Controllers\App\FileController;
 |
 */
 Route::apiResource('catalogues', CatalogueController::class);
+Route::apiResource('locations', LocationController::class)->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
+Route::get('countries', [LocationController::class, 'getCountries'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
 
 Route::group(['prefix' => 'images'], function () {
     Route::get('avatars', [ImageController::class, 'getAvatar']);

@@ -27,7 +27,7 @@ class AuthChangePasswordRequest extends FormRequest
             'user.id' => 'required|int',
             'user.password' => 'required',
             'user.new_password' => 'required|min:6|max:50',
-            'user.password_confirm' => 'required|same:user.new_password',
+            'user.password_confirmation' => 'required|same:user.new_password',
         ];
     }
 }
