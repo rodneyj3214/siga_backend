@@ -11,9 +11,11 @@ class LocationController extends Controller
 {
     public function index(Request $request)
     {
-        $locations = Location::with('type')->with(['children' => function ($province) {
-            $province->with(['children' => function ($canton) {
-                $canton->with('children');
+        $locations = Location::with('type')->with('parent')->with(['children' => function ($province) {
+            $province->with('parent')->with(['children' => function ($canton) {
+                $canton->with('parent')->with(['children' => function ($parish) {
+                    $parish->with('parent')->with('children');
+                }]);
             }]);
         }])->get();
         return response()->json([
@@ -99,9 +101,10 @@ class LocationController extends Controller
     public function getCountries(Request $request)
     {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
-        $locations = Location::with(['type' => function ($type) use ($catalogues) {
-            $type->where('type', $catalogues['catalogue']['location']['country']);
-        }])->get();
+        $locations = Location::whereHas('type', function ($type) use ($catalogues) {
+            $type->where('type', $catalogues['catalogue']['location']['type'])
+                ->where('code', $catalogues['catalogue']['location']['country']);
+        })->get();
         return response()->json([
             'data' => $locations,
             'msg' => [

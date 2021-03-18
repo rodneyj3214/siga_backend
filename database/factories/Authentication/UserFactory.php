@@ -14,20 +14,13 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-//            'ethnic_origin_id' => random_int(1, 8),
-//            'location_id' => 30,
-//            'identification_type_id' => random_int(14, 15),
             'identification' => $this->faker->numberBetween($min = 1000000000, $max = 9999999999),
             'first_name' => $this->faker->firstNameMale,
             'second_name' => $this->faker->firstNameMale,
             'first_lastname' => $this->faker->lastName,
             'second_lastname' => $this->faker->lastName,
-//            'sex_id' => 10,
-//            'gender_id' => 12,
-//            'personal_email' => $faker->unique()->safeEmail,
-//            'birthdate' => $faker->date($format = 'Y-m-d', $max = 'now'),
-//            'blood_type_id' => random_int(16, 23),
-            'avatar' => $this->faker->numberBetween($min = 1000000000, $max = 9999999999),
+            'personal_email' => $this->faker->unique()->safeEmail,
+            'birthdate' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
             'username' => $this->faker->numberBetween($min = 1000000000, $max = 9999999999),
             'email' => $this->faker->unique()->safeEmail,
             'status_id' => 1,

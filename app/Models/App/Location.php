@@ -9,7 +9,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 // Tratis State
 use App\Traits\StatusActiveTrait;
 
-
 class Location extends Model implements Auditable
 {
     use HasFactory;
