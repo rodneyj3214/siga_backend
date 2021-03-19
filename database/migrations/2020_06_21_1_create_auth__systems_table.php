@@ -16,6 +16,7 @@ class CreateAuthSystemsTable extends Migration
             $table->text('description')->nullable();
             $table->string('icon')->nullable()->comment('De la libreria que se usa en el frontend');
             $table->string('version')->comment('XX.XX.XX');
+            $table->string('redirect')->comment('pagina wen de redireccion del cliente');
             $table->date('date')->comment('Fecha del sistema');
             $table->foreignId('status_id')->constrained('app.catalogues');
             $table->boolean('state')->default(true);

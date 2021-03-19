@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Authentication;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\Auth\AuthChangePasswordRequest;
 use App\Http\Requests\Authentication\Auth\AuthForgotPasswordRequest;
-use App\Http\Requests\Authentication\Auth\AuthLoginRequest;
 use App\Http\Requests\Authentication\Auth\AuthResetPasswordRequest;
-use App\Http\Requests\Authentication\Auth\AuthTransactionalCodeRequest;
 use App\Http\Requests\Authentication\Auth\AuthUnlockRequest;
 use App\Http\Requests\Authentication\Auth\AuthUnlockUserRequest;
+use App\Mail\AuthMailable;
+use App\Mail\EmailMailable;
 use App\Models\Authentication\PasswordReset;
-use App\Models\Authentication\PassworReset;
 use App\Models\App\Status;
 use App\Models\Authentication\System;
 use App\Models\Authentication\TransactionalCode;
@@ -170,11 +169,12 @@ class  AuthController extends Controller
             'username' => $user->username,
             'token' => $token
         ]);
-        $system = System::firstWhere('code', $catalogues['system']['code']);
-        Mail::send('mails.forgot', ['token' => $token, 'user' => $user, 'system' => $system], function (Message $message) use ($user) {
-            $message->to($user->email);
-            $message->subject('Notificación de restablecimiento de contraseña');
-        });
+
+        Mail::to($user->email)
+            ->send(new EmailMailable(
+                'Notificación de restablecimiento de contraseña',
+                json_encode(['user' => $user, 'token' => $token])
+            ));
         $domainEmail = strlen($user->email) - strpos($user->email, "@");
 
         return response()->json([
@@ -188,7 +188,6 @@ class  AuthController extends Controller
 
     public function unlockUser(AuthUnlockUserRequest $request)
     {
-        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         $user = User::where('username', $request->username)
             ->orWhere('email', $request->username)
             ->orWhere('personal_email', $request->username)
@@ -202,29 +201,23 @@ class  AuthController extends Controller
                     'code' => '404'
                 ]], 404);
         }
-        $token = Str::random(100);
+        $token = Str::random(70);
         UserUnlock::create([
             'username' => $user->username,
             'token' => $token
         ]);
 
-//        $data = ['token' => $token, 'user' => $user];
-//        $pdf = \PDF::loadView('mails.unlock', $data);
-        $system = System::firstWhere('code', $catalogues['system']['code']);
-
-        Mail::send('mails.unlock', ['token' => $token, 'user' => $user, 'system' => $system],
-            function (Message $message) use ($user) {
-                $message->to($user->email);
-                $message->subject('Notificación de desbloqueo de usuario');
-//             $message->attachData($pdf->output(), 'test.pdf');
-            });
-        $domainEmail = strlen($user->email) - strpos($user->email, "@");
+        Mail::to($user->email)
+            ->send(new AuthMailable(
+                'Notificación de desbloqueo de usuario',
+                json_encode(['user' => $user, 'token' => $token])
+            ));
 
         return response()->json([
-            'data' => $this->hiddenString($user->email, 3, $domainEmail),
+            'data' => $this->hiddenStringEmail($user->email),
             'msg' => [
                 'summary' => 'Correo enviado',
-                'detail' => $this->hiddenString($user->email, 3, $domainEmail),
+                'detail' => $this->hiddenStringEmail($user->email),
                 'code' => '201'
             ]], 201);
     }
@@ -250,11 +243,11 @@ class  AuthController extends Controller
             'token' => $token
         ]);
 
-
-        Mail::send('mails.transactional-code', ['token' => $token, 'user' => $user], function (Message $message) use ($user) {
-            $message->to($user->email);
-            $message->subject('Información Código de Seguridad');
-        });
+        Mail::to($user->email)
+            ->send(new EmailMailable(
+                'Información Código de Seguridad',
+                json_encode(['user' => $user])
+            ));
         $domainEmail = strlen($user->email) - strpos($user->email, "@");
 
         return response()->json([
@@ -429,9 +422,10 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    private function hiddenString($str, $start = 1, $end = 1)
+    private function hiddenStringEmail($email, $start = 3)
     {
-        $len = strlen($str);
-        return substr($str, 0, $start) . str_repeat('*', $len - ($start + $end)) . substr($str, $len - $end, $end);
+        $end = strlen($email) - strpos($email, "@");
+        $len = strlen($email);
+        return substr($email, 0, $start) . str_repeat('*', $len - ($start + $end)) . substr($email, $len - $end, $end);
     }
 }

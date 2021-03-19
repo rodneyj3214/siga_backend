@@ -6,6 +6,7 @@ use App\Http\Controllers\Authentication\RoleController;
 use App\Http\Controllers\Authentication\PermissionController;
 use App\Http\Controllers\Authentication\RouteController;
 use App\Http\Controllers\Authentication\ShortcutController;
+use App\Http\Controllers\Authentication\SystemController;
 use Illuminate\Support\Facades\Route;
 
 // Without Authentication
@@ -35,6 +36,7 @@ Route::apiResource('routes', RouteController::class);
 Route::apiResource('shortcuts', ShortcutController::class);
 Route::apiResource('users', UserController::class)->except(['index', 'show']);
 Route::apiResource('roles', RoleController::class);
+Route::apiResource('systems', SystemController::class)->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
 
 Route::group(['prefix' => 'users'], function () {
     Route::post('filters', [UserController::class, 'index']);

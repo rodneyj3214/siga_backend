@@ -21,6 +21,8 @@ class CreateAppInstitutionsTable extends Migration
             $table->string('web')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();
+
+            $table->string('codigo_sniese', 50)->nullable();
         });
     }
 

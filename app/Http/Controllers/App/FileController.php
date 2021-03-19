@@ -66,7 +66,6 @@ class FileController extends Controller
 
     public function upload(Request $request)
     {
-        return $request->person;
         $user = User::findOrFail(1);
         foreach ($request->file('files') as $file) {
             $newFile = $user->files()->firstWhere('name', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));

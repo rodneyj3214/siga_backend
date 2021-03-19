@@ -23,6 +23,8 @@ class CreateCareersTable extends Migration
             $table->foreignId('type_id')->constrained('catalogues');
             $table->boolean('state')->default(true);
             $table->timestamps();
+
+            $table->string('codigo_sniese', 50)->nullable();
         });
     }
 
