@@ -245,7 +245,6 @@ class  UserController extends Controller
                     'code' => '400'
                 ]], 400);
         }
-
     }
 
     public function export()

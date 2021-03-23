@@ -8,6 +8,7 @@ use App\Http\Controllers\App\TeacherController;
 use App\Http\Controllers\App\InstitutionController;
 use App\Http\Controllers\App\FileController;
 use App\Http\Controllers\App\LocationController;
+use App\Http\Controllers\App\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,10 @@ Route::group(['prefix' => 'institutions'], function () {
 });
 
 Route::post('upload', [FileController::class, 'upload']);
+
+Route::group(['prefix' => 'emails'], function () {
+    Route::post('send', [EmailController::class, 'send']);
+});
 
 Route::get('test', function () {
     return 'hola mundo';

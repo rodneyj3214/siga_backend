@@ -81,6 +81,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Sistema de Gestión Académico - Administrativo',
             'acronym' => 'IGNUG',
             'version' => '1.2.3',
+            'redirect' => 'http://siga.yavirac.edu.ec:4200',
             'date' => '2021-03-10',
             'status_id' => $statysAvailable->id
         ]);
