@@ -11,8 +11,7 @@ class CreateVotingVotesTable extends Migration
         Schema::connection('pgsql-voting')->create('votes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('public.users');
-            $table->foreignId('voting_day
-            _id')->constrained('public.voting_days');
+            $table->foreignId('voting_day_id')->constrained('public.voting_days');
             $table->integer('answer');
             $table->time('time');
             $table->unique(['user_id', 'time']);

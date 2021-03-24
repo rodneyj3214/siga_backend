@@ -10,12 +10,13 @@ class CreateVotingVotingDaysTable extends Migration
     {
         Schema::connection('pgsql-voting')->create('voting_days', function (Blueprint $table) {
             $table->id();
-            $table->morphs('votingable');
+            $table->morphs('voting_dayable');
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('type')->comment('ESTUDIANTE','DOCENTE');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
+            $table->string('status');
             $table->timestamps();
         });
     }

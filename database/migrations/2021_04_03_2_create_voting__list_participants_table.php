@@ -12,8 +12,8 @@ class CreateVotingListParticipantsTable extends Migration
             $table->id();
             $table->foreignId('voting_list_id')->constrained('public.voting_lists');
             $table->foreignId('user_id')->constrained('public.users');
-            $table->foreignId('principal_id')->constrained('public.list_participants');
-            $table->string('photo');
+            $table->foreignId('principal_id')->nullable()->constrained('public.list_participants');
+            $table->string('photo')->nullable();
             $table->string('type')->comment('presidente tesorero, etc');
             $table->boolean('is_principal');
             $table->integer('order');

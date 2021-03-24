@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class AuthMailable extends Mailable
+class VotingMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -25,7 +25,8 @@ class AuthMailable extends Mailable
 
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
 
-        $this->system = $system ? System::firstWhere('code', $catalogues['system']['code']) : $system;
+        $this->system = $system == null ? System::firstWhere('code', $catalogues['system']['code']) : $system;
+
     }
 
     public function build()
@@ -36,7 +37,7 @@ class AuthMailable extends Mailable
             }
         }
 
-        return $this->view('mails.unlock-user')
+        return $this->view('mails.voting')
             ->with(['data' => json_decode($this->data), 'system' => $this->system]);
     }
 }

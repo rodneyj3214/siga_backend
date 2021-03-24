@@ -74,7 +74,8 @@
         "mega": "MEGA"
     },
     "system": {
-        "code": "IGNUG"
+        "code": "IGNUG",
+        "voting": "VOTACIONES"
     },
     "workday": {
         "type": {
