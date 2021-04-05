@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
-use App\Traits\StatusActiveTrait;
+use App\Traits\StateActiveTrait;
 
 
 class DetailEvaluation extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use StatusActiveTrait;
+    use StateActiveTrait;
 
     use HasFactory;
 

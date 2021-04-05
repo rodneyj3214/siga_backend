@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
-use App\Traits\StatusActiveTrait;
+use App\Traits\StateActiveTrait;
 
 use App\Models\App\Catalogue;
 use App\Models\App\Institution;
@@ -18,7 +18,7 @@ class Role extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StatusActiveTrait;
+    use StateActiveTrait;
 
 
     protected $connection = 'pgsql-authentication';

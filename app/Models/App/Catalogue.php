@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
 use App\Models\Authentication\Role;
-use App\Traits\StatusActiveTrait;
+use App\Traits\StateActiveTrait;
 
 
 
@@ -16,7 +16,7 @@ class Catalogue extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StatusActiveTrait;
+    use StateActiveTrait;
 
 
     protected $connection = 'pgsql-app';

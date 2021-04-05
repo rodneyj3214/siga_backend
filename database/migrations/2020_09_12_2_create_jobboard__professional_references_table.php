@@ -4,14 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProfessionalReferencesTable extends Migration
+class CreateJobboardProfessionalReferencesTable extends Migration
 {
 
     public function up()
     {
         Schema::connection('pgsql-job-board')->create('professional_references', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('professional_id');
+            $table->foreignId('professional_id')->constrained('job_board.professionals');;
             $table->string('institution');
             $table->string('position');
             $table->string('contact');

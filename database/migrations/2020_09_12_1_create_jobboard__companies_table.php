@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompaniesTable extends Migration
+class CreateJobboardCompaniesTable extends Migration
 {
 
     public function up()
@@ -13,9 +13,9 @@ class CreateCompaniesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('authentication.users');
             $table->foreignId('type_id')->constrained('app.catalogues');
-            $table->string('trade_name', 300);
-            $table->string('comercial_activity', 500);
-            $table->string('web_page', 500);
+            $table->string('trade_name');
+            $table->text('comercial_activity');
+            $table->string('web_page');
             $table->boolean('state')->default(true);
             $table->timestamps();
         });

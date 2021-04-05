@@ -14,7 +14,15 @@ class CreateAppLocationsTable extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('app.locations');
             $table->string('code');
             $table->string('name');
-            $table->string('short_name')->nullable();
+            $table->string('alpha2_code')->nullable();
+            $table->string('alpha3_code')->nullable();
+            $table->string('region')->nullable();
+            $table->string('subregion')->nullable();
+            $table->string('calling_code')->nullable();
+            $table->string('capital')->nullable();
+            $table->string('top_level_domain')->nullable();
+            $table->string('flag')->nullable();
+            $table->json('timezones')->nullable();
             $table->boolean('state')->default(true);
             $table->unique(['code','name']);
             $table->timestamps();

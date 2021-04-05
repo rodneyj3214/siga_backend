@@ -3,6 +3,7 @@
 #/public
 #/public/storage
 #/storage/*.key
+/migrations
 /vendor
 .env
 .env.prod

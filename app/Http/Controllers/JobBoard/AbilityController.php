@@ -12,6 +12,13 @@ class AbilityController extends Controller
 {
     function index(Request $request)
     {
+        $ablities = Ability::create($request->abilities);
+
+        $newAbility = new Ability();
+        $newAbility->description = $request->description;
+        $newAbility->state = $request->state;
+        $newAbility->save();
+
         try {
             $professional = Professional::where('id', $request->user_id)->first();
             if ($professional) {

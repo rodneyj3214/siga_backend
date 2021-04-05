@@ -3,7 +3,7 @@
 namespace App\Models\Attendance;
 
 use App\Models\App\Observation;
-use App\Traits\StatusActiveTrait;
+use App\Traits\StateActiveTrait;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +15,7 @@ class Workday extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StatusActiveTrait;
+    use StateActiveTrait;
 
 
     protected $connection = 'pgsql-attendance';

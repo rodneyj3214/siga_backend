@@ -8,17 +8,17 @@
         "maintenance": "5"
     },
     "role": {
-            "admin": "ADMIN",
-            "teacher": "TEACHER",
-            "student": "STUDENT",
-            "chancellor": "CHANCELLOR",
-            "vice_chancellor": "VICE_CHANCELLOR",
-            "concierge": "CONCIERGE",
-            "career_coordinator": "CAREER_COORDINATOR",
-            "academic_coordinator": "ACADEMIC_COORDINATOR",
-            "community_coordinator": "COMMUNITY_COORDINATOR",
-            "investigation_coordinator": "INVESTIGATION_COORDINATOR",
-            "administrative_coordinator": "ADMINISTRATIVE_COORDINATOR"
+        "admin": "ADMIN",
+        "teacher": "TEACHER",
+        "student": "STUDENT",
+        "chancellor": "CHANCELLOR",
+        "vice_chancellor": "VICE_CHANCELLOR",
+        "concierge": "CONCIERGE",
+        "career_coordinator": "CAREER_COORDINATOR",
+        "academic_coordinator": "ACADEMIC_COORDINATOR",
+        "community_coordinator": "COMMUNITY_COORDINATOR",
+        "investigation_coordinator": "INVESTIGATION_COORDINATOR",
+        "administrative_coordinator": "ADMINISTRATIVE_COORDINATOR"
     },
     "module": {
         "authentication": "AUTHENTICATION",
@@ -100,6 +100,14 @@
         }
     },
     "catalogue": {
+        "civil_status": {
+            "type": "CIVIL_STATUS",
+            "married": "MARRIED",
+            "single": "SINGLE",
+            "divorced": "DIVORCED",
+            "widower": "WIDOWER",
+            "union": "UNION"
+        },
         "sex": {
             "type": "SEX_TYPE",
             "male": "MALE",
@@ -108,7 +116,9 @@
         "gender": {
             "type": "GENDER_TYPE",
             "male": "MALE",
-            "female": "FEMALE"
+            "female": "FEMALE",
+            "other": "OTHER",
+            "not_say": "NOT_SAY"
         },
         "identification_type": {
             "type": "IDENTIFICATION_TYPE",

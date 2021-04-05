@@ -11,14 +11,15 @@ class CreateJobboardCoursesTable extends Migration
     {
         Schema::connection('pgsql-job-board')->create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('professional_id');
-            $table->foreignId('event_type_id')->constrained('app.catalogues');
+            $table->foreignId('professional_id')->constrained('job_board.professionals');;
+            $table->foreignId('type_id')->constrained('app.catalogues');
             $table->foreignId('institution_id')->constrained('app.catalogues');
             $table->foreignId('certification_type_id')->constrained('app.catalogues');
-            $table->string('event_name');
+            $table->string('name');
+            $table->text('description');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('hours');
+            $table->integer('hours');
             $table->boolean('state')->default(true);
             $table->timestamps();
         });

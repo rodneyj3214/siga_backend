@@ -8,13 +8,13 @@ use App\Models\App\Teacher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
-use App\Traits\StatusActiveTrait;
+use App\Traits\StateActiveTrait;
 
 
 class SelfResult extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use StatusActiveTrait;
+    use StateActiveTrait;
 
 
     protected $connection = 'pgsql-teacher-eval';

@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->createBloodTypeCatalogues();
         $this->createSexCatalogues();
         $this->createGenderCatalogues();
+        $this->createCivilStatusCatalogues();
         $this->createCareerModality();
         $this->createCareerType();
         $this->createLocationCatalogues();
@@ -504,17 +505,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'O+',
             'type' => $catalogues['catalogue']['blood_type']['type'],
         ]);
-        Catalogue::factory()->create([
-            'code' => $catalogues['catalogue']['blood_type']['a+'],
-            'name' => 'A+',
-            'type' => $catalogues['catalogue']['blood_type']['type'],
-        ]);
-        Catalogue::factory()->create([
-            'code' => $catalogues['catalogue']['blood_type']['a+'],
-            'name' => 'A+',
-            'type' => $catalogues['catalogue']['blood_type']['type'],
-        ]);
-
     }
 
     private function createSexCatalogues()
@@ -544,6 +534,46 @@ class DatabaseSeeder extends Seeder
             'code' => $catalogues['catalogue']['gender']['female'],
             'name' => 'FEMENINO',
             'type' => $catalogues['catalogue']['gender']['type'],
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['gender']['other'],
+            'name' => 'OTRO',
+            'type' => $catalogues['catalogue']['gender']['type'],
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['gender']['not_say'],
+            'name' => 'PREFIERO NO DECIRLO',
+            'type' => $catalogues['catalogue']['gender']['type'],
+        ]);
+    }
+
+    private function createCivilStatusCatalogues()
+    {
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['civil_status']['married'],
+            'name' => 'CASADO/A',
+            'type' => $catalogues['catalogue']['civil_status']['type']
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['civil_status']['single'],
+            'name' => 'SOLTERO/A',
+            'type' => $catalogues['catalogue']['civil_status']['type']
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['civil_status']['widower'],
+            'name' => 'VIUDO/A',
+            'type' => $catalogues['catalogue']['civil_status']['type']
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['civil_status']['divorced'],
+            'name' => 'DIVORCIADO/A',
+            'type' => $catalogues['catalogue']['civil_status']['type']
+        ]);
+        Catalogue::factory()->create([
+            'code' => $catalogues['catalogue']['civil_status']['union'],
+            'name' => 'UNIÓN DE HECHO',
+            'type' => $catalogues['catalogue']['civil_status']['type']
         ]);
     }
 

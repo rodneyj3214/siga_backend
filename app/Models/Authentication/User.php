@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
-use App\Traits\StatusActiveTrait;
+use App\Traits\StateActiveTrait;
 use App\Models\App\AdministrativeStaff;
 
 use App\Models\App\Catalogue;
@@ -24,7 +24,7 @@ class User extends Authenticatable implements Auditable
 {
     use HasApiTokens, Notifiable, HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StatusActiveTrait;
+    use StateActiveTrait;
 
 
     protected $connection = 'pgsql-authentication';
@@ -42,6 +42,7 @@ class User extends Authenticatable implements Auditable
         'birthdate',
         'avatar',
         'username',
+        'phone',
         'email',
         'email_verified_at',
         'password',

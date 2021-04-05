@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 
-trait StatusActiveTrait
+trait StateActiveTrait
 {
     protected static function booted()
     {
