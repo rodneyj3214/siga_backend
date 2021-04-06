@@ -20,24 +20,8 @@ class Ability extends Model implements Auditable
 
     protected $fillable = [
         'description',
+        'state'
     ];
-
-    protected $guarded = [
-        'state',
-    ];
-
-    protected $hidden = [
-        'state',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function professional()
     {
@@ -47,5 +31,11 @@ class Ability extends Model implements Auditable
     public function category()
     {
         return $this->belongsTo(Catalogue::class);
+    }
+
+    // Mutators
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = strtoupper($value);
     }
 }
