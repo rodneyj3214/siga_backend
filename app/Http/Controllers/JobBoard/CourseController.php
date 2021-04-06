@@ -54,20 +54,20 @@ class CourseController extends Controller
         }
     }
 
+
     //Almacena los  Datos creado del curso envia//
+   
     function store(Request $request)
     {
-        try {
-            $data = $request->json()->all();
-            $dataUser = $data['user'];
+        
+    $data = $request->json()->all();
+
             $dataCourse = $data['course'];
-            $professional = Professional::where('user_id', $dataUser['id'])->first();
-            if ($professional) {
+            $dataInstitution = $data['institution'];
+            $professional = Professional::firstWhere('user_id', $request->user()->id);
+            $institution = Institution::findOrFail($data['id'];
+            
                 $course = new Course();
-                $course->event_name = strtoupper($dataCourse ['event_name']);
-                $course->event_name = strtoupper($dataCourse ['event_name']);
-                $course->event_name = strtoupper($dataCourse ['event_name']);
-                $course->event_name = strtoupper($dataCourse ['event_name']);
                 $professional = Catalogue::findOrFail($dataCourse['event_type']['id']);
                 $eventType = Catalogue::findOrFail($dataCourse['event_type']['id']);
                 $eventType = Catalogue::findOrFail($dataCourse['event_type']['id']);
@@ -78,22 +78,7 @@ class CourseController extends Controller
                 $course->eventType()->associate($eventType);
                 $course->save();
 
-                return response()->json($response, 201);
-            } else {
-                return response()->json(null, 404);
-            }
-        } catch (ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 400);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
-    }
+
 
     //Actualiza los datos del curso creado//
     function update(Request $request)
