@@ -30,12 +30,12 @@ class Ability extends Model implements Auditable
 
     public function category()
     {
-        return $this->belongsTo(Catalogue::class);
+        return $this->belongsTo(Category::class);
     }
 
     // Mutators
     public function setDescriptionAttribute($value)
     {
-        $this->attributes['description'] = strtoupper($value);
+        $this->attributes['description'] = 'cod'.strtoupper($value);
     }
 }
