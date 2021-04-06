@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobBoard\AbilityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,15 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-
 */
+
+//Route::get('abilities', [AbilityController::class,'index']);
+//Route::get('abilities/{id}', [AbilityController::class,'show']);
+//Route::post('abilities', [AbilityController::class,'store']);
+//Route::put('abilities', [AbilityController::class,'update']);
+//Route::delete('abilities/{id}', [AbilityController::class,'delete']);
+
+Route::apiResource('abilities',AbilityController::class);
 /*
  * Grupo 1
  */

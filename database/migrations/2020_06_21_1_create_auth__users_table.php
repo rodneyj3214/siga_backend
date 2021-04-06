@@ -29,7 +29,7 @@ class CreateAuthUsersTable extends Migration
             $table->string('personal_email')->nullable()->unique();
             $table->date('birthdate')->nullable();
             $table->string('email')->unique();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('change_password')->default(false);
