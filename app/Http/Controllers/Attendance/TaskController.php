@@ -22,7 +22,7 @@ class TaskController extends Controller
         $data = $request->json()->all();
         $dataTask = $data['task'];
 
-        $user = User::findOrFail($request->user);
+        $user = $request->user();
         $attendance = $user->attendances()->where('date', $currentDate)->where('institution_id', $request->institution)->first();
 
         if ($attendance) {
@@ -101,7 +101,7 @@ class TaskController extends Controller
     {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         $role = Role::findOrFail($request->role);
-        $user = User::findOrFail($request->user);
+        $user = $request->user();
         $processes = $role->catalogues()->where('type', $catalogues['task']['process']['type'])->orderBy('name')->get();
         $attendances = $user->attendances()
             ->with(['workdays' => function ($workdays) {

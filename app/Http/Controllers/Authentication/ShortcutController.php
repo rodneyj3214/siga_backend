@@ -36,7 +36,7 @@ class ShortcutController extends Controller
 
         $shortcut = new Shortcut();
         $shortcut->name = $dataShortcut['name'];
-        $shortcut->user()->associate(User::findOrFail($request->user));
+        $shortcut->user()->associate(User::findOrFail($request->user()));
         $shortcut->role()->associate(Role::findOrFail($request->role));
         $shortcut->permission()->associate(Permission::findOrFail($dataShortcut['permission_id']));
         $shortcut->image = $dataShortcut['image'];
