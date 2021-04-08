@@ -41,7 +41,7 @@ class Course extends Model implements Auditable
         return $this->belongsTo(Catalogue::class);
     }
 
-    public function eventType()
+    public function Type()
     {
         return $this->belongsTo(Catalogue::class);
     }

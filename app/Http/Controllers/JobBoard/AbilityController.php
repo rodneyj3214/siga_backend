@@ -19,7 +19,8 @@ class AbilityController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
-            ]], 200);
+            ]
+        ], 200);
     }
 
     function show($id)
@@ -31,7 +32,8 @@ class AbilityController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
-            ]], 200);
+            ]
+        ], 200);
     }
 
     function store(Request $request)
@@ -46,7 +48,7 @@ class AbilityController extends Controller
         $ability->save();
     }
 
-    function update(Request $request,$id)
+    function update(Request $request, $id)
     {
         $data = $request->json()->all();
         $dataAbility = $data['ability'];
@@ -55,9 +57,8 @@ class AbilityController extends Controller
         $ability = Ability::findOrFail($id);
         $ability->description = $dataAbility['description'];
 
-        $ability->professional()->associate(Professional::firstWhere('user_id',$request->user()->id));
-//        $ability->category()->associate($dataCategory['category']);
-        $ability->category()->associate(Category::findOrFail($dataCategory['id']));
+        $ability->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
+        //        $ability->category()->associate($dataCategory['category']);
         $ability->save();
     }
 
