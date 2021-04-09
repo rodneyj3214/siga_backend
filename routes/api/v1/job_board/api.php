@@ -1,31 +1,52 @@
 <?php
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobBoard\OfferController;
+use App\Http\Controllers\JobBoard\CategoryController;
 use App\Http\Controllers\JobBoard\AbilityController;
 use App\Http\Controllers\JobBoard\AcademicFormationController;
+<<<<<<< HEAD:routes/api_v1/job_board/api.php
+=======
+use App\Http\Controllers\JobBoard\CourseController;
+use App\Http\Controllers\JobBoard\LanguageController;
+use App\Http\Controllers\JobBoard\ExperienceController;
+use App\Http\Controllers\JobBoard\ReferenceController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::apiResources([
+    'catalogues' => AbilityController::class,
+    'categories' => CategoryController::class,
+    'offers' => OfferController::class,
+    'abilities' => AbilityController::class,
+    'academic_formations' => AcademicFormationController::class,
+    'courses' => CourseController::class,
+    'languages' => LanguageController::class,
+    'experiences' => ExperienceController::class,
+    'references' => ReferenceController::class,
+]);
 
-//Route::get('abilities', [AbilityController::class,'index']);
-//Route::get('abilities/{id}', [AbilityController::class,'show']);
-//Route::post('abilities', [AbilityController::class,'store']);
-//Route::put('abilities', [AbilityController::class,'update']);
-//Route::delete('abilities/{id}', [AbilityController::class,'delete']);
+Route::group(['prefix' => 'abilities'], function () {
+    Route::get('/test', [AbilityController::class, 'test'])->where('id','');
+});
+>>>>>>> 29d062f6e3c07c70e790050f46321454097a073d:routes/api/v1/job_board/api.php
 
+Route::group(['prefix' => 'academic_formations'], function () {
+    Route::get('/test', [AcademicFormationController::class, 'test']);
+});
+
+Route::group(['prefix' => 'offers'], function () {
+    Route::get('/test', [OfferController::class, 'test']);
+});
+
+Route::group(['prefix' => 'professionals'], function () {
+    Route::get('register', [ProfessionalController::class, 'test'])->where('id','');
+});
+
+<<<<<<< HEAD:routes/api_v1/job_board/api.php
 Route::apiResource('abilities', AbilityController::class);
 Route::apiResource('academic-formations', AcademicFormationController::class);
 
+=======
+>>>>>>> 29d062f6e3c07c70e790050f46321454097a073d:routes/api/v1/job_board/api.php
 /*
  * Grupo 1
  */
@@ -161,13 +182,13 @@ Route::apiResource('', 'JobBoard\CourseController');
 Route::apiResource('academic_formations', 'JobBoard\AcademicFormationController');
 // });
 // Route::group(['middleware' => 'auth:api'], function () {
-Route::apiResource('professional_references', 'JobBoard\ProfessionalReferenceController');
+Route::apiResource('professional_references', 'JobBoard\ReferenceController');
 // });
 //Route::group(['middleware'=> 'auth:api'], function () {
 Route::apiResource('abilities','JobBoard\AbilityController');
 //});
 //Route::group(['middleware'=> 'auth:api'], function () {
-Route::apiResource('professional_experiences','JobBoard\ProfessionalExperienceController');
+Route::apiResource('professional_experiences','JobBoard\ExperienceController');
 //});
 // Route::group(['middleware' => 'auth:api'], function () {
 //Route::apiResource('offers', 'JobBoard\OfferReferenceController');

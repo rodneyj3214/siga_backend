@@ -57,12 +57,12 @@ class Professional extends Model implements Auditable
 
     public function professionalExperiences()
     {
-        return $this->hasMany(ProfessionalExperience::class);
+        return $this->hasMany(Experience::class);
     }
 
     public function professionalReferences()
     {
-        return $this->hasMany(ProfessionalReference::class);
+        return $this->hasMany(Reference::class);
     }
 
 

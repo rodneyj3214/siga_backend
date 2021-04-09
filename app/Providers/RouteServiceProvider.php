@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             $this->mapApiRoutes();
-//            Route::prefix('api_v1')
+//            Route::prefix('api')
 //                ->middleware('api')
 //                ->namespace($this->namespace)
 //                ->group(base_path('routes/api.php'));
@@ -52,53 +52,43 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapApiRoutes()
     {
-        Route::prefix('v1')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/log/api.php'));
         Route::prefix('v1/authentication')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/authentication/api.php'));
+            ->group(base_path('routes/api/v1/authentication/api.php'));
+
         Route::prefix('v1/attendance')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/attendance/api.php'));
+            ->group(base_path('routes/api/v1/attendance/api.php'));
         Route::prefix('v1/job_board')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/job_board/api.php'));
+            ->group(base_path('routes/api/v1/job_board/api.php'));
         Route::prefix('v1/cecy')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/cecy/api.php'));
+            ->group(base_path('routes/api/v1/cecy/api.php'));
         Route::prefix('v1/web')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/web/api.php'));
+            ->group(base_path('routes/api/v1/web/api.php'));
         Route::prefix('v1/app')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/app/api.php'));
+            ->group(base_path('routes/api/v1/app/api.php'));
         Route::prefix('v1/teacher_eval')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/teacher_eval/api.php'));
+            ->group(base_path('routes/api/v1/teacher_eval/api.php'));
         Route::prefix('v1/community')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/community/api.php'));
+            ->group(base_path('routes/api/v1/community/api.php'));
         Route::prefix('v1/voting')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/voting/api.php'));
-        Route::prefix('v1/v10')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/v10/api.php'));
-        Route::prefix('v1/v11')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api_v1/v11/api.php'));
+            ->group(base_path('routes/api/v1/voting/api.php'));
     }
 
     /**
@@ -109,7 +99,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(1000);
+            return Limit::perMinute(10000);
         });
     }
 }

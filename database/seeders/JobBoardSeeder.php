@@ -12,6 +12,7 @@ class JobBoardSeeder extends Seeder
     public function run()
     {
         $this->createProfessionals();
+        $this->createCategories();
     }
 
     private function createProfessionals()
@@ -25,8 +26,6 @@ class JobBoardSeeder extends Seeder
 
     private function createCategories()
     {
-        Category::factory()->create([
-
-        ]);
+        Category::factory()->count(5)->create();
     }
 }
