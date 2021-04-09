@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\JobBoard\CategoryController;
+use App\Http\Controllers\JobBoard\CompanyController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +25,9 @@ use App\Http\Controllers\JobBoard\AbilityController;
 //Route::delete('abilities/{id}', [AbilityController::class,'delete']);
 
 Route::apiResource('abilities',AbilityController::class);
+
+Route::apiResource('categories', CategoryController::class)->withoutMiddleware('auth:api');
+Route::apiResource('Companies',CompanyController::class);
 /*
  * Grupo 1
  */
