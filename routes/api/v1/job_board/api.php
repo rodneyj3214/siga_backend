@@ -5,8 +5,6 @@ use App\Http\Controllers\JobBoard\OfferController;
 use App\Http\Controllers\JobBoard\CategoryController;
 use App\Http\Controllers\JobBoard\AbilityController;
 use App\Http\Controllers\JobBoard\AcademicFormationController;
-<<<<<<< HEAD:routes/api_v1/job_board/api.php
-=======
 use App\Http\Controllers\JobBoard\CourseController;
 use App\Http\Controllers\JobBoard\LanguageController;
 use App\Http\Controllers\JobBoard\ExperienceController;
@@ -27,7 +25,6 @@ Route::apiResources([
 Route::group(['prefix' => 'abilities'], function () {
     Route::get('/test', [AbilityController::class, 'test'])->where('id','');
 });
->>>>>>> 29d062f6e3c07c70e790050f46321454097a073d:routes/api/v1/job_board/api.php
 
 Route::group(['prefix' => 'academic_formations'], function () {
     Route::get('/test', [AcademicFormationController::class, 'test']);
@@ -41,12 +38,9 @@ Route::group(['prefix' => 'professionals'], function () {
     Route::get('register', [ProfessionalController::class, 'test'])->where('id','');
 });
 
-<<<<<<< HEAD:routes/api_v1/job_board/api.php
 Route::apiResource('abilities', AbilityController::class);
 Route::apiResource('academic-formations', AcademicFormationController::class);
 
-=======
->>>>>>> 29d062f6e3c07c70e790050f46321454097a073d:routes/api/v1/job_board/api.php
 /*
  * Grupo 1
  */
