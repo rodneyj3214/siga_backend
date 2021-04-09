@@ -4,19 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSettingsTable extends Migration
+class CreateWebLinksTable extends Migration
 {
-
     public function up()
     {
-        Schema::connection('pgsql-app')->create('settings', function (Blueprint $table) {
+        Schema::connection('pgsql-web')->create('links', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->morphs('linkable');
+            $table->text('image');
+            $table->text('url');
             $table->text('name');
+            $table->text('icon');
             $table->text('description')->nullable();
-            $table->string('value');
-            $table->foreignId('type_id')->constrained('catalogues');
-            $table->foreignId('status_id')->constrained('catalogues');
+            $table->foreignId('status_id')->constrained('app.catalogues');
             $table->boolean('state')->default(true);
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ class CreateSettingsTable extends Migration
 
     public function down()
     {
-        Schema::connection('pgsql-app')->dropIfExists('settings');
+        Schema::connectio('pgsql-web')->dropIfExists('links');
     }
 }

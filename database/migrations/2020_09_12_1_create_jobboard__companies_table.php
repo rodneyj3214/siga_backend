@@ -13,7 +13,9 @@ class CreateJobboardCompaniesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('authentication.users');
             $table->foreignId('type_id')->constrained('app.catalogues');
-            $table->string('trade_name');
+            $table->foreignId('type_activity_id')->constrained('app.catalogues');
+            $table->foreignId('person_type_id')->constrained('app.catalogues');
+            $table->text('trade_name');
             $table->text('comercial_activity');
             $table->string('web_page');
             $table->boolean('state')->default(true);

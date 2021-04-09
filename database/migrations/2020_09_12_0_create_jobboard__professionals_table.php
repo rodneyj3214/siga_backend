@@ -11,6 +11,15 @@ class CreateJobboardProfessionalsTable extends Migration
         Schema::connection('pgsql-job-board')->create('professionals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('authentication.users');
+            $table->boolean('has_online_interview')->nullable();
+            $table->boolean('has_travel')->default(false);
+            $table->boolean('has_license')->default(false);
+            $table->boolean('has_vehículo')->default(false);
+            $table->boolean('has_disability')->default(false);
+            $table->boolean('has_familiar_disability')->default(false);
+            $table->boolean('identification_familiar_disability')->default(false);
+            $table->boolean('has_catastrophic_illness')->default(false);
+            $table->boolean('has_familiar_catastrophic_illness')->default(false);
             $table->text('about_me')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();

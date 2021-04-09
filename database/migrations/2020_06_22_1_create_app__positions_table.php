@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePositionsTable extends Migration
+class CreateAppPositionsTable extends Migration
 {
     public function up()
     {
@@ -13,6 +13,7 @@ class CreatePositionsTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->json('functions')->nullable();
+            $table->boolean('state')->default(true);
             $table->timestamps();
         });
     }

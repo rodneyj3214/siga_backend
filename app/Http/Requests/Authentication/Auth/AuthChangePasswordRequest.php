@@ -26,7 +26,7 @@ class AuthChangePasswordRequest extends FormRequest
         return [
             'user.id' => 'required|int',
             'user.password' => 'required',
-            'user.new_password' => 'required|min:6|max:50',
+            'user.new_password' => 'required|min:8|max:30',
             'user.password_confirmation' => 'required|same:user.new_password',
         ];
     }

@@ -223,7 +223,7 @@ class  UserController extends Controller
     {
         $file = $request->file('file');
         if ($file) {
-            $user = User::findOrFail($request->user);
+            $user = $request->user();
             Storage::delete($user->avatar);
 
             $filePath = $file->storeAs('avatars', $user->id . '.' . $file->getClientOriginalExtension(), 'public');

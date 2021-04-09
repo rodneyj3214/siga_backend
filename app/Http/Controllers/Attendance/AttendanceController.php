@@ -144,7 +144,7 @@ class AttendanceController extends Controller
 
     public function getUserAttendances(Request $request)
     {
-        $user = User::findOrFail($request->user);
+        $user = $request->user();
         $attendances = $user->attendances()
             ->with(['workdays' => function ($workdays) {
                 $workdays
@@ -169,7 +169,7 @@ class AttendanceController extends Controller
 
     public function getUserHistoryAttendances(Request $request)
     {
-        $user = User::findOrFail($request->user);
+        $user = $request->user();
 
         $attendances = $user->attendances()
             ->with(['workdays' => function ($workdays) {
@@ -196,7 +196,7 @@ class AttendanceController extends Controller
 
     public function getUserCurrentDay(Request $request)
     {
-        $user = User::findOrFail($request->user);
+        $user = $request->user();
         $attendances = $user->attendances()
             ->with(['workdays' => function ($workdays) {
                 $workdays->with('observations')->with('type');

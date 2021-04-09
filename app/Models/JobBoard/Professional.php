@@ -2,6 +2,7 @@
 
 namespace App\Models\JobBoard;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -10,14 +11,11 @@ use App\Models\Authentication\User;
 
 class Professional extends Model implements Auditable
 {
+    use HasFactory;
     use \OwenIt\Auditing\Auditable;
 
     protected $connection = 'pgsql-job-board';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
     protected $fillable = [
         'about_me'
     ];
