@@ -15,6 +15,7 @@ class CourseController extends Controller
     // Muestra lista de cursos existentes aqui//
     function index(Request $request)
     {
+        // return "holaNoe";
 
         $couses = $request->json()->all();
 
@@ -48,7 +49,13 @@ class CourseController extends Controller
     {
 
         $data = $request->json()->all();
+
         $dataCourse = $data['course'];
+        $dataInstitution = $data['institution'];
+        $dataProfessional = $data['professional'];
+
+        // $professional = Professional::firstWhere('user_id', $request->user()->id);
+        // $institution = Institution::findOrFail($request->dataInstitution_id);
 
         $course = new Course();
         $course->name = $dataCourse['name'];
@@ -56,6 +63,10 @@ class CourseController extends Controller
         $course->start_date = $dataCourse['start_date'];
         $course->end_date = $dataCourse['end_date'];
         $course->hours = $dataCourse['hours'];
+
+        // $course->professional()->associate($dataProfessional['professional']);
+        // $course->institution()->associate($dataInstitution['institution']);
+        $professional = Catalogue::findOrFail($dataCourse['event_type']['id']);
 
         $course->professional()->associate(Professional::findOrFail($request->Profesional_id));
         $course->institution()->associate(Institution::findOrFail($request->Institution_id));
@@ -79,7 +90,7 @@ class CourseController extends Controller
         $course->end_date = $dataCourse['end_date'];
         $course->hours = $dataCourse['hours'];
 
-        $course->professional()->associate(Professional::findOrFail($request->Profesional_id));
+        $course->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
         $course->institution()->associate(Institution::findOrFail($request->Institution_id));
         $course->type()->associate(Catalogue::findOrFail($request->Type_id));
         $course->certificationType()->associate(Catalogue::findOrFail($request->CertificationType_id));

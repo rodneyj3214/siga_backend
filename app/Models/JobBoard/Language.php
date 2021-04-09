@@ -18,10 +18,10 @@ class Language extends Model implements Auditable
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.languages';
 
-    protected $fillable = [];
-    protected $guarded = [
+    protected $fillable = [
         'state',
     ];
+
 
     public function professional()
     {

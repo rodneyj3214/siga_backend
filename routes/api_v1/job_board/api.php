@@ -4,6 +4,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobBoard\AbilityController;
+use App\Http\Controllers\JobBoard\CourseController;
+use App\Http\Controllers\JobBoard\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,9 @@ use App\Http\Controllers\JobBoard\AbilityController;
 //Route::put('abilities', [AbilityController::class,'update']);
 //Route::delete('abilities/{id}', [AbilityController::class,'delete']);
 
-Route::apiResource('abilities',AbilityController::class);
+Route::apiResource('abilities', AbilityController::class);
+Route::apiResource('courses', CourseController::class);
+Route::apiResource('languages', LanguageController::class);
 /*
  * Grupo 1
  */

@@ -2,6 +2,7 @@
 
 namespace App\Models\JobBoard;
 
+use App\Models\App\Catalogue;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -36,9 +37,10 @@ class Course extends Model implements Auditable
         return $this->belongsTo(Professional::class);
     }
 
+
     public function institution()
     {
-        return $this->belongsTo(Catalogue::class);
+        return $this->belongsTo(Cataloque::class);
     }
 
     public function Type()

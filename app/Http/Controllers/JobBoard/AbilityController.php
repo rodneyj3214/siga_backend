@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\JobBoard;
 
 use App\Http\Controllers\Controller;
+use App\Models\JobBoard\Category;
 use Illuminate\Http\Request;
 
 use App\Models\JobBoard\Professional;
@@ -38,13 +39,17 @@ class AbilityController extends Controller
 
     function store(Request $request)
     {
+
         $data = $request->json()->all();
         $dataAbility = $data['ability'];
+        $dataCategory = $data['category'];
 
         $ability = new Ability();
         $ability->description = $dataAbility['description'];
 
-        $ability->user()->associate($request->user());
+        $ability->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
+        $ability->category()->associate(Category::findOrFail($dataCategory['id']));
+
         $ability->save();
     }
 
