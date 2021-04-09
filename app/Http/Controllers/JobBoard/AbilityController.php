@@ -3,18 +3,27 @@
 namespace App\Http\Controllers\JobBoard;
 
 use App\Http\Controllers\Controller;
-use App\Models\JobBoard\Category;
-use Illuminate\Http\Request;
 
+//Models
+use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Ability;
 
+//Validation Request
+use App\Http\Requests\JobBoard\Ability\CreateAbilityRequest;
+use App\Http\Requests\JobBoard\Ability\IndexAbilityRequest;
+use App\Http\Requests\JobBoard\Ability\UpdateAbilityRequest;
+
+
 class AbilityController extends Controller
 {
-    function index(Request $request)
+    public function __construct()
+    {
+    }
+
+    function index(IndexAbilityRequest $request)
     {
         $abilities = Ability::all();
-
         return response()->json([
             'data' => $abilities,
             'msg' => [
@@ -24,10 +33,18 @@ class AbilityController extends Controller
         ], 200);
     }
 
-    function show($id)
+    function show($abilityId)
     {
-        $ability = Ability::findOrFail($id);
-
+        $ability = Ability::find($abilityId);
+        if (!$ability) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Abilidad no encontrada',
+                    'detail' => 'Vuelva a intentar'
+                ]
+            ], 404);
+        }
         return response()->json([
             'data' => $ability,
             'msg' => [
@@ -37,41 +54,68 @@ class AbilityController extends Controller
         ], 200);
     }
 
-    function store(Request $request)
+    function store(CreateAbilityRequest $request)
     {
-
-        $data = $request->json()->all();
-        $dataAbility = $data['ability'];
-        $dataCategory = $data['category'];
-
         $ability = new Ability();
-        $ability->description = $dataAbility['description'];
 
-        $ability->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
-        $ability->category()->associate(Category::findOrFail($dataCategory['id']));
+        $ability->description = $request->input('ability.description');
+        $ability->professional()->associate(Professional::findOrFail($request->input('professional.id')));
+        $ability->type()->associate(Catalogue::findOrFail($request->input('type.id')));
 
         $ability->save();
+
+        return response()->json([
+            'data' => $ability,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => ''
+            ]
+        ], 201);
     }
 
-    function update(Request $request, $id)
+    function update(UpdateAbilityRequest $request, $abilityId)
+
     {
-        $data = $request->json()->all();
-        $dataAbility = $data['ability'];
-        $dataCategory = $data['category'];
+        $ability = Ability::findOrFail($abilityId);
+        $ability->description = $request->input('ability.description');
 
-        $ability = Ability::findOrFail($id);
-        $ability->description = $dataAbility['description'];
 
-        $ability->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
-        //        $ability->category()->associate($dataCategory['category']);
+        $ability->professional()->associate(Professional::firstWhere($request->input('professional.id')));
+        $ability->type()->associate(Catalogue::findOrFail($request->input('type.id')));
+
         $ability->save();
+
+        return response()->json([
+            'data' => $ability,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => ''
+            ]
+        ], 201);
     }
 
-    function destroy($id)
+    function destroy($abilityId)
     {
-        $ability = Ability::findOrFail($id);
+        $ability = Ability::find($abilityId);
+        if (!$ability) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Abilidad no encontrada',
+                    'detail' => 'Vuelva a intentar'
+                ]
+            ], 404);
+        }
         $ability->state = false;
         $ability->save();
+
+        return response()->json([
+            'data' => $ability,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => ''
+            ]
+        ], 201);
     }
 
     function validateDuplicate($dataAbility, $professional)

@@ -12,7 +12,7 @@ class CreateJobboardOfferProfessionalTable extends Migration
             $table->id();
             $table->foreignId('professional_id')->constrained('job_board.professionals');;
             $table->foreignId('offer_id')->constrained('job_board.offers');;
-            $table->foreignId('status_id')->nullable()->constrained('app.catalogues');
+            $table->foreignId('status_id')->nullable()->constrained('app.status');
             $table->timestamps();
         });
     }

@@ -11,7 +11,8 @@ class CreateAppSocialmediaTable extends Migration
         Schema::connection('pgsql-app')->create('socialmedia', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('icon');
+            $table->string('icon')->nullable();
+            $table->string('logo')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();
         });

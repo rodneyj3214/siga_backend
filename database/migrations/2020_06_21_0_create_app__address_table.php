@@ -11,12 +11,12 @@ class CreateAppAddressTable extends Migration
         Schema::connection('pgsql-app')->create('address', function (Blueprint $table) {
             $table->id();
             $table->foreignId('location_id')->constrained('app.locations');
+            $table->foreignId('sector_id')->constrained('app.catalogues');
             $table->string('main_street');
             $table->string('secondary_street');
             $table->string('number')->nullable()->comment('número de casa');
             $table->string('post_code')->nullable()->comment('código postal');
-            $table->string('sector');
-            $table->text('indications');
+            $table->text('references');
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->boolean('state')->default(true);

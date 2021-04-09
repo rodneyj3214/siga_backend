@@ -12,7 +12,7 @@ class CreateJobboardAbilitiesTable extends Migration
         Schema::connection('pgsql-job-board')->create('abilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('professional_id')->constrained('job_board.professionals');
-            $table->foreignId('category_id')->constrained('app.category');
+            $table->foreignId('type_id')->constrained('app.catalogues');
             $table->text('description');
             $table->boolean('state')->default(true);
             $table->timestamps();

@@ -13,6 +13,7 @@ class CreateAppPositionsTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->json('functions')->nullable();
+            $table->boolean('state')->default(true);
             $table->timestamps();
         });
     }
