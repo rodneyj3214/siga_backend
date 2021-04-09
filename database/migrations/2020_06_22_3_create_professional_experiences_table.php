@@ -11,7 +11,7 @@ class CreateProfessionalExperiencesTable extends Migration
     {
         Schema::connection('pgsql-app')->create('professional_experiences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id');
+            $table->foreignId('teacher_id')->constrained('app.teachers');
             $table->string('employer')->comment('Nombre de la empresa o empleador');
             $table->string('position')->comment('Cargo');
             $table->text('description')->comment('Descripcion de las actividades');

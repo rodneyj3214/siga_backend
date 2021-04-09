@@ -12,9 +12,10 @@ class CreateAppSocialmediablesTable extends Migration
             $table->id();
             $table->foreignId('socialmedia_id')->constrained('app.socialmedia');
             $table->morphs('socialmediables');
+            $table->string('user');
             $table->string('url');
             $table->timestamps();
-//            $table->unique(['socialmedia_id', 'socialmediable_id', 'socialmediable_type']);
+            $table->unique(['socialmedia_id', 'user']);
         });
     }
 

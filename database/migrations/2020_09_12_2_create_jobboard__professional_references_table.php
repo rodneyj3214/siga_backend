@@ -14,13 +14,13 @@ class CreateJobboardProfessionalReferencesTable extends Migration
             $table->foreignId('professional_id')->constrained('job_board.professionals');;
             $table->string('institution');
             $table->string('position');
-            $table->string('contact');
-            $table->string('phone');
+            $table->string('contact_name');
+            $table->string('contact_phone');
+            $table->string('contact_email')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();
         });
     }
-
 
     public function down()
     {

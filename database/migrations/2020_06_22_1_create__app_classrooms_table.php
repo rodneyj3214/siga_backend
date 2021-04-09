@@ -11,10 +11,10 @@ class CreateAppClassroomsTable extends Migration
     {
         Schema::connection('pgsql-app')->create('classrooms', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 100);
-            $table->string('name', 500);
-            $table->foreignId('type_id')->constrained('catalogues');
-            $table->string('icon', 200)->nullable();
+            $table->string('code');
+            $table->string('name');
+            $table->foreignId('type_id')->constrained('app.catalogues');
+            $table->string('icon')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();
         });
