@@ -36,6 +36,6 @@ class Ability extends Model implements Auditable
     // Mutators
     public function setDescriptionAttribute($value)
     {
-        $this->attributes['description'] = 'cod'.strtoupper($value);
+        $this->attributes['description'] = strtoupper($value);
     }
 }
