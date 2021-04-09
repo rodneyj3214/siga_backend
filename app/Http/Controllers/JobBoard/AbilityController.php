@@ -11,10 +11,13 @@ use App\Models\JobBoard\Ability;
 
 class AbilityController extends Controller
 {
-    function index(Request $request)
+    public function __construct(){
+
+    }
+
+    function index(Request $request, $professionalId)
     {
         $abilities = Ability::all();
-
         return response()->json([
             'data' => $abilities,
             'msg' => [
@@ -23,10 +26,18 @@ class AbilityController extends Controller
             ]], 200);
     }
 
-    function show($id)
+    function show($abilityId)
     {
-        $ability = Ability::findOrFail($id);
-
+        return "metodo show";
+        $ability = Ability::find($abilityId);
+        if (!$ability) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Abilidad no encontrada',
+                    'detail' => 'Vuelva a intentar'
+                ]], 404);
+        }
         return response()->json([
             'data' => $ability,
             'msg' => [
@@ -37,30 +48,26 @@ class AbilityController extends Controller
 
     function store(Request $request)
     {
-
-        $data = $request->json()->all();
-        $dataAbility = $data['ability'];
-        $dataCategory = $data['category'];
-
         $ability = new Ability();
-        $ability->description = $dataAbility['description'];
+        $ability->description = $request->input('ability.description');
 
-        $ability->professional()->associate(Professional::firstWhere('user_id',$request->user()->id));
-        $ability->category()->associate(Category::findOrFail($dataCategory['id']));
-
+        $ability->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
+        $ability->category()->associate(Category::findOrFail($request->input('category.id')));
         $ability->save();
     }
 
-    function update(Request $request,$id)
+    function update(Request $request, $professionalId, $abilityId)
     {
+//        return $professionalId;
+        return $abilityId;
         $data = $request->json()->all();
         $dataAbility = $data['ability'];
         $dataCategory = $data['category'];
 
-        $ability = Ability::findOrFail($id);
+        $ability = Ability::findOrFail($abilityId);
         $ability->description = $dataAbility['description'];
 
-        $ability->professional()->associate(Professional::firstWhere('user_id',$request->user()->id));
+        $ability->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
         $ability->category()->associate(Category::findOrFail($dataCategory['id']));
         $ability->save();
     }
@@ -78,5 +85,10 @@ class AbilityController extends Controller
             ->where('professional_id', $professional['id'])
             ->where('state', '<>', 'DELETED')
             ->first();
+    }
+
+    function test(Request $request)
+    {
+        return "hola mundo";
     }
 }

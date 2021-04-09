@@ -4,12 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJobboardProfessionalExperiencesTable extends Migration
+class CreateJobboardExperiencesTable extends Migration
 {
 
     public function up()
     {
-        Schema::connection('pgsql-job-board')->create('professional_experiences', function (Blueprint $table) {
+        Schema::connection('pgsql-job-board')->create('experiences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('professional_id')->constrained('job_board.professionals');
             $table->foreignId('area_id')->constrained('app.catalogues');
@@ -27,6 +27,6 @@ class CreateJobboardProfessionalExperiencesTable extends Migration
 
     public function down()
     {
-        Schema::connection('pgsql-job-board')->dropIfExists('professional_experiences');
+        Schema::connection('pgsql-job-board')->dropIfExists('experiences');
     }
 }
