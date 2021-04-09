@@ -14,7 +14,7 @@ class CreateJobboardProfessionalsTable extends Migration
             $table->boolean('has_online_interview')->nullable();
             $table->boolean('has_travel')->default(false);
             $table->boolean('has_license')->default(false);
-            $table->boolean('has_vehículo')->default(false);
+            $table->boolean('has_vehicle')->default(false);
             $table->boolean('has_disability')->default(false);
             $table->boolean('has_familiar_disability')->default(false);
             $table->boolean('identification_familiar_disability')->default(false);

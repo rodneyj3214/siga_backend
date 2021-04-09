@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 use App\Traits\StateActiveTrait;
-
+use App\Models\App\Catalogue;
 
 class Ability extends Model implements Auditable
 {
@@ -28,14 +28,14 @@ class Ability extends Model implements Auditable
         return $this->belongsTo(Professional::class);
     }
 
-    public function category()
+    public function type()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Catalogue::class);
     }
 
     // Mutators
     public function setDescriptionAttribute($value)
     {
-        $this->attributes['description'] = 'cod'.strtoupper($value);
+        $this->attributes['description'] = strtoupper($value);
     }
 }

@@ -103,7 +103,7 @@ class Handler extends ExceptionHandler
                 'msg' => [
                     'summary' => 'Error en la consulta',
                     'detail' => 'Comunicate con el administrador',
-                    'code' => '400',
+                    'code' => '400s',
                 ]], 400);
         }
 
@@ -113,7 +113,7 @@ class Handler extends ExceptionHandler
                 'msg' => [
                     'summary' => 'Error en la consulta',
                     'detail' => 'Comunicate con el administrador',
-                    'code' => '400',
+                    'code' => '400 model',
                 ]], 400);
         }
 
@@ -121,9 +121,8 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'data' => $e->errors(),
                 'msg' => [
-                    'summary' => 'Error en la validacion',
-                    'detail' => 'Intente de nuevo',
-                    'code' => '400',
+                    'summary' => 'Error en la validacion de campos',
+                    'detail' => 'Intente de nuevo'
                 ]], 400);
         }
 
@@ -141,8 +140,7 @@ class Handler extends ExceptionHandler
             'data' => $e->getMessage(),
             'msg' => [
                 'summary' => $e->getMessage(),
-                'detail' => 'Comnicate con el administrador',
-                'code' => '500',
+                'detail' => 'Comnicate con el administrador'
             ]], 500);
 //        return parent::render($request, $e);
     }
