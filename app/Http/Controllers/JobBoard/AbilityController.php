@@ -48,13 +48,6 @@ class AbilityController extends Controller
 
     function store(Request $request)
     {
-<<<<<<< HEAD
-        $data = $request->json()->all();
-        $dataAbility = $data['ability'];
-        $dataCategory = $data['category'];
-
-=======
->>>>>>> 29d062f6e3c07c70e790050f46321454097a073d
         $ability = new Ability();
         $ability->description = $request->input('ability.description');
 
@@ -63,11 +56,7 @@ class AbilityController extends Controller
         $ability->save();
     }
 
-<<<<<<< HEAD
-    function update(Request $request, $id)
-=======
     function update(Request $request, $professionalId, $abilityId)
->>>>>>> 29d062f6e3c07c70e790050f46321454097a073d
     {
 //        return $professionalId;
         return $abilityId;
