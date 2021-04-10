@@ -13,11 +13,12 @@ use App\Models\JobBoard\Skill;
 use App\Http\Requests\JobBoard\Skill\CreateSkillRequest;
 use App\Http\Requests\JobBoard\Skill\IndexSkillRequest;
 use App\Http\Requests\JobBoard\Skill\UpdateSkillRequest;
+use Illuminate\Http\Request;
 
 class SkillController extends Controller
 {
-       function index(IndexSkillRequest $request)
-       {
+    function index(IndexSkillRequest $request)
+    {
         $professional = Professional::getInstance($request->input('professional_id'));
 
         if ($request->has('search')) {
@@ -150,8 +151,9 @@ class SkillController extends Controller
             ->first();
     }
 
-    public function test(IndexSkillRequest $request)
+    function test(Request $request)
     {
+        return response()->json(csrf_token());
         $professional = new Professional();
         $professional->id = $request->input('professional_id');
         $skills = $professional->skills()->paginate($request->input('per_page'));
