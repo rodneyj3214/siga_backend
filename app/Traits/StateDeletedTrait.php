@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait StatusDeletedTrait
+trait StateDeletedTrait
 {
     public function scopeIsDeleted($query)
     {

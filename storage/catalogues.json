@@ -166,6 +166,11 @@
             "province": "PROVINCE",
             "canton": "CANTON",
             "parish": "PARISH"
+        },
+        "skill_type": {
+            "type": "SKILL_TYPE",
+            "soft": "SOFT",
+            "hard": "HARD"
         }
     }
 }

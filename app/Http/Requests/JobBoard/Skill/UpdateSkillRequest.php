@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\JobBoard\Ability;
+namespace App\Http\Requests\JobBoard\Skill;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAbilityRequest extends FormRequest
+class UpdateSkillRequest extends FormRequest
 {
     public function authorize()
     {

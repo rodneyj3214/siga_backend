@@ -121,9 +121,9 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'data' => $e->errors(),
                 'msg' => [
-                    'summary' => 'Error en la validacion de campos',
+                    'summary' => 'Error en la validación de campos',
                     'detail' => 'Intente de nuevo'
-                ]], 400);
+                ]], 422);
         }
 
         if ($e instanceof \Error) {

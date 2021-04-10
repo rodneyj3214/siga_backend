@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\JobBoard\Ability;
+namespace App\Http\Requests\JobBoard\Skill;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateAbilityRequest extends FormRequest
+class CreateSkillRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,7 @@ class CreateAbilityRequest extends FormRequest
     public function rules()
     {
         return [
-            'ability.description' =>
+            'skill.description' =>
                 ['required',
                     'max:50',
                     'min:10',
@@ -28,8 +28,8 @@ class CreateAbilityRequest extends FormRequest
     public function messages()
     {
         return [
-            'ability.description.required' => 'La descripción es requerida',
-            'ability.description.min' => 'Mínimo 10 caracteres',
+            'skill.description.required' => 'La descripción es requerida',
+            'skill.description.min' => 'Mínimo 10 caracteres',
             'professional.id.integer' => 'Debe ser un campo numérico',
         ];
     }

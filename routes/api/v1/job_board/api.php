@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobBoard\OfferController;
 use App\Http\Controllers\JobBoard\CategoryController;
-use App\Http\Controllers\JobBoard\AbilityController;
+use App\Http\Controllers\JobBoard\SkillController;
 use App\Http\Controllers\JobBoard\AcademicFormationController;
 use App\Http\Controllers\JobBoard\CourseController;
 use App\Http\Controllers\JobBoard\LanguageController;
@@ -11,10 +11,10 @@ use App\Http\Controllers\JobBoard\ExperienceController;
 use App\Http\Controllers\JobBoard\ReferenceController;
 
 Route::apiResources([
-    'catalogues' => AbilityController::class,
+    'catalogues' => SkillController::class,
     'categories' => CategoryController::class,
     'offers' => OfferController::class,
-    'abilities' => AbilityController::class,
+    'skills' => SkillController::class,
     'academic_formations' => AcademicFormationController::class,
     'courses' => CourseController::class,
     'languages' => LanguageController::class,
@@ -22,8 +22,8 @@ Route::apiResources([
     'references' => ReferenceController::class,
 ]);
 
-Route::group(['prefix' => 'abilities'], function () {
-    Route::get('/test', [AbilityController::class, 'test'])->where('id','');
+Route::group(['prefix' => 'skill'], function () {
+    Route::get('/test', [SkillController::class, 'test']);
 });
 
 Route::group(['prefix' => 'academic_formations'], function () {
@@ -176,7 +176,7 @@ Route::apiResource('academic_formations', 'JobBoard\AcademicFormationController'
 Route::apiResource('professional_references', 'JobBoard\ReferenceController');
 // });
 //Route::group(['middleware'=> 'auth:api'], function () {
-Route::apiResource('abilities','JobBoard\AbilityController');
+Route::apiResource('abilities','JobBoard\SkillController');
 //});
 //Route::group(['middleware'=> 'auth:api'], function () {
 Route::apiResource('professional_experiences','JobBoard\ExperienceController');
