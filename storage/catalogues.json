@@ -18,7 +18,9 @@
         "academic_coordinator": "ACADEMIC_COORDINATOR",
         "community_coordinator": "COMMUNITY_COORDINATOR",
         "investigation_coordinator": "INVESTIGATION_COORDINATOR",
-        "administrative_coordinator": "ADMINISTRATIVE_COORDINATOR"
+        "administrative_coordinator": "ADMINISTRATIVE_COORDINATOR",
+        "professional": "PROFESIONAL",
+        "company": "EMPRESA"
     },
     "module": {
         "authentication": "AUTHENTICATION",
@@ -100,6 +102,9 @@
         }
     },
     "catalogue": {
+        "sector": {
+            "type": "SECTOR"
+        },
         "civil_status": {
             "type": "CIVIL_STATUS",
             "married": "MARRIED",
@@ -171,6 +176,48 @@
             "type": "SKILL_TYPE",
             "soft": "SOFT",
             "hard": "HARD"
+        },
+        "course_event_type": {
+            "type": "COURSE_EVENT_TYPE"
+        },
+        "course_institution": {
+            "type": "COURSE_INSTITUTION"
+        },
+        "course_certification_type": {
+            "type": "COURSE_CERTIFICATION_TYPE"
+        },
+        "course_area": {
+            "type": "COURSE_AREA"
+        },
+        "language_type": {
+            "type": "LANGUAGE_TYPE"
+        },
+        "language_level": {
+            "type": "LANGUAGE_LEVEL"
+        },
+        "company_type": {
+            "type": "COMPANY_TYPE"
+        },
+        "company_activity_type": {
+            "type": "COMPANY_ACTIVITY_TYPE"
+        },
+        "company_person_type": {
+            "type": "COMPANY_PERSON_TYPE"
+        },
+        "offer_contract_type": {
+            "type": "OFFER_CONTRACT_TYPE"
+        },
+        "offer_position": {
+            "type": "OFFER_POSITION"
+        },
+        "offer_working_day": {
+            "type": "OFFER_WORKING_DAY"
+        },
+        "offer_experience_time": {
+            "type": "OFFER_EXPERIENCE_TIME"
+        },
+        "offer_training_hours": {
+            "type": "OFFER_TRAINING_HOURS"
         }
     }
 }

@@ -14,10 +14,10 @@ class CreateJobboardSkillsTable extends Migration
             $table->foreignId('type_id')->comment('soft or hard')->constrained('app.catalogues');
             $table->text('description');
             $table->boolean('state')->default(true);
+            $table->unique(['professional_id','type_id']);
             $table->timestamps();
         });
     }
-
 
     public function down()
     {

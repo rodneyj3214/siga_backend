@@ -19,6 +19,7 @@ class SkillController extends Controller
 {
     function index(IndexSkillRequest $request)
     {
+        // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
         $professional = Professional::getInstance($request->input('professional_id'));
 
         if ($request->has('search')) {
@@ -34,7 +35,8 @@ class SkillController extends Controller
                 'data' => null,
                 'msg' => [
                     'summary' => 'No se encontraron Habilidades',
-                    'detail' => 'Intente de nuevo'
+                    'detail' => 'Intente de nuevo',
+                    'code'=>'404'
                 ]], 404);
         }
 
@@ -43,34 +45,45 @@ class SkillController extends Controller
 
     function show($skillId)
     {
+        // Valida que el id se un número, si no es un número devuelve un mensaje de error
         if (!is_numeric($skillId)) {
             return response()->json([
                 'data' => null,
                 'msg' => [
                     'summary' => 'ID no válido',
-                    'detail' => 'Intente de nuevo'
+                    'detail' => 'Intente de nuevo',
+                    'code'=>'400'
                 ]], 400);
         }
         $skill = Skill::find($skillId);
+
+        // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error
         if (!$skill) {
             return response()->json([
                 'data' => null,
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
-                    'detail' => 'Vuelva a intentar'
+                    'detail' => 'Vuelva a intentar',
+                    'code'=>'404'
                 ]], 404);
         }
+
+
         return response()->json([
             'data' => $skill,
             'msg' => [
                 'summary' => 'success',
-                'detail' => ''
+                'detail' => '',
+                'code'=>'200'
             ]], 200);
     }
 
     function store(CreateSkillRequest $request)
     {
+        // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
         $professional = Professional::getInstance($request->input('professional.id'));
+
+        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo skill.
         $type = Catalogue::getInstance($request->input('type.id'));
 
         $skill = new Skill();
@@ -82,22 +95,27 @@ class SkillController extends Controller
         return response()->json([
             'data' => $skill,
             'msg' => [
-                'summary' => 'success',
-                'detail' => ''
+                'summary' => 'Habilidad creada',
+                'detail' => 'El registro fue creado',
+                'code'=>'400'
             ]], 201);
     }
 
     function update(UpdateSkillRequest $request, $skillId)
     {
+        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo skill.
         $type = Catalogue::getInstance($request->input('type.id'));
 
         $skill = Skill::find($skillId);
+
+        // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error
         if (!$skill) {
             return response()->json([
                 'data' => null,
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
-                    'detail' => 'Vuelva a intentar'
+                    'detail' => 'Vuelva a intentar',
+                    'code'=>'404'
                 ]], 404);
         }
 
@@ -108,55 +126,56 @@ class SkillController extends Controller
         return response()->json([
             'data' => $skill,
             'msg' => [
-                'summary' => 'success',
-                'detail' => ''
+                'summary' => 'Habilidad actualizada',
+                'detail' => 'El registro fue actualizado',
+                'code'=>'201'
             ]], 201);
     }
 
     function destroy($skillId)
     {
+        // Valida que el id se un número, si no es un número devuelve un mensaje de error
         if (!is_numeric($skillId)) {
             return response()->json([
                 'data' => null,
                 'msg' => [
                     'summary' => 'ID no válido',
-                    'detail' => 'Intente de nuevo'
+                    'detail' => 'Intente de nuevo',
+                    'code'=>'400'
                 ]], 400);
         }
         $skill = Skill::find($skillId);
+
+        // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error
         if (!$skill) {
             return response()->json([
                 'data' => null,
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
-                    'detail' => 'Vuelva a intentar'
+                    'detail' => 'Vuelva a intentar',
+                    'code'=>'404'
                 ]], 404);
         }
+
+        // Es una eliminación lógica
         $skill->state = false;
         $skill->save();
 
         return response()->json([
             'data' => $skill,
             'msg' => [
-                'summary' => 'success',
-                'detail' => ''
+                'summary' => 'Habilidad eliminada',
+                'detail' => 'El registro fue eliminado',
+                'code'=>'201'
             ]], 201);
-    }
-
-    function validateDuplicate($dataSkill, $professional)
-    {
-        return Skill::where('category', $dataSkill['category'])
-            ->where('professional_id', $professional['id'])
-            ->where('state', '<>', 'DELETED')
-            ->first();
     }
 
     function test(Request $request)
     {
-        return response()->json(csrf_token());
-        $professional = new Professional();
-        $professional->id = $request->input('professional_id');
-        $skills = $professional->skills()->paginate($request->input('per_page'));
-        return response()->json($skills, 200);
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
+        $types = Catalogue::where('type', $catalogues['catalogue']['company_type']['type'])->get();
+        $activityTypes = Catalogue::where('type', $catalogues['catalogue']['company_activity_type']['type'])->get();
+        $personTypes = Catalogue::where('type', $catalogues['catalogue']['company_person_type']['type'])->get();
+        return response()->json($types[rand(1, 4)]['id'], 200);
     }
 }

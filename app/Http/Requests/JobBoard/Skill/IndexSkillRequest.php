@@ -14,14 +14,20 @@ class IndexSkillRequest extends FormRequest
 
     public function rules()
     {
-        $rules = ['professional_id' => ['required']];
+        $rules = [
+            'professional_id' => [
+                'required',
+                'integer'
+            ],
+        ];
         return JobBoardFormRequest::rules($rules);
     }
 
     public function messages()
     {
         $messages = [
-            'professional_id.required' => 'El profesional es obligatorio',
+            'professional.id.required' => 'El profesional es obligatorio',
+            'professional.id.integer' => 'El ID del profesional debe ser numérico',
         ];
         return JobBoardFormRequest::messages($messages);
     }

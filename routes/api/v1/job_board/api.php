@@ -37,7 +37,7 @@ Route::group(['prefix' => 'offer'], function () {
 });
 
 Route::group(['prefix' => 'skill'], function () {
-    Route::get('test', [SkillController::class, 'test']);
+    Route::get('test', [SkillController::class, 'test'])->withoutMiddleware(['auth:api']);
 });
 
 Route::group(['prefix' => 'academic_formation'], function () {
