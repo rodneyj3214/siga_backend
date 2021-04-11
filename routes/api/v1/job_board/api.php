@@ -38,9 +38,6 @@ Route::group(['prefix' => 'professionals'], function () {
     Route::get('register', [ProfessionalController::class, 'test'])->where('id','');
 });
 
-Route::apiResource('abilities', AbilityController::class);
-Route::apiResource('academic-formations', AcademicFormationController::class);
-
 /*
  * Grupo 1
  */
