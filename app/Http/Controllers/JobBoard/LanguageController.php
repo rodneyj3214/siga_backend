@@ -13,10 +13,10 @@ class LanguageController extends Controller
 {
     function index(Request $request)
     {
-        $abilities = Language::all();
+        $languages = Language::all();
 
         return response()->json([
-            'data' => $abilities,
+            'data' => $languages,
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
