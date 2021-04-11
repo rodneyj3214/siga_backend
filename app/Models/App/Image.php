@@ -10,14 +10,17 @@ use Carbon\Carbon;
 
 // Application
 use App\Traits\StateActiveTrait;
+use phpseclib3\Math\BigInteger;
 
 
+/**
+ * @property BigInteger id
+ */
 class Image extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use StateActiveTrait;
-
 
     protected $connection = 'pgsql-app';
     protected $table = 'app.images';

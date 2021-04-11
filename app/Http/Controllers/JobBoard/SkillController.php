@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\JobBoard;
 
+use App\Http\Controllers\App\ImageController;
 use App\Http\Controllers\Controller;
 
 // Models
+use App\Http\Requests\App\Image\DeleteImageRequest;
+use App\Http\Requests\App\Image\UpdateImageRequest;
+use App\Http\Requests\App\Image\UploadImageRequest;
 use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Skill;
@@ -13,6 +17,7 @@ use App\Models\JobBoard\Skill;
 use App\Http\Requests\JobBoard\Skill\CreateSkillRequest;
 use App\Http\Requests\JobBoard\Skill\IndexSkillRequest;
 use App\Http\Requests\JobBoard\Skill\UpdateSkillRequest;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class SkillController extends Controller
@@ -36,7 +41,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'No se encontraron Habilidades',
                     'detail' => 'Intente de nuevo',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
 
@@ -52,7 +57,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'ID no válido',
                     'detail' => 'Intente de nuevo',
-                    'code'=>'400'
+                    'code' => '400'
                 ]], 400);
         }
         $skill = Skill::find($skillId);
@@ -64,7 +69,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
                     'detail' => 'Vuelva a intentar',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
 
@@ -74,7 +79,7 @@ class SkillController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => '',
-                'code'=>'200'
+                'code' => '200'
             ]], 200);
     }
 
@@ -97,7 +102,7 @@ class SkillController extends Controller
             'msg' => [
                 'summary' => 'Habilidad creada',
                 'detail' => 'El registro fue creado',
-                'code'=>'400'
+                'code' => '400'
             ]], 201);
     }
 
@@ -115,7 +120,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
                     'detail' => 'Vuelva a intentar',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
 
@@ -128,7 +133,7 @@ class SkillController extends Controller
             'msg' => [
                 'summary' => 'Habilidad actualizada',
                 'detail' => 'El registro fue actualizado',
-                'code'=>'201'
+                'code' => '201'
             ]], 201);
     }
 
@@ -141,7 +146,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'ID no válido',
                     'detail' => 'Intente de nuevo',
-                    'code'=>'400'
+                    'code' => '400'
                 ]], 400);
         }
         $skill = Skill::find($skillId);
@@ -153,7 +158,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
                     'detail' => 'Vuelva a intentar',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
 
@@ -166,7 +171,7 @@ class SkillController extends Controller
             'msg' => [
                 'summary' => 'Habilidad eliminada',
                 'detail' => 'El registro fue eliminado',
-                'code'=>'201'
+                'code' => '201'
             ]], 201);
     }
 
@@ -177,5 +182,20 @@ class SkillController extends Controller
         $activityTypes = Catalogue::where('type', $catalogues['catalogue']['company_activity_type']['type'])->get();
         $personTypes = Catalogue::where('type', $catalogues['catalogue']['company_person_type']['type'])->get();
         return response()->json($types[rand(1, 4)]['id'], 200);
+    }
+
+    function uploadImage(UploadImageRequest $request)
+    {
+        return (new ImageController())->upload($request, Skill::getInstance($request->input('id')));
+    }
+
+    function updateImage(UpdateImageRequest $request, $imageId)
+    {
+        return (new ImageController())->update($request, $imageId);
+    }
+
+    function deleteImage($imageId)
+    {
+        return (new ImageController())->delete($imageId);
     }
 }

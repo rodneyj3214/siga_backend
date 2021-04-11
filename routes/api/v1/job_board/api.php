@@ -38,6 +38,9 @@ Route::group(['prefix' => 'offer'], function () {
 
 Route::group(['prefix' => 'skill'], function () {
     Route::get('test', [SkillController::class, 'test'])->withoutMiddleware(['auth:api']);
+    Route::post('image', [SkillController::class, 'uploadImage']);
+    Route::post('image/{image}', [SkillController::class, 'updateImage']);
+    Route::delete('image/{image}', [SkillController::class, 'deleteImage']);
 });
 
 Route::group(['prefix' => 'academic_formation'], function () {

@@ -10,23 +10,14 @@ use App\Http\Controllers\App\FileController;
 use App\Http\Controllers\App\LocationController;
 use App\Http\Controllers\App\EmailController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 Route::apiResource('catalogues', CatalogueController::class);
 Route::apiResource('locations', LocationController::class)->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
 Route::get('countries', [LocationController::class, 'getCountries'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
 
-Route::group(['prefix' => 'images'], function () {
+Route::group(['prefix' => 'image'], function () {
     Route::get('avatars', [ImageController::class, 'getAvatar']);
     Route::post('avatars', [ImageController::class, 'createAvatar']);
+    Route::post('upload', [ImageController::class, 'upload']);
 });
 
 Route::group(['prefix' => 'teachers'], function () {

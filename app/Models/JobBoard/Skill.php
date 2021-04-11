@@ -28,7 +28,12 @@ class Skill extends Model implements Auditable
         'state'
     ];
 
-
+    public static function getInstance($id)
+    {
+        $model = new Skill();
+        $model->id = $id;
+        return $model;
+    }
     // Relationships
     public function professional()
     {
