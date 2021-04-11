@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 use App\Models\App\Catalogue;
-use App\Traits\StateActiveTrait;
+use App\Traits\StateActive;
 
 
 class Answer extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
-    use StateActiveTrait;
+    use StateActive;
 
 
     protected $connection = 'pgsql-teacher-eval';

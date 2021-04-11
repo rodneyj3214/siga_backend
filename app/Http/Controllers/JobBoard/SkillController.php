@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers\JobBoard;
 
-use App\Http\Controllers\App\ImageController;
+// Controllers
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\App\FileController;
+use App\Http\Controllers\App\ImageController;
 
 // Models
-use App\Http\Requests\App\Image\DeleteImageRequest;
-use App\Http\Requests\App\Image\UpdateImageRequest;
-use App\Http\Requests\App\Image\UploadImageRequest;
+use App\Http\Requests\App\File\IndexFileRequest;
+use App\Http\Requests\App\File\ShowFileRequest;
 use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Skill;
 
-// Request Validation
+// FormRequest
 use App\Http\Requests\JobBoard\Skill\CreateSkillRequest;
 use App\Http\Requests\JobBoard\Skill\IndexSkillRequest;
 use App\Http\Requests\JobBoard\Skill\UpdateSkillRequest;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use App\Http\Requests\App\Image\UpdateImageRequest;
+use App\Http\Requests\App\Image\UploadImageRequest;
+use App\Http\Requests\App\File\UpdateFileRequest;
+use App\Http\Requests\App\File\UploadFileRequest;
 
 class SkillController extends Controller
 {
@@ -175,15 +178,6 @@ class SkillController extends Controller
             ]], 201);
     }
 
-    function test(Request $request)
-    {
-        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
-        $types = Catalogue::where('type', $catalogues['catalogue']['company_type']['type'])->get();
-        $activityTypes = Catalogue::where('type', $catalogues['catalogue']['company_activity_type']['type'])->get();
-        $personTypes = Catalogue::where('type', $catalogues['catalogue']['company_person_type']['type'])->get();
-        return response()->json($types[rand(1, 4)]['id'], 200);
-    }
-
     function uploadImage(UploadImageRequest $request)
     {
         return (new ImageController())->upload($request, Skill::getInstance($request->input('id')));
@@ -197,5 +191,30 @@ class SkillController extends Controller
     function deleteImage($imageId)
     {
         return (new ImageController())->delete($imageId);
+    }
+
+    function uploadFile(UploadFileRequest $request)
+    {
+        return (new FileController())->upload($request, Skill::getInstance($request->input('id')));
+    }
+
+    function updateFile(UpdateFileRequest $request, $fileId)
+    {
+        return (new FileController())->update($request, $fileId);
+    }
+
+    function deleteFile($fileId)
+    {
+        return (new FileController())->delete($fileId);
+    }
+
+    function indexFile(IndexFileRequest $request)
+    {
+        return (new FileController())->index($request, Skill::getInstance($request->input('id')));
+    }
+
+    function ShowFile($fileId)
+    {
+        return (new FileController())->show($fileId);
     }
 }

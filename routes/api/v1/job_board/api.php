@@ -11,6 +11,7 @@ use App\Http\Controllers\JobBoard\CourseController;
 use App\Http\Controllers\JobBoard\LanguageController;
 use App\Http\Controllers\JobBoard\ExperienceController;
 use App\Http\Controllers\JobBoard\ReferenceController;
+use Illuminate\Support\Facades\Storage;
 
 Route::apiResources([
     'catalogues' => SkillController::class,
@@ -37,26 +38,51 @@ Route::group(['prefix' => 'offer'], function () {
 });
 
 Route::group(['prefix' => 'skill'], function () {
-    Route::get('test', [SkillController::class, 'test'])->withoutMiddleware(['auth:api']);
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return \App\Models\JobBoard\Skill::find(1);
+    })->withoutMiddleware(['auth:api']);
+
     Route::post('image', [SkillController::class, 'uploadImage']);
     Route::post('image/{image}', [SkillController::class, 'updateImage']);
     Route::delete('image/{image}', [SkillController::class, 'deleteImage']);
+
+    Route::post('file', [SkillController::class, 'uploadFile']);
+    Route::post('file/{image}', [SkillController::class, 'updateFile']);
+    Route::delete('file/{image}', [SkillController::class, 'deleteFile']);
+    Route::get('file', [SkillController::class, 'indexFile']);
+    Route::get('file/{file}', [SkillController::class, 'showFile']);
 });
 
 Route::group(['prefix' => 'academic_formation'], function () {
-    Route::get('test', [AcademicFormationController::class, 'test']);
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return 'test';
+    })->withoutMiddleware(['auth:api']);
 });
 Route::group(['prefix' => 'course'], function () {
-    Route::get('test', [CourseController::class, 'test']);
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return 'test';
+    })->withoutMiddleware(['auth:api']);
 });
 Route::group(['prefix' => 'language'], function () {
-    Route::get('test', [LanguageController::class, 'test']);
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return 'test';
+    })->withoutMiddleware(['auth:api']);
 });
 
 Route::group(['prefix' => 'experience'], function () {
-    Route::get('test', [ExperienceController::class, 'test']);
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return 'test';
+    })->withoutMiddleware(['auth:api']);
 });
 
 Route::group(['prefix' => 'reference'], function () {
-    Route::get('test', [ReferenceController::class, 'test']);
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return 'test';
+    })->withoutMiddleware(['auth:api']);
 });

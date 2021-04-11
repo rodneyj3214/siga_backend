@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 use App\Models\App\Authority;
-use App\Traits\StateActiveTrait;
+use App\Traits\StateActive;
 
 
 class PairResult extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
+    use StateActive;
 
     use HasFactory;
 

@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 // Traits State
-use App\Traits\StateActiveTrait;
+use App\Traits\StateActive;
 
 
 class TeacherInformation extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
+    use StateActive;
 
 
 }

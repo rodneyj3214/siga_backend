@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 // Tratis State
-use App\Traits\StateActiveTrait;
+use App\Traits\StateActive;
 
 class Location extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
+    use StateActive;
 
 
     protected $connection = 'pgsql-app';

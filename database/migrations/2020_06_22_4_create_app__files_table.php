@@ -13,8 +13,8 @@ class CreateAppFilesTable extends Migration
             $table->morphs('fileable');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->text('uri')->nullable();
             $table->string('extension');
+            $table->text('directory')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();
         });

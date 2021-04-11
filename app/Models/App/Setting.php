@@ -2,7 +2,7 @@
 
 namespace App\Models\App;
 
-use App\Traits\StateActiveTrait;
+use App\Traits\StateActive;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +12,7 @@ class Setting extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
+    use StateActive;
 
 
     protected $connection = 'pgsql-app';

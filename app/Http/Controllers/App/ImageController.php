@@ -3,47 +3,36 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\App\Image\DeleteImageRequest;
-use App\Http\Requests\App\Image\UpdateImageRequest;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
-use App\Http\Requests\App\Image\UploadImageRequest;
-
-use App\Models\Authentication\User;
-use App\Models\App\Image;
-
 use Intervention\Image\Facades\Image as InterventionImage;
+use App\Http\Requests\App\Image\UpdateImageRequest;
+use App\Http\Requests\App\Image\UploadImageRequest;
+use App\Models\App\Image;
 
 class ImageController extends Controller
 {
     public function upload(UploadImageRequest $request, $model)
     {
-        $image = $request->file('image');
-        $newImage = new Image([
-            'code' => pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME),
-            'name' => pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME),
-            'description' => $request->input('description'),
-            'extension' => $image->getClientOriginalExtension(),
-            'uri' => 'asd'
-        ]);
+        foreach ($request->file('images') as $image) {
+            $newImage = new Image();
+            $newImage->name = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $newImage->description = $request->input('description');
+            $newImage->extension = '.jpg';
+            $newImage->imageable()->associate($model);
+            $newImage->save();
 
-        $newImage->imageable()->associate($model);
-        $newImage->save();
+            Storage::makeDirectory('images\\' . $newImage->id);
 
-        Storage::makeDirectory('images\\' . $newImage->id);
+            $this->uploadOriginal(InterventionImage::make($image), $newImage->id);
+            $this->uploadLargeImage(InterventionImage::make($image), $newImage->id);
+            $this->uploadMediumImage(InterventionImage::make($image), $newImage->id);
+            $this->uploadSmallImage(InterventionImage::make($image), $newImage->id);
 
-        $this->uploadOriginal(InterventionImage::make($image), $newImage->id);
-        $this->uploadLargeImage(InterventionImage::make($image), $newImage->id);
-        $this->uploadMediumImage(InterventionImage::make($image), $newImage->id);
-        $this->uploadSmallImage(InterventionImage::make($image), $newImage->id);
-
-        $newImage->uri = 'images/' . $newImage->id . '.jpg';
-        $newImage->save();
-
+            $newImage->directory = 'images';
+            $newImage->save();
+        }
         return response()->json([
-            'data' => $newImage->uri,
+            'data' => null,
             'msg' => [
                 'summary' => 'Imagen subida',
                 'detail' => 'La imagen fue subida correctamente',
@@ -53,8 +42,9 @@ class ImageController extends Controller
 
     public function update(UpdateImageRequest $request, $imageId)
     {
+        $image = Image::find($imageId);
         // Valida que exista la imagen, si no encuentra el registro en la base devuelve un mensaje de error
-        if (!Image::find($imageId)) {
+        if (!$image) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -64,10 +54,14 @@ class ImageController extends Controller
                 ]], 404);
         }
 
+        $image->name=$request->input('name');
+        $image->description=$request->input('description');
+        $image->save();
+
+        $this->uploadOriginal($request->file('image'), $imageId);
         $this->uploadLargeImage($request->file('image'), $imageId);
         $this->uploadMediumImage($request->file('image'), $imageId);
         $this->uploadSmallImage($request->file('image'), $imageId);
-        $this->uploadOriginal($request->file('image'), $imageId);
 
         return response()->json([
             'data' => null,
@@ -108,6 +102,7 @@ class ImageController extends Controller
             ]], 201);
     }
 
+    // Guarda imagenes con una resolución de 300px de ancho y el alto es ajustable para celulares
     private function uploadSmallImage($image, $name)
     {
         $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-sm.jpg';
@@ -121,6 +116,7 @@ class ImageController extends Controller
         })->save($path, 75);
     }
 
+    // Guarda imagenes con una resolución de 750px de ancho y el alto es ajustable para tablets
     private function uploadMediumImage($image, $name)
     {
         $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-md.jpg';
@@ -134,6 +130,7 @@ class ImageController extends Controller
         })->save($path, 75);
     }
 
+    // Guarda imagenes con una resolución de 1250px de ancho y el alto es ajustable para pc
     private function uploadLargeImage($image, $name)
     {
         $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-lg.jpg';
@@ -147,6 +144,7 @@ class ImageController extends Controller
         })->save($path, 75);
     }
 
+    // Guarda imagenes con su tamaño original
     private function uploadOriginal($image, $name)
     {
         $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '.jpg';

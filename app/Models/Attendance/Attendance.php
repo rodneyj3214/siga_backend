@@ -4,7 +4,7 @@ namespace App\Models\Attendance;
 
 use App\Models\App\Institution;
 use App\Models\App\Observation;
-use App\Traits\StateActiveTrait;
+use App\Traits\StateActive;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\App\Teacher;
@@ -18,7 +18,7 @@ class Attendance extends Model implements Auditable
 
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
+    use StateActive;
 
 
     protected $connection = 'pgsql-attendance';

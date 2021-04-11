@@ -13,8 +13,8 @@ class CreateAppImagesTable extends Migration
             $table->morphs('imageable');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->text('uri')->nullable();
             $table->string('extension');
+            $table->text('directory')->nullable();
             $table->boolean('state')->default(true);
             $table->timestamps();
         });

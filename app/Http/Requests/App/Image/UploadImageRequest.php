@@ -15,10 +15,11 @@ class UploadImageRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'image' => [
+            'images.*' => [
                 'required',
-                'mimes:jpg,jpeg,png',
-                'max:2024'
+                'mimes:jpg,jpeg,png,jpeg 2000,bmp',
+                'file',
+                'max:102400',
             ],
         ];
         return JobBoardFormRequest::rules($rules);
@@ -27,10 +28,18 @@ class UploadImageRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'image.required' => 'La imagen es requerida',
-            'image.mimes' => 'El formato no es permitido',
-            'image.max' => 'El tamaño máximo permitido es 1MB',
+            'images.*.required' => 'El campo :attribute es obligatorio.',
+            'images.*.mimes' => 'El campo :attribute debe ser un archivo de tipo: :values.',
+            'images.*.max' => 'El campo :attribute no puede ser mayor que :maxKB.',
         ];
         return JobBoardFormRequest::messages($messages);
+    }
+
+    public function attributes()
+    {
+        $attributes = [
+            'images.*' => 'imagen'
+        ];
+        return JobBoardFormRequest::attributes($attributes);
     }
 }
