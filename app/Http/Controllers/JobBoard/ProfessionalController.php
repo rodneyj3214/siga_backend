@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\JobBoard;
 
-use App\Models\JobBoard\Ability;
+use App\Models\JobBoard\Skill;
 use App\Models\JobBoard\AcademicFormation;
 use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Course;
