@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
+use App\Traits\StatusActiveTrait;
+
 use App\Models\Authentication\User;
 
 
@@ -13,11 +15,37 @@ class Professional extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
+    use StatusActiveTrait;
 
     protected $connection = 'pgsql-job-board';
+    protected $table = 'job_board.professionals';
+
 
     protected $fillable = [
+        'has_online_interview',
+       'has_travel',
+       'has_license',
+        'has_vehicle',
+        'has_disability',
+        'has_familiar_disability',
+       'identification_familiar_disability',
+        'has_catastrophic_illness',
+        'has_familiar_catastrophic_illness',
         'about_me'
+    ];
+
+    protected $hidden = [
+        'state'
+
+    ];
+
+    protected $casts = [
+        'email_verified_at'= 'datetime'
+
+    ];
+    protected $hidden = [
+        'state'
+
     ];
 
     public function offers()

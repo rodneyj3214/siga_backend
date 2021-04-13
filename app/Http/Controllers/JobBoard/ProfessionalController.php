@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\JobBoard;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+
+
+
 use App\Models\JobBoard\Ability;
 use App\Models\JobBoard\AcademicFormation;
 use App\Models\JobBoard\Company;
@@ -14,13 +20,98 @@ use App\Models\JobBoard\Reference;
 use Exception;
 use http\Client\Curl\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Http\Controllers\Controller;
+
+//use Illuminate\Support\Facades\DB;
+//use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfessionalController extends Controller
 {
+
+    
+
+    function index(Request $request)
+        $professional = Profferesional::all();
+ 
+        return response()->json([
+            'data' => $professionals,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => ''
+            ]], 200);
+             
+        }
+        function show($id)
+        $professional = Profferesional::()findOrFail($id);
+ 
+        return response()->json([
+            'data' => $professional ,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => ''
+            ]], 200);
+             
+        }
+
+
+        function store (Request $request)
+        {
+            $data = $request->json()->all();
+            $dataProfessional = $data['professional'];
+
+            $professional = new Professional
+     //      $professional->user()->$dataProfessional['user_id'];
+             $professional->has_online_interview()->$dataProfessional['has_online_interview_id'];
+             $professional->has_travel()->$dataProfessional['has_travel_id'];
+             $professional->has_license()->$dataProfessional['has_license_id'];
+             $professional->has_vehicle()->$dataProfessional['has_vehicle_id'];
+             $professional->has_disability()->$dataProfessional['has_disability_id'];
+             $professional->has_familiar_disability()->$dataProfessional['has_familiar_disability_id'];
+             $professional->identification_familiar_disability()->$dataProfessional['identification_familiar_disability_id'];
+             $professional->has_catastrophic_illness()->$dataProfessional['has_catastrophic_illness_id'];
+             $professional->has_familiar_catastrophic_illness()->$dataProfessional['has_familiar_catastrophic_illness_id'];
+             $professional->about_me()->$dataProfessional['about_me_id'];
+
+
+            $professional->offer()->associate(Offer::findOrfail($request->input('offer.id')));
+            $professional->company()->associate(Company::findOrfail($request->input('company.id')));
+            $professional->user()->associate(User::findOrfail($request->input('user.id')));
+
+            
+            $professional->save();
+     
+            }
+
+            function update(Request  $request, $id)
+
+            
+            $data = $request->json()->all();
+            $dataProfessional = $data['professional'];
+           
+            $professional = Professional::findOrfail($id);
+            $professional->has_online_interview = $dataProfessional ['has_online_interview'];
+            $professional->has_travel = $dataProfessional ['has_travel'];
+            $professional->has_license = $dataProfessional ['has_license'];
+            $professional->has_vehicle = $dataProfessional ['has_vehicle'];
+            $professional->has_disability = $dataProfessional ['has_disability'];
+            $professional->has_familiar_disability = $dataProfessional ['has_familiar_disability'];
+            $professional->identification_familiar_disability = $dataProfessional ['identification_familiar_disability'];
+            $professional->has_catastrophic_illness = $dataProfessional ['has_catastrophic_illness'];
+            $professional->has_familiar_catastrophic_illness = $dataProfessional ['has_familiar_catastrophic_illness'];
+            $professional->about_me= $dataProfessional ['about_me'];
+
+            $professional->user()-associate($request->user());
+            $professional->save();
+        }
+
+        function destroy($id)
+
+       
+        $professional = Professional::findOrfail($id);
+        $professional->state = false;
+        $professional->save();
+    }
+
+    /*
 
     //Método para filtrar postulantes
     function filterPostulants(Request $request)
@@ -78,9 +169,9 @@ class ProfessionalController extends Controller
 
     }
 
-    /* Metodo para obtener todas las ofertas a las que aplico el profesional*/
+    /* Metodo para obtener todas las ofertas a las que aplico el profesional*
 
-    /* Metodos para gestionar los datos personales*/
+    /* Metodos para gestionar los datos personales*
     function getProfessionals(Request $request)
     {
         $professionals = Professional::with(['academicFormations.category' => function ($query) {
@@ -197,7 +288,7 @@ class ProfessionalController extends Controller
 
     /*
      * Grupo 3
-     */
+     
     function getAppliedOffers(Request $request)
     {
         try {
@@ -324,7 +415,7 @@ class ProfessionalController extends Controller
     /*
      * Grupo4
      */
-    /*Actualiza datos del professional*/
+    /*Actualiza datos del professional
     function update(Request $request)
     {
         try {
@@ -364,4 +455,5 @@ class ProfessionalController extends Controller
     /*
      * FinGrupo4
      */
+    
 }
