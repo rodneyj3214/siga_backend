@@ -3,6 +3,7 @@
 namespace App\Models\JobBoard;
 
 use App\Models\App\File;
+use App\Models\App\Image;
 use Brick\Math\BigInteger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,10 +30,9 @@ class Skill extends Model implements Auditable
     protected $fillable = [
         'description',
         'state',
-        'full_path',
     ];
 
-    protected $hidden = ['description'];
+    // protected $hidden = ['description'];
 
     protected $appends = ['full_description'];
 
@@ -54,14 +54,14 @@ class Skill extends Model implements Auditable
         return $this->belongsTo(Catalogue::class);
     }
 
-    public function file()
-    {
-        return $this->morphOne(File::class,'fileable');
-    }
-
     public function files()
     {
-        return $this->morphMany(File::class,'fileable');
+        return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     // Mutators

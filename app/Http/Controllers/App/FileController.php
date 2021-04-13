@@ -125,7 +125,7 @@ class FileController extends Controller
         return response()->json($files, 200);
     }
 
-    function show($fileId)
+    public function show($fileId)
     {
         // Valida que el id se un número, si no es un número devuelve un mensaje de error
         if (!is_numeric($fileId)) {

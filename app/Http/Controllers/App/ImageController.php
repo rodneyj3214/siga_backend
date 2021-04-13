@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\App\Image\IndexImageRequest;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
 use App\Http\Requests\App\Image\UpdateImageRequest;
@@ -70,7 +71,6 @@ class ImageController extends Controller
                 'detail' => 'La imagen fue actualizada correctamente',
                 'code' => '201'
             ]], 201);
-
     }
 
     public function delete($imageId)
@@ -100,6 +100,64 @@ class ImageController extends Controller
                 'detail' => 'La imagen fue eliminada correctamente',
                 'code' => '201'
             ]], 201);
+    }
+
+    public function index(IndexImageRequest $request, $model)
+    {
+        if ($request->has('search')) {
+            $images = $model->images()
+                ->name($request->input('search'))
+                ->description($request->input('search'))
+                ->get();
+        } else {
+            $images = $model->images()->paginate($request->input('per_page'));
+        }
+
+        if (sizeof($images) === 0) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'No se encontraron imagenes',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '404'
+                ]], 404);
+        }
+
+        return response()->json($images, 200);
+    }
+
+    public function show($imageId)
+    {
+        // Valida que el id se un número, si no es un número devuelve un mensaje de error
+        if (!is_numeric($imageId)) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'ID no válido',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '400'
+                ]], 400);
+        }
+        $image = Image::firstWhere('id', $imageId);
+
+        // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error
+        if (!$image) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Imagen no encontrado',
+                    'detail' => 'Vuelva a intentar',
+                    'code' => '404'
+                ]], 404);
+        }
+
+        return response()->json([
+            'data' => $image,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => '',
+                'code' => '200'
+            ]], 200);
     }
 
     // Guarda imagenes con una resolución de 300px de ancho y el alto es ajustable para celulares
@@ -152,6 +210,5 @@ class ImageController extends Controller
 
         $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '.webp';
         $image->save($path, 75);
-
     }
 }

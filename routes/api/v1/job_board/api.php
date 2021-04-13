@@ -43,11 +43,13 @@ Route::group(['prefix' => 'skill'], function () {
         return \App\Models\JobBoard\Skill::find(1);
     })->withoutMiddleware(['auth:api']);
 
-    Route::post('image', [SkillController::class, 'uploadImage']);
+    Route::post('image', [SkillController::class, 'uploadImages']);
     Route::post('image/{image}', [SkillController::class, 'updateImage']);
     Route::delete('image/{image}', [SkillController::class, 'deleteImage']);
+    Route::get('image', [SkillController::class, 'indexImage']);
+    Route::get('image/{image}', [SkillController::class, 'showImage']);
 
-    Route::post('file', [SkillController::class, 'uploadFile']);
+    Route::post('file', [SkillController::class, 'uploadFiles']);
     Route::post('file/{image}', [SkillController::class, 'updateFile']);
     Route::delete('file/{image}', [SkillController::class, 'deleteFile']);
     Route::get('file', [SkillController::class, 'indexFile']);

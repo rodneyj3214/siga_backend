@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\App\File;
+namespace App\Http\Requests\App\Image;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\App\AppFormRequest;
 
-class IndexFileRequest extends FormRequest
+class IndexImageRequest extends FormRequest
 {
     public function authorize()
     {

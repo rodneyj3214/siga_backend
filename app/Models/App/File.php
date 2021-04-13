@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 use phpseclib3\Math\BigInteger;
-
 use App\Traits\StateActive;
 
 /**
@@ -22,7 +21,6 @@ class File extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use StateActive;
 
-
     protected $connection = 'pgsql-app';
     protected $table = 'app.files';
 
@@ -32,6 +30,8 @@ class File extends Model implements Auditable
         'extension',
         'directory',
     ];
+
+    protected $hidden = ['fileable_type'];
 
     protected $appends = ['full_name', 'full_path'];
 
@@ -56,15 +56,14 @@ class File extends Model implements Auditable
         }
     }
 
-
     // Accessors
     public function getFullNameAttribute()
     {
-        return "{$this->id}.{$this->extension}";
+        return "{$this->attributes['id']}.{$this->attributes['extension']}";
     }
 
     public function getFullPathAttribute()
     {
-        return "files/{$this->id}.{$this->extension}";
+        return "files/{$this->attributes['id']}.{$this->attributes['extension']}";
     }
 }

@@ -8,8 +8,6 @@ use App\Http\Controllers\App\FileController;
 use App\Http\Controllers\App\ImageController;
 
 // Models
-use App\Http\Requests\App\File\IndexFileRequest;
-use App\Http\Requests\App\File\ShowFileRequest;
 use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Skill;
@@ -22,6 +20,9 @@ use App\Http\Requests\App\Image\UpdateImageRequest;
 use App\Http\Requests\App\Image\UploadImageRequest;
 use App\Http\Requests\App\File\UpdateFileRequest;
 use App\Http\Requests\App\File\UploadFileRequest;
+use App\Http\Requests\App\File\IndexFileRequest;
+use App\Http\Requests\App\Image\IndexImageRequest;
+
 
 class SkillController extends Controller
 {
@@ -178,7 +179,7 @@ class SkillController extends Controller
             ]], 201);
     }
 
-    function uploadImage(UploadImageRequest $request)
+    function uploadImages(UploadImageRequest $request)
     {
         return (new ImageController())->upload($request, Skill::getInstance($request->input('id')));
     }
@@ -192,8 +193,16 @@ class SkillController extends Controller
     {
         return (new ImageController())->delete($imageId);
     }
+    function indexImage(IndexImageRequest $request)
+    {
+        return (new FileController())->index($request, Skill::getInstance($request->input('id')));
+    }
 
-    function uploadFile(UploadFileRequest $request)
+    function ShowImage($fileId)
+    {
+        return (new FileController())->show($fileId);
+    }
+    function uploadFiles(UploadFileRequest $request)
     {
         return (new FileController())->upload($request, Skill::getInstance($request->input('id')));
     }

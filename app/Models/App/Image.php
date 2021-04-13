@@ -5,10 +5,8 @@ namespace App\Models\App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
-
-// Application
-use App\Traits\StateActive;
 use phpseclib3\Math\BigInteger;
+use App\Traits\StateActive;
 
 /**
  * @property BigInteger id
@@ -33,6 +31,8 @@ class Image extends Model implements Auditable
         'directory',
     ];
 
+    protected $hidden = ['imageable_type'];
+
     protected $appends = ['full_name', 'full_path'];
 
     // Relationships
@@ -44,11 +44,11 @@ class Image extends Model implements Auditable
     // Accessors
     public function getFullNameAttribute()
     {
-        return "{$this->id}.{$this->extension}";
+        return "{$this->attributes['id']}.{$this->attributes['extension']}";
     }
 
     public function getFullPathAttribute()
     {
-        return "images/{$this->id}.{$this->extension}";
+        return "files/{$this->attributes['id']}.{$this->attributes['extension']}";
     }
 }
