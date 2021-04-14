@@ -115,7 +115,7 @@ class CourseController extends Controller
            'msg' => [
                'summary' => 'Curso creado',
                'detail' => 'El registro fue creado',
-               'code' => '400'
+               'code' => '201'
            ]], 201);
     }
 
