@@ -487,4 +487,3 @@ class ProfessionalController extends Controller
      * FinGrupo4
      */
     
-}
