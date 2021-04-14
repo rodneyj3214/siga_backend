@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobBoard\CompanyController;
+use App\Http\Controllers\JobBoard\ProfessionalController;
 use App\Http\Controllers\JobBoard\OfferController;
 use App\Http\Controllers\JobBoard\CategoryController;
-use App\Http\Controllers\JobBoard\AbilityController;
+use App\Http\Controllers\JobBoard\SkillController;
 use App\Http\Controllers\JobBoard\AcademicFormationController;
 use App\Http\Controllers\JobBoard\CourseController;
 use App\Http\Controllers\JobBoard\LanguageController;
@@ -11,10 +13,10 @@ use App\Http\Controllers\JobBoard\ExperienceController;
 use App\Http\Controllers\JobBoard\ReferenceController;
 
 Route::apiResources([
-    'catalogues' => AbilityController::class,
+    'catalogues' => SkillController::class,
     'categories' => CategoryController::class,
     'offers' => OfferController::class,
-    'abilities' => AbilityController::class,
+    'skills' => SkillController::class,
     'academic_formations' => AcademicFormationController::class,
     'courses' => CourseController::class,
     'languages' => LanguageController::class,
@@ -22,186 +24,38 @@ Route::apiResources([
     'references' => ReferenceController::class,
 ]);
 
-Route::group(['prefix' => 'abilities'], function () {
-    Route::get('/test', [AbilityController::class, 'test'])->where('id','');
+Route::group(['prefix' => 'company'], function () {
+    Route::get('test', [CompanyController::class, 'test']);
 });
 
-Route::group(['prefix' => 'academic_formations'], function () {
-    Route::get('/test', [AcademicFormationController::class, 'test']);
+Route::group(['prefix' => 'professional'], function () {
+    Route::get('test', [ProfessionalController::class, 'test']);
 });
 
-Route::group(['prefix' => 'offers'], function () {
-    Route::get('/test', [OfferController::class, 'test']);
+Route::group(['prefix' => 'offer'], function () {
+    Route::get('test', [OfferController::class, 'test']);
 });
 
-Route::group(['prefix' => 'professionals'], function () {
-    Route::get('register', [ProfessionalController::class, 'test'])->where('id','');
+Route::group(['prefix' => 'skill'], function () {
+    Route::get('test', [SkillController::class, 'test'])->withoutMiddleware(['auth:api']);
 });
 Route::apiResource('professionals',ProfessionalController::class);
 
 
-/*
- * Grupo 1
- */
-
-/* Rutas para los profesionales
-Route::group(['prefix' => 'professionals'], function () {
-    //Route::group(['middleware' => 'auth:api'], function () {
-
-    //Ruta para obtener un profesional segun el id, relación con la tabla academicFormations para la vista principal de la pagian
-    Route::get('/{id}', 'JobBoard\ProfessionalController@show');
-    //});
+Route::group(['prefix' => 'academic_formation'], function () {
+    Route::get('test', [AcademicFormationController::class, 'test']);
 });
-*/
-/**********************************************************************************************************************/
-
-/* Rutas para obtener todos los postulantes
-Route::group(['prefix' => 'postulants'], function () {
-
-    // Ruta para gestionar los datos personales
-    Route::get('', 'JobBoard\ProfessionalController@getProfessionals');
-
-    //Método para aplicar a una empresa
-    Route::post('/apply', 'JobBoard\CompanyController@applyPostulant');
-
-    //Método para validar aplicación de un profesional a una empresa
-    Route::get('/validateAppliedPostulant', 'JobBoard\ProfessionalController@validateAppliedPostulant');
+Route::group(['prefix' => 'course'], function () {
+    Route::get('test', [CourseController::class, 'test']);
+});
+Route::group(['prefix' => 'language'], function () {
+    Route::get('test', [LanguageController::class, 'test']);
 });
 
-// Total de Empresas, Profesionales y Ofertas
-Route::get('/total', function () {
-    $now = Carbon::now();
-    $totalCompanies = \App\Models\JobBoard\Company::where('state_id', 1)->count();
-    $totalProfessionals = \App\Models\JobBoard\Professional::where('state_id', 1)->count();
-    $totalOffers = \App\Models\JobBoard\Offer::where('state_id', 1)
-        ->where('end_date', '>=', $now->format('Y-m-d'))
-        ->where('start_date', '<=', $now->format('Y-m-d'))
-        ->count();
-    return response()->json(['totalCompanies' => $totalCompanies, 'totalOffers' => $totalOffers, 'totalProfessionals' => $totalProfessionals], 200);
-});
-*/
-/**********************************************************************************************************************/
-
-/* Rutas para filtrar a los profesionales y ofertas
-
-//Ruta para filtrar los postulantes utilizando un campo
-Route::post('/postulants/filter', 'JobBoard\ProfessionalController@filterPostulants');
-
-//??? Esta ruta es igual a Route::get('', 'JobBoard\ProfessionalController@getProfessionals')
-Route::get('/postulants/filter', 'JobBoard\ProfessionalController@filterPostulantsFields');
-*/
-/**********************************************************************************************************************/
-
-/* Ruta para obtener las categorías del filtro
-Route::group(['prefix' => 'categories'], function () {
-    Route::get('', 'JobBoard\CategoryController@index');
-});
-*/
-/*
- * FinGrupo 1
- */
-
-/*
- * Grupo 2
-
-// Rutas ofertas
-Route::group(['prefix' => 'offers'], function () {
-    // Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('all', 'JobBoard\OfferController@getAllOffers'); // Trae todas las ofertas.
-    Route::get('/opportunities', 'JobBoard\OfferController@getOffers'); // Trae todas las ofertas con filtros
-    Route::post('/filter', 'JobBoard\OfferController@filterOffers'); // Filtra las ofertas segun el buscador.
-    Route::get('/opportunities/validateAppliedOffer', 'JobBoard\OfferController@validateAppliedOffer');
-    Route::post('/opportunities/apply', 'JobBoard\OfferController@applyOffer');
-});
-// Total de Empresas, Profesionales y Ofertas
-Route::get('/total', function () {
-    $now = Carbon::now();
-    $totalCompanies = \App\Models\JobBoard\Company::where('state_id', 1)->count();
-    $totalProfessionals = \App\Models\JobBoard\Professional::where('state_id', 1)->count();
-    $totalOffers = \App\Models\JobBoard\Offer::where('state_id', 1)
-        ->where('end_date', '>=', $now->format('Y-m-d'))
-        ->where('start_date', '<=', $now->format('Y-m-d'))
-        ->count();
-    return response()->json(['totalCompanies' => $totalCompanies, 'totalOffers' => $totalOffers, 'totalProfessionals' => $totalProfessionals], 200);
+Route::group(['prefix' => 'experience'], function () {
+    Route::get('test', [ExperienceController::class, 'test']);
 });
 
-Route::group(['prefix' => 'categories'], function () {
-    Route::get('/index', function () {
-        $categories = Category::with('children')->get();
-        return response()->json([
-            'data' => [
-                'categories' => $categories
-            ]
-        ], 200);
-    });
+Route::group(['prefix' => 'reference'], function () {
+    Route::get('test', [ReferenceController::class, 'test']);
 });
-*/
-/*
- * FinGrupo 2
- */
-
-/*
- * Grupo 3
-
-Route::group(['prefix' => 'offers'], function () {
-    Route::get('/', 'JobBoard\OfferController@getAllOffers');
-    Route::get('/applied_offers', 'JobBoard\ProfessionalController@getAppliedOffers');
-    Route::get('/professionales-ofertas', 'JobBoard\ProfessionalController@getAllprofessionalsTesteo');
-    Route::get('/companias-interesadas', 'JobBoard\ProfessionalController@getInterestedCompanies');
-});
-
-Route::group(['prefix' => 'opportunities'], function () {
-    Route::get('/', 'JobBoard\OfferController@indexOffers');
-    Route::get('/applied-offers', 'JobBoard\ProfessionalController@getAppliedOffers');
-    Route::get('/interested-companies', 'JobBoard\ProfessionalController@getInterestedCompanies');
-    Route::put('/unlink-offer', 'JobBoard\ProfessionalController@unlinkOffer');
-    Route::get('/professionals-offers', 'JobBoard\ProfessionalController@getAllprofessionalsTesteo');
-    Route::get('/professional-companies', 'JobBoard\ProfessionalController@getAllcompaniesTesteo');
-});
-*/
-/*
- * FinGrupo 3
- */
-
-/*
- * Grupo4
-
-
-// Route::group(['middleware' => 'auth:api'], function () {
-Route::apiResource('', 'JobBoard\CourseController');
-// });
-
-// Route::group(['middleware' => 'auth:api'], function () {
-Route::apiResource('academic_formations', 'JobBoard\AcademicFormationController');
-// });
-// Route::group(['middleware' => 'auth:api'], function () {
-Route::apiResource('professional_references', 'JobBoard\ReferenceController');
-// });
-//Route::group(['middleware'=> 'auth:api'], function () {
-Route::apiResource('abilities','JobBoard\AbilityController');
-//});
-//Route::group(['middleware'=> 'auth:api'], function () {
-Route::apiResource('professional_experiences','JobBoard\ExperienceController');
-//});
-// Route::group(['middleware' => 'auth:api'], function () {
-//Route::apiResource('offers', 'JobBoard\OfferReferenceController');
-// });
-Route::group(['prefix' => 'professionals'], function () {
-    Route::group(['middleware' => 'auth:api'], function () {
-        Route::put('', 'JobBoard\ProfessionalController@update');
-    });
-});
-
-//Rutas para las empresas
-Route::group(['prefix' => 'companies'], function () {
-    // Route::group(['middleware'=> 'auth:api'],function(){
-    Route::get('/professionals', 'JobBoard\CompanyController@getAppliedProfessionals');//busca los profesionales que la empresa esta interesada
-    Route::delete('/detachPostulant', 'JobBoard\CompanyController@detachPostulant');// quitar los professionales que la empresa ya no esta interesada
-    Route::get('/{id}', 'JobBoard\CompanyController@show');
-    Route::put('', 'JobBoard\CompanyController@update');
-    // });
-
-});
-/*
- * FinGrupo4
- */

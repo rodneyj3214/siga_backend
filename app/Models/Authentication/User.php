@@ -3,6 +3,7 @@
 namespace App\Models\Authentication;
 
 // Laravel
+use App\Models\JobBoard\Professional;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -62,7 +63,10 @@ class User extends Authenticatable implements Auditable
     {
         return $this->where('username', $username)->first();
     }
-
+    public function professional()
+    {
+        $this->hasOne(Professional::class);
+    }
     public function securityQuestions()
     {
         $this->belongsToMany(SecurityQuestion::class)->withPivot('answer')->withTimestamps();

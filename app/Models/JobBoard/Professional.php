@@ -17,6 +17,7 @@ class Professional extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use StatusActiveTrait;
 
+    public $skill = null;
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.professionals';
 
@@ -34,11 +35,14 @@ class Professional extends Model implements Auditable
         'about_me'
     ];
 
+    public static function getInstance($id)
+    {
+        $model = new Professional();
+        $model->id = $id;
+        return $model;
+    }
 
 
-
-
- 
     public function offers()
     {
         return $this->belongsToMany(Offer::class)->withPivot('id', 'status_id')->withTimestamps();
@@ -59,9 +63,9 @@ class Professional extends Model implements Auditable
         return $this->hasMany(AcademicFormation::class);
     }
 
-    public function abilities()
+    public function skills()
     {
-        return $this->hasMany(Ability::class);
+        return $this->hasMany(Skill::class);
     }
 
     public function languages()
