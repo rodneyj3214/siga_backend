@@ -19,7 +19,7 @@ class CreateProfessionalExperiencesTable extends Migration
             $table->date('end_date')->nullable()->comment('Fecha de fin del trabajo');
             $table->text('reason_leave')->comment('Razon de la salida');
             $table->boolean('current_work')->default(false)->comment('true si se encuentra trabajando actualmente');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

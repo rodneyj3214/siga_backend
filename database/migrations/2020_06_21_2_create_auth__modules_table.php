@@ -16,7 +16,7 @@ class CreateAuthModulesTable extends Migration
             $table->string('system_id')->comment('Para categorizar los modulos');
             $table->string('icon')->nullable()->comment('Icono de la libreria que se usa en el frontend');
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

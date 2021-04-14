@@ -11,7 +11,6 @@ use App\Traits\StateActiveTrait;
 
 class Course extends Model implements Auditable
 {
-
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use StateActiveTrait;

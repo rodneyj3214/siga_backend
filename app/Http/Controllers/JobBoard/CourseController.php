@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\JobBoard;
 
+use App\Http\Controllers\App\ImageController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

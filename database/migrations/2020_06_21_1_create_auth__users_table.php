@@ -34,8 +34,8 @@ class CreateAuthUsersTable extends Migration
             $table->string('password');
             $table->boolean('change_password')->default(false);
             $table->integer('attempts')->default(\App\Models\Authentication\User::ATTEMPTS);
-            $table->boolean('state')->default(true);
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

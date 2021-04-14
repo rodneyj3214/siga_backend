@@ -16,11 +16,11 @@ class CreateJobboardExperiencesTable extends Migration
             $table->string('employer');
             $table->string('position');
             $table->date('start_date');
-            $table->json('activities');
             $table->date('end_date')->nullable();
+            $table->json('activities');
             $table->text('reason_leave')->nullable();
-            $table->boolean('is_work')->default(false);
-            $table->boolean('state')->default(true);
+            $table->boolean('is_working')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
