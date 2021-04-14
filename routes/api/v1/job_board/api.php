@@ -25,15 +25,7 @@ Route::apiResources([
     'references' => ReferenceController::class,
 ]);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Route::group(['prefix' => 'abilities'], function () {
-    Route::get('/test', [AbilityController::class, 'test'])->where('id', '');
-=======
-Route::group(['prefix' => 'company'], function () {
-    Route::get('test', [CompanyController::class, 'test']);
->>>>>>> a85f1ae8c267017175ae37b9bf652a8b479a91a3
-=======
+
 Route::group(['prefix' => 'skill'], function () {
     // ruta para hcer pruebas
     Route::get('test', function () {
@@ -58,7 +50,6 @@ Route::group(['prefix' => 'company'], function () {
     Route::get('test', function () {
         return 'test';
     })->withoutMiddleware(['auth:api']);
->>>>>>> ce96b501a2d51c1243d6d9877d7cfcafa3fa6eda
 });
 
 Route::group(['prefix' => 'professional'], function () {
@@ -66,23 +57,6 @@ Route::group(['prefix' => 'professional'], function () {
 });
 
 Route::group(['prefix' => 'offer'], function () {
-<<<<<<< HEAD
-    Route::get('test', [OfferController::class, 'test']);
-});
-
-<<<<<<< HEAD
-Route::group(['prefix' => 'professionals'], function () {
-    Route::get('register', [ProfessionalController::class, 'test'])->where('id', '');
-=======
-Route::group(['prefix' => 'skill'], function () {
-    Route::get('test', [SkillController::class, 'test'])->withoutMiddleware(['auth:api']);
->>>>>>> a85f1ae8c267017175ae37b9bf652a8b479a91a3
-=======
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
->>>>>>> ce96b501a2d51c1243d6d9877d7cfcafa3fa6eda
 });
 
 Route::group(['prefix' => 'academic_formation'], function () {
@@ -119,9 +93,3 @@ Route::group(['prefix' => 'reference'], function () {
         return 'test';
     })->withoutMiddleware(['auth:api']);
 });
-<<<<<<< HEAD
-/*
- * FinGrupo4
- */
-=======
->>>>>>> a85f1ae8c267017175ae37b9bf652a8b479a91a3
