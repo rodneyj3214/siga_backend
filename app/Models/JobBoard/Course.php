@@ -8,7 +8,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Course extends Model implements Auditable
 {
-
     use \OwenIt\Auditing\Auditable;
 
     protected $connection = 'pgsql-job-board';

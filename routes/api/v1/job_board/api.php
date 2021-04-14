@@ -18,7 +18,7 @@ Route::apiResources([
     'categories' => CategoryController::class,
     'offers' => OfferController::class,
     'skills' => SkillController::class,
-    'academic_formations' => AcademicFormationController::class,
+    'academic-formations' => AcademicFormationController::class,
     'courses' => CourseController::class,
     'languages' => LanguageController::class,
     'experiences' => ExperienceController::class,
@@ -45,7 +45,10 @@ Route::group(['prefix' => 'skill'], function () {
 });
 
 Route::group(['prefix' => 'company'], function () {
-    Route::get('test', [CompanyController::class, 'test']);
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return 'test';
+    })->withoutMiddleware(['auth:api']);
 });
 
 Route::group(['prefix' => 'professional'], function () {
@@ -53,8 +56,10 @@ Route::group(['prefix' => 'professional'], function () {
 });
 
 Route::group(['prefix' => 'offer'], function () {
-    Route::get('test', [OfferController::class, 'test']);
-
+    // ruta para hcer pruebas
+    Route::get('test', function () {
+        return 'test';
+    })->withoutMiddleware(['auth:api']);
 });
 
 Route::group(['prefix' => 'academic_formation'], function () {

@@ -11,7 +11,6 @@ use Brick\Math\BigInteger;
 use App\Models\App\File;
 use App\Models\App\Image;
 use App\Models\App\Catalogue;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property BigInteger id
@@ -22,7 +21,6 @@ class Skill extends Model implements Auditable
 {
     use HasFactory;
     use Auditing;
-//    use SoftDeletes;
     use SoftDeletes;
 
     protected $connection = 'pgsql-job-board';
