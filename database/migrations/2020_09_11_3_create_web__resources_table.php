@@ -17,7 +17,7 @@ class CreateWebResourcesTable extends Migration
             $table->integer('order');
             $table->foreignId('type_id')->constrained('app.catalogues');
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

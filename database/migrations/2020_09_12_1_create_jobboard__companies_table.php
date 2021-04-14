@@ -18,7 +18,7 @@ class CreateJobboardCompaniesTable extends Migration
             $table->text('trade_name');
             $table->text('comercial_activity');
             $table->string('web');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

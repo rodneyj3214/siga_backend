@@ -19,7 +19,7 @@ class CreateAuthSystemsTable extends Migration
             $table->string('redirect')->comment('pagina wen de redireccion del cliente');
             $table->date('date')->comment('Fecha del sistema');
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ class CreateJobboardProfessionalsTable extends Migration
             $table->boolean('has_catastrophic_illness')->default(false);
             $table->boolean('has_familiar_catastrophic_illness')->default(false);
             $table->text('about_me')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -2,32 +2,45 @@
 
 namespace App\Models\JobBoard;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use \OwenIt\Auditing\Auditable as Auditing;
-
-use App\Traits\StateActiveTrait;
+use Brick\Math\BigInteger;
+use App\Models\App\File;
+use App\Models\App\Image;
 use App\Models\App\Catalogue;
 
 /**
- * @property boolean state
+ * @property BigInteger id
  * @property string description
+ * @property boolean state
  */
 class Skill extends Model implements Auditable
 {
     use HasFactory;
     use Auditing;
-    use StateActiveTrait;
+    use SoftDeletes;
 
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.skills';
 
     protected $fillable = [
         'description',
-        'state'
+        'state',
     ];
 
+    // protected $hidden = ['description'];
+
+    protected $appends = ['full_description'];
+
+    public static function getInstance($id)
+    {
+        $model = new Skill();
+        $model->id = $id;
+        return $model;
+    }
 
     // Relationships
     public function professional()
@@ -40,6 +53,16 @@ class Skill extends Model implements Auditable
         return $this->belongsTo(Catalogue::class);
     }
 
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
     // Mutators
     public function setDescriptionAttribute($value)
     {
@@ -49,8 +72,14 @@ class Skill extends Model implements Auditable
     // Scopes
     public function scopeDescription($query, $description)
     {
-        if ($description){
-            return $query->orWhere('description','ILIKE',"%$description%");
+        if ($description) {
+            return $query->where('description', 'ILIKE', "%$description%");
         }
+    }
+
+    // Accessors
+    public function getFullDescriptionAttribute()
+    {
+        return "{$this->attributes['id']}.{$this->attributes['description']}";
     }
 }

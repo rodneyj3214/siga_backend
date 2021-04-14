@@ -27,7 +27,7 @@ class CreateAppAdministrativeStaffTable extends Migration
             $table->string('conadis_carnet')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

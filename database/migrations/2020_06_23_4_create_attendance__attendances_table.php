@@ -12,7 +12,7 @@ class CreateAttendanceAttendancesTable extends Migration
             $table->id();
             $table->morphs('attendanceable');
             $table->foreignId('institution_id')->constrained('app.institutions');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->date('date');
             $table->timestamps();
         });

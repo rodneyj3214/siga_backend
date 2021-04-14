@@ -12,7 +12,7 @@ class CreateAttendanceWorkdaysTable extends Migration
             $table->id();
             $table->foreignId('attendance_id');
             $table->foreignId('type_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->text('description')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();

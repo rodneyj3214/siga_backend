@@ -15,7 +15,7 @@ class CreateJobboardCategoriesTable extends Migration
             $table->string('code');
             $table->text('name');
             $table->string('icon')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

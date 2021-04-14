@@ -15,7 +15,7 @@ class CreateAppClassroomsTable extends Migration
             $table->string('name');
             $table->foreignId('type_id')->constrained('app.catalogues');
             $table->string('icon')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

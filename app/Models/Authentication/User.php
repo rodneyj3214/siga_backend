@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
-use App\Traits\StateActiveTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\App\AdministrativeStaff;
 
 use App\Models\App\Catalogue;
@@ -25,7 +25,7 @@ class User extends Authenticatable implements Auditable
 {
     use HasApiTokens, Notifiable, HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
+    use SoftDeletes;
 
 
     protected $connection = 'pgsql-authentication';
