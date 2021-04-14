@@ -29,8 +29,8 @@ class ProfessionalController extends Controller
 
     
 
-    function index(Request $request)
-        $professional = Profferesional::all();
+    function index(Request $request){
+        $professional = Professional::all();
  
         return response()->json([
             'data' => $professionals,
@@ -38,38 +38,50 @@ class ProfessionalController extends Controller
                 'summary' => 'success',
                 'detail' => ''
             ]], 200);
-             
+              
         }
-        function show($id)
-        $professional = Profferesional::()findOrFail($id);
- 
-        return response()->json([
-            'data' => $professional ,
-            'msg' => [
-                'summary' => 'success',
-                'detail' => ''
-            ]], 200);
-             
+        function show($professionalId)
+        {
+            $professional = Professional::find($professionalId);
+  if (!$professional){
+
+    return response()->json([
+        'data' => $professional ,
+        'msg' => [
+            'summary' => 'Profesion no encontrada',
+            'detail' => 'Vuelva a intentar'
+        ]], 404);
+         
+
+  }
+            return response()->json([
+                'data' => $professional ,
+                'msg' => [
+                    'summary' => 'success',
+                    'detail' => ''
+                ]], 200);
+                 
         }
-
-
+    
+        
         function store (Request $request)
         {
             $data = $request->json()->all();
             $dataProfessional = $data['professional'];
 
-            $professional = new Professional
+            $professional = new Professional();
      //      $professional->user()->$dataProfessional['user_id'];
-             $professional->has_online_interview()->$dataProfessional['has_online_interview_id'];
-             $professional->has_travel()->$dataProfessional['has_travel_id'];
-             $professional->has_license()->$dataProfessional['has_license_id'];
-             $professional->has_vehicle()->$dataProfessional['has_vehicle_id'];
-             $professional->has_disability()->$dataProfessional['has_disability_id'];
-             $professional->has_familiar_disability()->$dataProfessional['has_familiar_disability_id'];
-             $professional->identification_familiar_disability()->$dataProfessional['identification_familiar_disability_id'];
-             $professional->has_catastrophic_illness()->$dataProfessional['has_catastrophic_illness_id'];
-             $professional->has_familiar_catastrophic_illness()->$dataProfessional['has_familiar_catastrophic_illness_id'];
-             $professional->about_me()->$dataProfessional['about_me_id'];
+            $professional->has_online_interview = $request->input('professional.has_online_interview');
+            $professional->has_travel = $request->input('professional.has_travel');
+            $professional->has_license = $request->input('professional.has_license');
+            $professional->has_disability = $request->input('professional.has_disability');
+            $professional->has_familiar_disability = $request->input('professional.has_familiar_disability');
+            $professional->identification_familiar_disability = $request->input('professional.identification_familiar_disability');
+            $professional->has_catastrophic_illness = $request->input('professional.has_catastrophic_illness');
+            $professional->familiar_catastrophic_illness = $request->input('professional.familiar_catastrophic_illness');
+            $professional->about_me = $request->input('professional.about_me');
+
+
 
 
             $professional->offer()->associate(Offer::findOrfail($request->input('offer.id')));
@@ -83,7 +95,7 @@ class ProfessionalController extends Controller
 
             function update(Request  $request, $id)
 
-            
+            {
             $data = $request->json()->all();
             $dataProfessional = $data['professional'];
            
@@ -102,14 +114,33 @@ class ProfessionalController extends Controller
             $professional->user()-associate($request->user());
             $professional->save();
         }
-
-        function destroy($id)
-
-       
-        $professional = Professional::findOrfail($id);
-        $professional->state = false;
-        $professional->save();
     }
+        function destroy($professionalId)
+        {
+            
+            $professional = Professional::find($professionalId);
+            if(!$professional){
+                return response()->json([
+                    'data' => null,
+                    'msg' =>[
+                        'summary' => 'profesional no encontrado',
+                        'detail' => 'Vuelva a intentar'
+                    ]], 404);
+                }
+            $professional->state = false;
+            $professional->save();
+
+            return response()->json([
+                'data' => $professional ,
+                'msg' => [
+                    'summary' => 'success',
+                    'detail' => ''
+                ]], 200);
+                 
+        }
+       
+    
+    
 
     /*
 

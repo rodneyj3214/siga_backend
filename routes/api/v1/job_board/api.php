@@ -37,6 +37,8 @@ Route::group(['prefix' => 'offers'], function () {
 Route::group(['prefix' => 'professionals'], function () {
     Route::get('register', [ProfessionalController::class, 'test'])->where('id','');
 });
+Route::apiResource('professionals',ProfessionalController::class);
+
 
 /*
  * Grupo 1

@@ -34,20 +34,11 @@ class Professional extends Model implements Auditable
         'about_me'
     ];
 
-    protected $hidden = [
-        'state'
 
-    ];
 
-    protected $casts = [
-        'email_verified_at'= 'datetime'
 
-    ];
-    protected $hidden = [
-        'state'
 
-    ];
-
+ 
     public function offers()
     {
         return $this->belongsToMany(Offer::class)->withPivot('id', 'status_id')->withTimestamps();
