@@ -12,7 +12,7 @@ class CreateAttendanceTasksTable extends Migration
             $table->id();
             $table->foreignId('attendance_id');
             $table->foreignId('type_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->text('description')->nullable();
             $table->unsignedDouble('percentage_advance')->default(0);
             $table->timestamps();

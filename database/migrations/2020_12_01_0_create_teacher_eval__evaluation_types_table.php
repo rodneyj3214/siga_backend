@@ -11,7 +11,7 @@ class CreateTeacherEvalEvaluationTypesTable extends Migration
         Schema::connection('pgsql-teacher-eval')->create('evaluation_types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('parent_id')->nullable()->comment('Hace tabla recursiva por eso hace referencia a una misma tabla')->constrained('evaluation_types');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->foreignId('status_id')->constrained('app.catalogues');
             $table->string('name')->unique()->comment('Descripcion Tipo Evaluacion');
             $table->string('code')->unique()->comment('Codigo Tipo Evaluacion');

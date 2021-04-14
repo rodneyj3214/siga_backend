@@ -10,7 +10,7 @@ class CreateTeacherEvalDetailEvaluationsTable extends Migration
     {
         Schema::connection('pgsql-teacher-eval')->create('detail_evaluations', function (Blueprint $table) {
             $table->id();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->morphs('detail_evaluationable');
             $table->foreignId('evaluation_id')->comment('Evaluacion Realizada');
             $table->double('result',5,2)->nullable()->comment('Resultado Detalle Evaluacion');

@@ -11,7 +11,7 @@ class CreateTeacherEvalAnswersTable extends Migration
         Schema::connection('pgsql-teacher-eval')->create('answers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->string('code')->unique()->comment('Codigo Respuesta');
             $table->integer('order')->unique()->comment('Orden Respuesta');
             $table->string('name')->unique()->comment('Respuesta');

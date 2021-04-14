@@ -17,7 +17,7 @@ class CreateJobboardReferencesTable extends Migration
             $table->string('contact_name');
             $table->string('contact_phone');
             $table->string('contact_email')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ class CreateJobboardLanguagesTable extends Migration
             $table->foreignId('written_level_id')->constrained('app.catalogues');
             $table->foreignId('spoken_level_id')->constrained('app.catalogues');
             $table->foreignId('read_level_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

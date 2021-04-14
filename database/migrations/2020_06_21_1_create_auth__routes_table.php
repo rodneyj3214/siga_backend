@@ -21,7 +21,7 @@ class CreateAuthRoutesTable extends Migration
             $table->string('icon')->nullable()->comment('Icono de la libreria que se usa en el frontend');
             $table->string('logo');
             $table->integer('order')->comment('Orden que apareceran las rutas en la interfaz');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
