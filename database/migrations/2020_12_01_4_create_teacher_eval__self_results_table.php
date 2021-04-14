@@ -12,7 +12,7 @@ class CreateTeacherEvalSelfResultsTable extends Migration
             $table->id();
             $table->foreignId('answer_question_id')->comment('Pregunta y Respuesta')->constrained('answer_question');
             $table->foreignId('teacher_id')->comment('Informacion Profesor a Calificar')->constrained('app.teachers');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

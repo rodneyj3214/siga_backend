@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 use App\Models\App\Authority;
-use App\Traits\StateActive;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class PairResult extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use StateActive;
+    use SoftDeletes;
 
     use HasFactory;
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\App\Image\DownloadImageRequest;
 use App\Http\Requests\App\Image\IndexImageRequest;
+
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
 use App\Http\Requests\App\Image\UpdateImageRequest;
@@ -12,6 +14,28 @@ use App\Models\App\Image;
 
 class ImageController extends Controller
 {
+    private $storagePath;
+
+    public function __construct()
+    {
+        $this->storagePath = storage_path('app\private\images\\');
+    }
+
+    public function download(DownloadImageRequest $request)
+    {
+        $path = $request->input('full_path');
+        if (Storage::exists($path)) {
+            return Storage::download($path);
+        }
+        return response()->json([
+            'data' => null,
+            'msg' => [
+                'summary' => 'Imagen no encontrada',
+                'detail' => 'Intente de nuevo',
+                'code' => '404'
+            ]], 404);
+    }
+
     public function upload(UploadImageRequest $request, $model)
     {
         foreach ($request->file('images') as $image) {
@@ -55,8 +79,8 @@ class ImageController extends Controller
                 ]], 404);
         }
 
-        $image->name=$request->input('name');
-        $image->description=$request->input('description');
+        $image->name = $request->input('name');
+        $image->description = $request->input('description');
         $image->save();
 
         $this->uploadOriginal($request->file('image'), $imageId);
@@ -163,12 +187,12 @@ class ImageController extends Controller
     // Guarda imagenes con una resolución de 300px de ancho y el alto es ajustable para celulares
     private function uploadSmallImage($image, $name)
     {
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-sm.jpg';
+        $path = $this->storagePath . $name . '\\' . $name . '-sm.jpg';
         $image->widen(300, function ($constraint) {
             $constraint->upsize();
         })->save($path, 75);
 
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-sm.webp';
+        $path = $this->storagePath . $name . '\\' . $name . '-sm.webp';
         $image->widen(300, function ($constraint) {
             $constraint->upsize();
         })->save($path, 75);
@@ -177,12 +201,12 @@ class ImageController extends Controller
     // Guarda imagenes con una resolución de 750px de ancho y el alto es ajustable para tablets
     private function uploadMediumImage($image, $name)
     {
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-md.jpg';
+        $path = $this->storagePath . $name . '\\' . $name . '-md.jpg';
         $image->widen(750, function ($constraint) {
             $constraint->upsize();
         })->save($path, 75);
 
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-md.webp';
+        $path = $this->storagePath . $name . '\\' . $name . '-md.webp';
         $image->widen(750, function ($constraint) {
             $constraint->upsize();
         })->save($path, 75);
@@ -191,12 +215,12 @@ class ImageController extends Controller
     // Guarda imagenes con una resolución de 1250px de ancho y el alto es ajustable para pc
     private function uploadLargeImage($image, $name)
     {
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-lg.jpg';
+        $path = $this->storagePath . $name . '\\' . $name . '-lg.jpg';
         $image->widen(1250, function ($constraint) {
             $constraint->upsize();
         })->save($path, 75);
 
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '-lg.webp';
+        $path = $this->storagePath . $name . '\\' . $name . '-lg.webp';
         $image->widen(1250, function ($constraint) {
             $constraint->upsize();
         })->save($path, 75);
@@ -205,10 +229,10 @@ class ImageController extends Controller
     // Guarda imagenes con su tamaño original
     private function uploadOriginal($image, $name)
     {
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '.jpg';
+        $path = $this->storagePath . $name . '\\' . $name . '.jpg';
         $image->save($path, 75);
 
-        $path = storage_path() . '\app\public\images\\' . $name . '\\' . $name . '.webp';
+        $path = $this->storagePath . $name . '\\' . $name . '.webp';
         $image->save($path, 75);
     }
 }

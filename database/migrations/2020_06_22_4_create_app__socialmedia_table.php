@@ -13,7 +13,7 @@ class CreateAppSocialmediaTable extends Migration
             $table->string('name')->unique();
             $table->string('icon')->nullable();
             $table->string('logo')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

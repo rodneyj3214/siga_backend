@@ -23,7 +23,7 @@ class CreateAppLocationsTable extends Migration
             $table->string('top_level_domain')->nullable();
             $table->string('flag')->nullable();
             $table->json('timezones')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->unique(['code','name']);
             $table->timestamps();
         });

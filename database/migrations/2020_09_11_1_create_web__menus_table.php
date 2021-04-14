@@ -18,7 +18,7 @@ class CreateWebMenusTable extends Migration
             $table->integer('order');
             $table->foreignId('type_id')->constrained('catalogues'); /*para ver si esta arriba o abajo */
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

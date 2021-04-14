@@ -21,7 +21,7 @@ class CreateJobboardCoursesTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('hours');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

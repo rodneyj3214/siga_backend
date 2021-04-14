@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\App\File\DownloadFileRequest;
 use App\Http\Requests\App\File\UpdateFileRequest;
 use App\Http\Requests\App\File\UploadFileRequest;
 use App\Http\Requests\App\File\IndexFileRequest;
@@ -11,6 +12,22 @@ use App\Models\App\File;
 
 class FileController extends Controller
 {
+    public function download(DownloadFileRequest $request)
+    {
+        $path = $request->input('full_path');
+        if (Storage::exists($path)) {
+            return Storage::download($path);
+        }
+
+       return response()->json([
+        'data' => null,
+        'msg' => [
+            'summary' => 'Archivo no encontrado',
+            'detail' => 'Intente de nuevo',
+            'code' => '404'
+        ]], 404);
+    }
+
     public function upload(UploadFileRequest $request, $model)
     {
         foreach ($request->file('files') as $file) {
@@ -24,7 +41,7 @@ class FileController extends Controller
             $file->storeAs(
                 'files',
                 $newFile->fullName,
-                'public'
+                'private'
             );
 
             $newFile->directory = 'files';
@@ -56,7 +73,7 @@ class FileController extends Controller
         $request->file('file')->storeAs(
             'files',
             $file->fullName,
-            'public'
+            'private'
         );
         $file->name = $request->input('name');
         $file->description = $request->input('description');

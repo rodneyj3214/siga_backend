@@ -23,7 +23,6 @@ use App\Http\Requests\App\File\UploadFileRequest;
 use App\Http\Requests\App\File\IndexFileRequest;
 use App\Http\Requests\App\Image\IndexImageRequest;
 
-
 class SkillController extends Controller
 {
     function index(IndexSkillRequest $request)
@@ -76,8 +75,6 @@ class SkillController extends Controller
                     'code' => '404'
                 ]], 404);
         }
-
-
         return response()->json([
             'data' => $skill,
             'msg' => [
@@ -167,8 +164,7 @@ class SkillController extends Controller
         }
 
         // Es una eliminación lógica
-        $skill->state = false;
-        $skill->save();
+        $skill->delete();
 
         return response()->json([
             'data' => $skill,
@@ -193,6 +189,7 @@ class SkillController extends Controller
     {
         return (new ImageController())->delete($imageId);
     }
+
     function indexImage(IndexImageRequest $request)
     {
         return (new FileController())->index($request, Skill::getInstance($request->input('id')));
@@ -202,6 +199,7 @@ class SkillController extends Controller
     {
         return (new FileController())->show($fileId);
     }
+
     function uploadFiles(UploadFileRequest $request)
     {
         return (new FileController())->upload($request, Skill::getInstance($request->input('id')));

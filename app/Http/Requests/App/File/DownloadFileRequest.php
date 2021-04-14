@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\App\Image;
+namespace App\Http\Requests\App\File;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\App\AppFormRequest;
 
-class IndexImageRequest extends FormRequest
+class DownloadFileRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,9 +15,8 @@ class IndexImageRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'id' => [
+            'full_path' => [
                 'required',
-                'integer',
             ],
         ];
         return AppFormRequest::rules($rules);
@@ -26,8 +25,7 @@ class IndexImageRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'id.required' => 'El campo :attribute es obligatorio',
-            'id.integer' => 'El campo :attribute debe ser un número',
+            'full_path.required' => 'El campo :attribute es obligatorio',
         ];
         return AppFormRequest::messages($messages);
     }
@@ -35,7 +33,7 @@ class IndexImageRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'id' => 'ID',
+            'full_path' => 'ruta completa',
         ];
         return AppFormRequest::attributes($attributes);
     }

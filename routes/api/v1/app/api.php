@@ -15,9 +15,11 @@ Route::apiResource('locations', LocationController::class)->withoutMiddleware(['
 Route::get('countries', [LocationController::class, 'getCountries'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
 
 Route::group(['prefix' => 'image'], function () {
-    Route::get('avatars', [ImageController::class, 'getAvatar']);
-    Route::post('avatars', [ImageController::class, 'createAvatar']);
-    Route::post('upload', [ImageController::class, 'upload']);
+    Route::get('download', [ImageController::class, 'download']);
+});
+
+Route::group(['prefix' => 'file'], function () {
+    Route::get('download', [FileController::class, 'download']);
 });
 
 Route::group(['prefix' => 'teachers'], function () {
@@ -28,8 +30,6 @@ Route::group(['prefix' => 'institutions'], function () {
     Route::post('assign_institution', [InstitutionController::class, 'assignInstitution']);
     Route::post('remove_institution', [InstitutionController::class, 'removeInstitution']);
 });
-
-Route::post('upload', [FileController::class, 'upload']);
 
 Route::group(['prefix' => 'emails'], function () {
     Route::post('send', [EmailController::class, 'send']);

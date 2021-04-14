@@ -15,7 +15,7 @@ class CreateWebCataloguesTable extends Migration
             $table->text('name');
             $table->text('type');
             $table->text('icon')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

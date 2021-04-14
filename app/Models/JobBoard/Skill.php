@@ -2,16 +2,16 @@
 
 namespace App\Models\JobBoard;
 
-use App\Models\App\File;
-use App\Models\App\Image;
-use Brick\Math\BigInteger;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use \OwenIt\Auditing\Auditable as Auditing;
-
-use App\Traits\StateActive;
+use Brick\Math\BigInteger;
+use App\Models\App\File;
+use App\Models\App\Image;
 use App\Models\App\Catalogue;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property BigInteger id
@@ -22,7 +22,8 @@ class Skill extends Model implements Auditable
 {
     use HasFactory;
     use Auditing;
-    use StateActive;
+//    use SoftDeletes;
+    use SoftDeletes;
 
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.skills';
@@ -74,7 +75,7 @@ class Skill extends Model implements Auditable
     public function scopeDescription($query, $description)
     {
         if ($description) {
-            return $query->orWhere('description', 'ILIKE', "%$description%");
+            return $query->where('description', 'ILIKE', "%$description%");
         }
     }
 

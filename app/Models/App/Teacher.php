@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 // Traits State
-use App\Traits\StateActive;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 // Models
@@ -19,7 +19,7 @@ class Teacher extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActive;
+    use SoftDeletes;
 
 
     protected $connection = 'pgsql-app';

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 use phpseclib3\Math\BigInteger;
-use App\Traits\StateActive;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property BigInteger id
@@ -19,7 +19,7 @@ class File extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActive;
+    use SoftDeletes;
 
     protected $connection = 'pgsql-app';
     protected $table = 'app.files';

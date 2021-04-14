@@ -19,7 +19,7 @@ class CreateAppInstitutionsTable extends Migration
             $table->text('slogan')->nullable();
             $table->string('logo')->nullable();
             $table->string('web')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->string('codigo_sniese', 50)->nullable();

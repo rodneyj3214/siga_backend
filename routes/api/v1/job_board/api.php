@@ -25,18 +25,6 @@ Route::apiResources([
     'references' => ReferenceController::class,
 ]);
 
-Route::group(['prefix' => 'company'], function () {
-    Route::get('test', [CompanyController::class, 'test']);
-});
-
-Route::group(['prefix' => 'professional'], function () {
-    Route::get('test', [ProfessionalController::class, 'test']);
-});
-
-Route::group(['prefix' => 'offer'], function () {
-    Route::get('test', [OfferController::class, 'test']);
-});
-
 Route::group(['prefix' => 'skill'], function () {
     // ruta para hcer pruebas
     Route::get('test', function () {
@@ -56,18 +44,33 @@ Route::group(['prefix' => 'skill'], function () {
     Route::get('file/{file}', [SkillController::class, 'showFile']);
 });
 
+Route::group(['prefix' => 'company'], function () {
+    Route::get('test', [CompanyController::class, 'test']);
+});
+
+Route::group(['prefix' => 'professional'], function () {
+    Route::get('test', [ProfessionalController::class, 'test']);
+});
+
+Route::group(['prefix' => 'offer'], function () {
+    Route::get('test', [OfferController::class, 'test']);
+
+});
+
 Route::group(['prefix' => 'academic_formation'], function () {
     // ruta para hcer pruebas
     Route::get('test', function () {
         return 'test';
     })->withoutMiddleware(['auth:api']);
 });
+
 Route::group(['prefix' => 'course'], function () {
     // ruta para hcer pruebas
     Route::get('test', function () {
         return 'test';
     })->withoutMiddleware(['auth:api']);
 });
+
 Route::group(['prefix' => 'language'], function () {
     // ruta para hcer pruebas
     Route::get('test', function () {
