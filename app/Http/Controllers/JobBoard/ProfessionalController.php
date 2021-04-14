@@ -4,9 +4,8 @@ namespace App\Http\Controllers\JobBoard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-
-
+use Illuminate\DataBase\Eloquent\soft;
+use Illuminate\DataBase\Eloquent\HasFactory;
 
 use App\Models\JobBoard\Ability;
 use App\Models\JobBoard\Skill;
