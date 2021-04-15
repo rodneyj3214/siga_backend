@@ -69,7 +69,6 @@ class ProfessionalController extends Controller
 
             $professional = new Professional();
      //      $professional->user()->$dataProfessional['user_id'];
-            $professional->has_online_interview = $request->input('professional.has_online_interview');
             $professional->has_travel = $request->input('professional.has_travel');
             $professional->has_license = $request->input('professional.has_license');
             $professional->has_disability = $request->input('professional.has_disability');
@@ -78,9 +77,6 @@ class ProfessionalController extends Controller
             $professional->has_catastrophic_illness = $request->input('professional.has_catastrophic_illness');
             $professional->familiar_catastrophic_illness = $request->input('professional.familiar_catastrophic_illness');
             $professional->about_me = $request->input('professional.about_me');
-
-
-
 
             $professional->offer()->associate(Offer::findOrfail($request->input('offer.id')));
             $professional->company()->associate(Company::findOrfail($request->input('company.id')));
@@ -98,10 +94,8 @@ class ProfessionalController extends Controller
             $dataProfessional = $data['professional'];
            
             $professional = Professional::findOrfail($id);
-            $professional->has_online_interview = $dataProfessional ['has_online_interview'];
             $professional->has_travel = $dataProfessional ['has_travel'];
             $professional->has_license = $dataProfessional ['has_license'];
-            $professional->has_vehicle = $dataProfessional ['has_vehicle'];
             $professional->has_disability = $dataProfessional ['has_disability'];
             $professional->has_familiar_disability = $dataProfessional ['has_familiar_disability'];
             $professional->identification_familiar_disability = $dataProfessional ['identification_familiar_disability'];

@@ -2,44 +2,43 @@
 
 namespace App\Models\JobBoard;
 
+//use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
-use App\Traits\StatusActiveTrait;
+use App\Traits\StateActiveTrait;
+use App\Models\JobBoard\Auditing;
 
-use App\Models\Authentication\User;
 
 
 class Professional extends Model implements Auditable
 {
     use HasFactory;
     use Auditing;
-    use StatusActiveTrait;
     use SoftDeletes;
+    use StateActiveTrait;
+    use \Owenit\Auditing\Auditable;
 
-
-    public $skill = null;
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.professionals';
 
-
     protected $fillable = [
-        'has_online_interview',
-       'has_travel',
-       'has_license',
-        'has_vehicle',
-        'has_disability',
-        'has_familiar_disability',
-       'identification_familiar_disability',
-        'has_catastrophic_illness',
-        'has_familiar_catastrophic_illness',
-        'about_me',
+        'has_travel',
+        'has_license',
+         'has_disability',
+         'has_familiar_disability',
+        'identification_familiar_disability',
+         'has_catastrophic_illness',
+         'has_familiar_catastrophic_illness',
+         'about_me',
     ];
 
-//protected $appends =['full_description'];
+    // protected $hidden = ['description'];
+
+    //protected $appends = ['full_description'];
 
     public static function getInstance($id)
     {
@@ -48,7 +47,7 @@ class Professional extends Model implements Auditable
         return $model;
     }
 
-
+    
     public function offers()
     {
         return $this->belongsToMany(Offer::class)->withPivot('id', 'status_id')->withTimestamps();
