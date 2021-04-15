@@ -2,29 +2,24 @@
 
 namespace App\Models\JobBoard;
 
-//use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
-use App\Traits\StateActiveTrait;
-use App\Models\JobBoard\Auditing;
-
+use App\Models\Authentication\User;
 
 
 class Professional extends Model implements Auditable
 {
-    use HasFactory;
-    use Auditing;
-    use SoftDeletes;
-    use StateActiveTrait;
-    use \Owenit\Auditing\Auditable;
+    use \OwenIt\Auditing\Auditable;
+
 
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.professionals';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'has_travel',
         'has_license',
@@ -36,18 +31,6 @@ class Professional extends Model implements Auditable
          'about_me',
     ];
 
-    // protected $hidden = ['description'];
-
-    //protected $appends = ['full_description'];
-
-    public static function getInstance($id)
-    {
-        $model = new Professional();
-        $model->id = $id;
-        return $model;
-    }
-
-    
     public function offers()
     {
         return $this->belongsToMany(Offer::class)->withPivot('id', 'status_id')->withTimestamps();
@@ -68,9 +51,9 @@ class Professional extends Model implements Auditable
         return $this->hasMany(AcademicFormation::class);
     }
 
-    public function skills()
+    public function abilities()
     {
-        return $this->hasMany(Skill::class);
+        return $this->hasMany(Ability::class);
     }
 
     public function languages()
@@ -85,12 +68,12 @@ class Professional extends Model implements Auditable
 
     public function professionalExperiences()
     {
-        return $this->hasMany(Experience::class);
+        return $this->hasMany(ProfessionalExperience::class);
     }
 
     public function professionalReferences()
     {
-        return $this->hasMany(Reference::class);
+        return $this->hasMany(ProfessionalReference::class);
     }
 
 
