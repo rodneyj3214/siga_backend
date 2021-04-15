@@ -34,7 +34,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('routes', RouteController::class);
 Route::apiResource('shortcuts', ShortcutController::class);
-Route::apiResource('users', UserController::class)->except(['index', 'show']);
+Route::apiResource('users', UserController::class);
 Route::apiResource('roles', RoleController::class);
 Route::apiResource('systems', SystemController::class)->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
 

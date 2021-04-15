@@ -35,7 +35,7 @@ class IndexSkillRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'professional_id' => 'profesional-id',
+            'professional_id' => 'profesional-ID',
         ];
         return JobBoardFormRequest::attributes($attributes);
     }
