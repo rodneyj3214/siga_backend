@@ -14,11 +14,19 @@ class Professional extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
 
+    public $skill = null;
     protected $connection = 'pgsql-job-board';
 
     protected $fillable = [
         'about_me'
     ];
+
+    public static function getInstance($id)
+    {
+        $model = new Professional();
+        $model->id = $id;
+        return $model;
+    }
 
     public function offers()
     {
@@ -40,9 +48,9 @@ class Professional extends Model implements Auditable
         return $this->hasMany(AcademicFormation::class);
     }
 
-    public function abilities()
+    public function skills()
     {
-        return $this->hasMany(Ability::class);
+        return $this->hasMany(Skill::class);
     }
 
     public function languages()

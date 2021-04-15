@@ -15,6 +15,7 @@ class UserFactory extends Factory
     {
         return [
             'identification' => $this->faker->numberBetween($min = 1000000000, $max = 9999999999),
+            'username' => $this->faker->numberBetween($min = 1000000000, $max = 9999999999),
             'first_name' => $this->faker->firstNameMale,
             'second_name' => $this->faker->firstNameMale,
             'first_lastname' => $this->faker->lastName,

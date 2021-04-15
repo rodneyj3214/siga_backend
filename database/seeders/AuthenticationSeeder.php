@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use App\Models\App\Career;
 use App\Models\App\Catalogue;
 use App\Models\App\Institution;
@@ -118,6 +119,7 @@ class AuthenticationSeeder extends Seeder
         $system = System::firstWhere('code', $catalogues['system']['code']);
         $institution = Institution::find(1);
 
+        // SIGA
         Role::factory()->create([
             'code' => $catalogues['role']['admin'],
             'name' => 'ADMINISTRADOR',
@@ -172,8 +174,21 @@ class AuthenticationSeeder extends Seeder
         Role::factory()->create([
             'code' => $catalogues['role']['administrative_coordinator'],
             'name' => 'COORD. ADMINISTRATIVO',
-            'system_id' => $system->id
-            , 'institution_id' => $institution->id]);
+            'system_id' => $system->id,
+            'institution_id' => $institution->id]);
+
+        // JOB BOARD
+        Role::factory()->create([
+            'code' => $catalogues['role']['professional'],
+            'name' => 'PREFSIONAL',
+            'system_id' => $system->id,
+            'institution_id' => $institution->id]);
+
+        Role::factory()->create([
+            'code' => $catalogues['role']['company'],
+            'name' => 'EMPRESA',
+            'system_id' => $system->id,
+            'institution_id' => $institution->id]);
     }
 
     private function createPermissions()
@@ -753,11 +768,7 @@ class AuthenticationSeeder extends Seeder
 
     private function createUsers()
     {
-        User::factory()->create(
-            [
-                'username' => '1234567890',
-                'email' => 'cesar.tamayo0204@gmail.com'
-            ]);
+        User::factory()->count(10)->create();
     }
 
     private function createUsersRoles()

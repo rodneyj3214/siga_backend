@@ -4,24 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJobboardAbilitiesTable extends Migration
+class CreateJobboardSkillsTable extends Migration
 {
-
     public function up()
     {
-        Schema::connection('pgsql-job-board')->create('abilities', function (Blueprint $table) {
+        Schema::connection('pgsql-job-board')->create('skills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('professional_id')->constrained('job_board.professionals');
-            $table->foreignId('type_id')->constrained('app.catalogues');
+            $table->foreignId('type_id')->comment('soft or hard')->constrained('app.catalogues');
             $table->text('description');
             $table->boolean('state')->default(true);
+            $table->unique(['professional_id','type_id']);
             $table->timestamps();
         });
     }
 
-
     public function down()
     {
-        Schema::connection('pgsql-job-board')->dropIfExists('abilities');
+        Schema::connection('pgsql-job-board')->dropIfExists('skills');
     }
 }

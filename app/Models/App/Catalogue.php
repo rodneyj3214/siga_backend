@@ -30,7 +30,12 @@ class Catalogue extends Model implements Auditable
         'icon',
         'state'
     ];
-
+    public static function getInstance($id)
+    {
+        $model = new Catalogue();
+        $model->id = $id;
+        return $model;
+    }
     public function setCodeAttribute($value)
     {
         $this->attributes['code'] = strtoupper($value);

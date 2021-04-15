@@ -7,7 +7,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Location;
-
+use App\Models\App\Catalogue;
+use App\Models\App\Status;
 
 
 class Offer extends Model implements Auditable
@@ -18,26 +19,22 @@ class Offer extends Model implements Auditable
 
     protected $fillable = [
         'code',
-        'contact',
-        'email',
-        'phone',
-        'cell_phone',
-        'position',
-        'training_hours',
-        'experience_time',
+        'description',
+        'contact_name',
+        'contact_email',
+        'contact_phone',
+        'contact_cellphone',
         'remuneration',
-        'working_day',
-        'number_jobs',
+        'vacancies',
         'start_date',
         'end_date',
-        'activities',
         'aditional_information',
-        'location_id',
-        'state_id'
+        'state',
     ];
 
     protected $casts = [
         'activities' => 'array',
+        'requirements' => 'array',
     ];
 
 
@@ -46,21 +43,44 @@ class Offer extends Model implements Auditable
         return $this->belongsTo(Company::class);
     }
 
-    public function professionals()
-    {
-        return $this->belongsToMany(Professional::class)->withTimestamps();
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class)->withTimestamps();
-    }
-
     public function location()
     {
         return $this->belongsTo(Location::class);
     }
 
+    public function contractType()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
 
+    public function position()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function sector()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function workingDay()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function experienceTime()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function trainingHours()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 
 }
