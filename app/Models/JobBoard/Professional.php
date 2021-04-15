@@ -3,6 +3,8 @@
 namespace App\Models\JobBoard;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -14,8 +16,10 @@ use App\Models\Authentication\User;
 class Professional extends Model implements Auditable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use Auditing;
     use StatusActiveTrait;
+    use SoftDeletes;
+
 
     public $skill = null;
     protected $connection = 'pgsql-job-board';
@@ -32,8 +36,10 @@ class Professional extends Model implements Auditable
        'identification_familiar_disability',
         'has_catastrophic_illness',
         'has_familiar_catastrophic_illness',
-        'about_me'
+        'about_me',
     ];
+
+//protected $appends =['full_description'];
 
     public static function getInstance($id)
     {
