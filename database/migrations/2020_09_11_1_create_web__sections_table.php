@@ -15,7 +15,7 @@ class CreateWebSectionsTable extends Migration
             $table->text('description');
             $table->integer('order');
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

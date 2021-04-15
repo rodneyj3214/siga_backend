@@ -23,7 +23,7 @@ class CreateAppSchoolPeriodsTable extends Migration
             $table->date('extraordinary_end_date');
             $table->date('especial_start_date');
             $table->date('especial_end_date');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

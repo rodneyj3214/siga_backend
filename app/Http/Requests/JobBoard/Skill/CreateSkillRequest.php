@@ -35,13 +35,23 @@ class CreateSkillRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'skill.description.required' => 'La descripción es obligatoria',
-            'skill.description.min' => 'La descripción debe tener mínimo 10 caracteres',
-            'professional.id.required' => 'El profesional es obligatorio',
-            'professional.id.integer' => 'El ID del profesional debe ser numérico',
-            'type.id.required' => 'El tipo es obligatorio',
-            'type.id.integer' => 'El ID del tipo debe ser numérico',
+            'skill.description.required' => 'El campo :attribute es obligatorio',
+            'skill.description.min' => 'El campo :attribute debe tener al menos :min caracteres',
+            'professional.id.required' => 'El campo :attribute es obligatorio',
+            'professional.id.integer' => 'El campo :attribute debe ser numérico',
+            'type.id.required' => 'El campo :attribute es obligatorio',
+            'type.id.integer' => 'El campo :attribute debe ser numérico',
         ];
         return JobBoardFormRequest::messages($messages);
+    }
+
+    public function attributes()
+    {
+        $attributes = [
+            'skill.description' => 'descripción',
+            'professional.id' => 'profesional-id',
+            'type.id' => 'tipo-id',
+        ];
+        return JobBoardFormRequest::attributes($attributes);
     }
 }

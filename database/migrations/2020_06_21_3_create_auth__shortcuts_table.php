@@ -16,7 +16,7 @@ class CreateAuthShortcutsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('image');
-//            $table->boolean('state')->default(true);
+//            $table->softDeletes();
             $table->unique(['user_id', 'role_id', 'permission_id']);
             $table->timestamps();
         });

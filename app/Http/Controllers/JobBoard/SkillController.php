@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers\JobBoard;
 
+// Controllers
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\App\FileController;
+use App\Http\Controllers\App\ImageController;
 
 // Models
 use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Skill;
 
-// Request Validation
+// FormRequest
 use App\Http\Requests\JobBoard\Skill\CreateSkillRequest;
 use App\Http\Requests\JobBoard\Skill\IndexSkillRequest;
 use App\Http\Requests\JobBoard\Skill\UpdateSkillRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\App\Image\UpdateImageRequest;
+use App\Http\Requests\App\Image\UploadImageRequest;
+use App\Http\Requests\App\File\UpdateFileRequest;
+use App\Http\Requests\App\File\UploadFileRequest;
+use App\Http\Requests\App\File\IndexFileRequest;
+use App\Http\Requests\App\Image\IndexImageRequest;
 
 class SkillController extends Controller
 {
@@ -36,7 +44,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'No se encontraron Habilidades',
                     'detail' => 'Intente de nuevo',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
 
@@ -52,7 +60,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'ID no válido',
                     'detail' => 'Intente de nuevo',
-                    'code'=>'400'
+                    'code' => '400'
                 ]], 400);
         }
         $skill = Skill::find($skillId);
@@ -64,17 +72,15 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
                     'detail' => 'Vuelva a intentar',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
-
-
         return response()->json([
             'data' => $skill,
             'msg' => [
                 'summary' => 'success',
                 'detail' => '',
-                'code'=>'200'
+                'code' => '200'
             ]], 200);
     }
 
@@ -97,7 +103,7 @@ class SkillController extends Controller
             'msg' => [
                 'summary' => 'Habilidad creada',
                 'detail' => 'El registro fue creado',
-                'code'=>'400'
+                'code' => '400'
             ]], 201);
     }
 
@@ -115,7 +121,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
                     'detail' => 'Vuelva a intentar',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
 
@@ -128,7 +134,7 @@ class SkillController extends Controller
             'msg' => [
                 'summary' => 'Habilidad actualizada',
                 'detail' => 'El registro fue actualizado',
-                'code'=>'201'
+                'code' => '201'
             ]], 201);
     }
 
@@ -141,7 +147,7 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'ID no válido',
                     'detail' => 'Intente de nuevo',
-                    'code'=>'400'
+                    'code' => '400'
                 ]], 400);
         }
         $skill = Skill::find($skillId);
@@ -153,29 +159,69 @@ class SkillController extends Controller
                 'msg' => [
                     'summary' => 'Habilidad no encontrada',
                     'detail' => 'Vuelva a intentar',
-                    'code'=>'404'
+                    'code' => '404'
                 ]], 404);
         }
 
         // Es una eliminación lógica
-        $skill->state = false;
-        $skill->save();
+        $skill->delete();
 
         return response()->json([
             'data' => $skill,
             'msg' => [
                 'summary' => 'Habilidad eliminada',
                 'detail' => 'El registro fue eliminado',
-                'code'=>'201'
+                'code' => '201'
             ]], 201);
     }
 
-    function test(Request $request)
+    function uploadImages(UploadImageRequest $request)
     {
-        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
-        $types = Catalogue::where('type', $catalogues['catalogue']['company_type']['type'])->get();
-        $activityTypes = Catalogue::where('type', $catalogues['catalogue']['company_activity_type']['type'])->get();
-        $personTypes = Catalogue::where('type', $catalogues['catalogue']['company_person_type']['type'])->get();
-        return response()->json($types[rand(1, 4)]['id'], 200);
+        return (new ImageController())->upload($request, Skill::getInstance($request->input('id')));
+    }
+
+    function updateImage(UpdateImageRequest $request, $imageId)
+    {
+        return (new ImageController())->update($request, $imageId);
+    }
+
+    function deleteImage($imageId)
+    {
+        return (new ImageController())->delete($imageId);
+    }
+
+    function indexImage(IndexImageRequest $request)
+    {
+        return (new FileController())->index($request, Skill::getInstance($request->input('id')));
+    }
+
+    function ShowImage($fileId)
+    {
+        return (new FileController())->show($fileId);
+    }
+
+    function uploadFiles(UploadFileRequest $request)
+    {
+        return (new FileController())->upload($request, Skill::getInstance($request->input('id')));
+    }
+
+    function updateFile(UpdateFileRequest $request, $fileId)
+    {
+        return (new FileController())->update($request, $fileId);
+    }
+
+    function deleteFile($fileId)
+    {
+        return (new FileController())->delete($fileId);
+    }
+
+    function indexFile(IndexFileRequest $request)
+    {
+        return (new FileController())->index($request, Skill::getInstance($request->input('id')));
+    }
+
+    function ShowFile($fileId)
+    {
+        return (new FileController())->show($fileId);
     }
 }

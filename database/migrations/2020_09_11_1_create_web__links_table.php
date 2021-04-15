@@ -17,7 +17,7 @@ class CreateWebLinksTable extends Migration
             $table->text('icon');
             $table->text('description')->nullable();
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

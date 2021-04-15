@@ -30,11 +30,20 @@ class UpdateSkillRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'skill.description.required' => 'La descripción es obligatoria',
-            'skill.description.min' => 'La descripción debe tener mínimo 10 caracteres',
-            'type.id.required' => 'El tipo es obligatorio',
-            'type.id.integer' => 'El ID del tipo debe ser numérico',
+            'skill.description.required' => 'El campo :attribute es obligatorio',
+            'skill.description.min' => 'El campo :attribute debe tener al menos :min caracteres',
+            'type.id.required' => 'El campo :attribute es obligatorio',
+            'type.id.integer' => 'El campo :attribute debe ser numérico',
         ];
         return JobBoardFormRequest::messages($messages);
+    }
+
+    public function attributes()
+    {
+        $attributes = [
+            'skill.description' => 'descripción',
+            'type.id' => 'tipo-id',
+        ];
+        return JobBoardFormRequest::attributes($attributes);
     }
 }

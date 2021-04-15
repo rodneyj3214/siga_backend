@@ -13,7 +13,7 @@ class CreateTeacherEvalStudentResultsTable extends Migration
             $table->foreignId('answer_question_id')->comment('Pregunta y respuesta')->constrained('answer_question');
             $table->foreignId('subject_teacher_id')->comment('Asignatura Profesor')->constrained('app.subject_teacher');
             $table->foreignId('student_id')->comment('Informacion Estudiante Evaluador')->constrained('app.students');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

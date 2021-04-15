@@ -17,7 +17,7 @@ class CreateAppStudentsTable extends Migration
             $table->date('career_start_date')->nullable();// esto cambiar a otra tabla
             $table->year('graduation_year')->nullable();// esto cambiar a otra tabla
             $table->string('cohort')->nullable();// esto cambiar a otra tabla
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

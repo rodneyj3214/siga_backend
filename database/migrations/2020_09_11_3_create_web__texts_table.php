@@ -16,7 +16,7 @@ class CreateWebTextsTable extends Migration
             $table->text('subtitle')->nullable();
             $table->text('description');
             $table->foreignId('status_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

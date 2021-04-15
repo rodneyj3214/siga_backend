@@ -33,7 +33,7 @@ class CreateJobboardOffersTable extends Migration
             $table->json('activities');
             $table->json('requirements');
             $table->text('aditional_information')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
