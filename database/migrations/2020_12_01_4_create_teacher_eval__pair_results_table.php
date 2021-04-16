@@ -12,7 +12,7 @@ class CreateTeacherEvalPairResultsTable extends Migration
             $table->id();
             $table->foreignId('answer_question_id')->comment('Pregunta y respuesta')->constrained('answer_question');
             $table->foreignId('detail_evaluation_id')->comment('Detalle Evaluacion Realizada');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

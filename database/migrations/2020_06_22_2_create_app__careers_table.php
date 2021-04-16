@@ -21,7 +21,7 @@ class CreateAppCareersTable extends Migration
             $table->string('title');
             $table->string('acronym');
             $table->string('logo');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->string('codigo_sniese', 50)->nullable();

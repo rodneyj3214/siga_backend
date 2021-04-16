@@ -11,12 +11,11 @@ class CreateAppImagesTable extends Migration
         Schema::connection('pgsql-app')->create('images', function (Blueprint $table) {
             $table->id();
             $table->morphs('imageable');
-            $table->string('code');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->text('uri');
             $table->string('extension');
-            $table->boolean('state')->default(true);
+            $table->text('directory')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

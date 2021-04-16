@@ -12,8 +12,8 @@ class CreateJobboardOffersTable extends Migration
         Schema::connection('pgsql-job-board')->create('offers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained('job_board.companies');
-            $table->foreignId('contract_type_id')->constrained('app.catalogues');
             $table->foreignId('location_id')->constrained('app.locations');
+            $table->foreignId('contract_type_id')->constrained('app.catalogues');
             $table->foreignId('position_id')->constrained('app.catalogues');
             $table->foreignId('sector_id')->constrained('app.catalogues');
             $table->foreignId('working_day_id')->constrained('app.catalogues');
@@ -25,7 +25,7 @@ class CreateJobboardOffersTable extends Migration
             $table->string('contact_name');
             $table->string('contact_email');
             $table->string('contact_phone')->nullable();
-            $table->string('contact_cell_phone')->nullable();
+            $table->string('contact_cellphone')->nullable();
             $table->string('remuneration')->nullable();
             $table->integer('vacancies')->comment('total de puestos disponibles')->nullable();
             $table->date('start_date');
@@ -33,7 +33,7 @@ class CreateJobboardOffersTable extends Migration
             $table->json('activities');
             $table->json('requirements');
             $table->text('aditional_information')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

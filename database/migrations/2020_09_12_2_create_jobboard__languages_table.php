@@ -12,10 +12,11 @@ class CreateJobboardLanguagesTable extends Migration
         Schema::connection('pgsql-job-board')->create('languages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('professional_id')->constrained('job_board.professionals');;
+            $table->foreignId('language_id')->constrained('app.catalogues');
             $table->foreignId('written_level_id')->constrained('app.catalogues');
             $table->foreignId('spoken_level_id')->constrained('app.catalogues');
-            $table->foreignId('reading_level_id')->constrained('app.catalogues');
-            $table->boolean('state')->default(true);
+            $table->foreignId('read_level_id')->constrained('app.catalogues');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
 use App\Models\Authentication\Role;
-use App\Traits\StateActiveTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 
@@ -16,7 +16,7 @@ class Catalogue extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
+    use SoftDeletes;
 
 
     protected $connection = 'pgsql-app';
@@ -30,7 +30,12 @@ class Catalogue extends Model implements Auditable
         'icon',
         'state'
     ];
-
+    public static function getInstance($id)
+    {
+        $model = new Catalogue();
+        $model->id = $id;
+        return $model;
+    }
     public function setCodeAttribute($value)
     {
         $this->attributes['code'] = strtoupper($value);

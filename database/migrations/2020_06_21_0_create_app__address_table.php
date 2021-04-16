@@ -19,7 +19,7 @@ class CreateAppAddressTable extends Migration
             $table->text('references');
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

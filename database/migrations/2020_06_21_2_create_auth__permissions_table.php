@@ -14,7 +14,7 @@ class CreateAuthPermissionsTable extends Migration
             $table->foreignId('system_id')->comment('Para que el permiso pertenezca a un sistema');
             $table->foreignId('institution_id')->constrained('app.institutions');
             $table->json('actions')->comment('[CREATE, UPDATE, DELETE, SELECT], etc');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

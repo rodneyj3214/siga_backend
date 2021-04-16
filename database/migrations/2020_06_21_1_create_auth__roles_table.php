@@ -14,7 +14,7 @@ class CreateAuthRolesTable extends Migration
             $table->text('name');
             $table->foreignId('system_id')->comment('Para que el rol pertenezca a un sistema');
             $table->foreignId('institution_id')->constrained('app.institutions');
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

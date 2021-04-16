@@ -35,7 +35,7 @@ class CreateAppTeachersTable extends Migration
             $table->double('scholarship_amount')->comment('monto de la beca')->default(0);
             $table->boolean('publications')->comment('tiene publicaciones en revistas indexadas')->default(false);
             $table->integer('total_publications')->comment('total publicaciones en revistas indexadas')->default(0);
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -12,7 +12,7 @@ class CreateAppStatusTable extends Migration
             $table->id();
             $table->string('code')->unique()->comment('1. ACTIVE, 2. INACTIVE, 3. LOCKED. etc');
             $table->string('name')->unique();
-            $table->boolean('state')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

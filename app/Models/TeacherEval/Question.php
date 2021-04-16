@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
 use App\Models\App\Catalogue;
-use App\Traits\StateActiveTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Question extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
-    use StateActiveTrait;
+    use SoftDeletes;
 
 
     protected $connection = 'pgsql-teacher-eval';

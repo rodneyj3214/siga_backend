@@ -3,6 +3,7 @@
 namespace App\Models\Authentication;
 
 // Laravel
+use App\Models\JobBoard\Professional;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 
 // Application
-use App\Traits\StateActiveTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\App\AdministrativeStaff;
 
 use App\Models\App\Catalogue;
@@ -24,8 +25,7 @@ class User extends Authenticatable implements Auditable
 {
     use HasApiTokens, Notifiable, HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
-
+    use SoftDeletes;
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.users';
@@ -61,6 +61,11 @@ class User extends Authenticatable implements Auditable
     public function findForPassport($username)
     {
         return $this->where('username', $username)->first();
+    }
+
+    public function professional()
+    {
+        $this->hasOne(Professional::class);
     }
 
     public function securityQuestions()
@@ -137,4 +142,6 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasOne(AdministrativeStaff::class);
     }
+
+
 }

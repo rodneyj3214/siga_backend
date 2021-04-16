@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
                     'msg' => [
                         'summary' => 'Tipo de autenticacion no soportado',
                         'detail' => 'Comnicate con el administrador',
-                        'code' => '400',
+                        'code' => $e->getCode()
                     ]], 400);
             }
             // client authentication failed
@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
                     'msg' => [
                         'summary' => 'Cliente no valido',
                         'detail' => 'Comunicate con el administrador',
-                        'code' => '500',
+                       'code' => $e->getCode()
                     ]], 500);
             }
             // user authentication failed
@@ -72,7 +72,7 @@ class Handler extends ExceptionHandler
                     'msg' => [
                         'summary' => 'Credenciales no validas',
                         'detail' => 'Su usuario o contraseña no son correctos',
-                        'code' => '401',
+                       'code' => $e->getCode()
                     ]], 401);
             }
         }
@@ -83,7 +83,7 @@ class Handler extends ExceptionHandler
                 'msg' => [
                     'summary' => 'No Autenticado',
                     'detail' => '',
-                    'code' => '401',
+                   'code' => $e->getCode()
                 ]], 401);
         }
 
@@ -93,7 +93,7 @@ class Handler extends ExceptionHandler
                 'msg' => [
                     'summary' => 'Recurso no encontrado',
                     'detail' => '',
-                    'code' => '404',
+                    'code' => $e->getCode()
                 ]], 404);
         }
 
@@ -103,7 +103,7 @@ class Handler extends ExceptionHandler
                 'msg' => [
                     'summary' => 'Error en la consulta',
                     'detail' => 'Comunicate con el administrador',
-                    'code' => '400s',
+                    'code' => $e->getCode()
                 ]], 400);
         }
 
@@ -113,7 +113,7 @@ class Handler extends ExceptionHandler
                 'msg' => [
                     'summary' => 'Error en la consulta',
                     'detail' => 'Comunicate con el administrador',
-                    'code' => '400 model',
+                    'code' => $e->getCode()
                 ]], 400);
         }
 
@@ -121,9 +121,10 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'data' => $e->errors(),
                 'msg' => [
-                    'summary' => 'Error en la validacion de campos',
-                    'detail' => 'Intente de nuevo'
-                ]], 400);
+                    'summary' => 'Error en la validación de campos',
+                    'detail' => 'Intente de nuevo',
+                    'code' => $e->getCode()
+                ]], 422);
         }
 
         if ($e instanceof \Error) {
@@ -132,7 +133,7 @@ class Handler extends ExceptionHandler
                 'msg' => [
                     'summary' => 'Oops! Tuvimos un problema con el servidor',
                     'detail' => 'Comnicate con el administrador',
-                    'code' => '500',
+                   'code' => $e->getCode(),
                 ]], 500);
         }
 
@@ -140,7 +141,8 @@ class Handler extends ExceptionHandler
             'data' => $e->getMessage(),
             'msg' => [
                 'summary' => $e->getMessage(),
-                'detail' => 'Comnicate con el administrador'
+                'detail' => 'Comnicate con el administrador',
+                'code' => $e->getCode()
             ]], 500);
 //        return parent::render($request, $e);
     }

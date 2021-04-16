@@ -2,58 +2,53 @@
 
 namespace App\Models\App;
 
-// Laravel
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
-use Carbon\Carbon;
+use phpseclib3\Math\BigInteger;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-// Application
-use App\Traits\StateActiveTrait;
-
-
+/**
+ * @property BigInteger id
+ * @property string name
+ * @property string description
+ * @property string extension
+ * @property string directory
+ */
 class Image extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    use StateActiveTrait;
-
+    use SoftDeletes;
 
     protected $connection = 'pgsql-app';
     protected $table = 'app.images';
 
     protected $fillable = [
-        'code',
         'name',
         'description',
         'extension',
-        'uri',
+        'directory',
     ];
 
+    protected $hidden = ['imageable_type'];
+
+    protected $appends = ['full_name', 'full_path'];
+
+    // Relationships
     public function imageable()
     {
         return $this->morphTo();
     }
 
-    public static function upload($model, $request)
+    // Accessors
+    public function getFullNameAttribute()
     {
-        $fileCode = Carbon::now();
-        $filePath = $request->image->storeAs('images', $request->name . '.png', 'public');
-        $image = $model->images()->where('name', $request->name)->first();
-        if (!$image) {
-            $avatar = new Image([
-                'code' => $fileCode,
-                'name' => $request->name,
-                'description' => $request->description,
-                'uri' => $filePath,
-            ]);
+        return "{$this->attributes['id']}.{$this->attributes['extension']}";
+    }
 
-            $avatar->imageable()->associate($model);
-            $avatar->state()->associate(State::firstWhere('code', State::ACTIVE));
-            $avatar->save();
-        }
-
-        return $image;
-
+    public function getFullPathAttribute()
+    {
+        return "files/{$this->attributes['id']}.{$this->attributes['extension']}";
     }
 }
