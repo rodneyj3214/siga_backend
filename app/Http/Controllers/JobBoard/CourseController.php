@@ -26,6 +26,7 @@ class CourseController extends Controller
         if ($request->has('search')) {
             $courses = $professional->courses()
                 ->description($request->input('search'))
+                ->name($request->input('search'))
                 ->get();
         } else {
             $courses = $professional->courses()->paginate($request->input('per_page'));
@@ -92,7 +93,7 @@ class CourseController extends Controller
        $institution = Catalogue::getInstance($request->input('institution.id'));
 
        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
-       $certification = Catalogue::getInstance($request->input('certification_type.id'));
+       $certificationType = Catalogue::getInstance($request->input('certificationType.id'));
 
        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
        $area = Catalogue::getInstance($request->input('area.id'));
@@ -105,9 +106,9 @@ class CourseController extends Controller
        $course->hours = $request->input('course.hours');
        $course->professional()->associate($professional);
        $course->institution()->associate($institution);
-       $course->eventType()->associate($type);
-       $course->certificationType()->associate($certification);
-       $course->areaType()->associate($area);
+       $course->type()->associate($type);
+       $course->certificationType()->associate($certificationType);
+       $course->area()->associate($area);
        $course->save();
 
        return response()->json([
@@ -124,7 +125,7 @@ class CourseController extends Controller
     {
         $type = Catalogue::getInstance($request->input('type.id'));
         $institution = Catalogue::getInstance($request->input('institution.id'));
-        $certification = Catalogue::getInstance($request->input('certification_type.id'));
+        $certificationType = Catalogue::getInstance($request->input('certificationType.id'));
         $area = Catalogue::getInstance($request->input('area.id'));
 
         $course = Course::find($courseId);
@@ -146,15 +147,15 @@ class CourseController extends Controller
         $course->end_date = $request->input('course.end_date');
         $course->hours = $request->input('course.hours');
         $course->institution()->associate($institution);
-        $course->eventType()->associate($type);
-        $course->certificationType()->associate($certification);
-        $course->areaType()->associate($area);
+        $course->type()->associate($type);
+        $course->certificationType()->associate($certificationType);
+        $course->area()->associate($area);
         $course->save();
 
         return response()->json([
             'data' => $course,
             'msg' => [
-                'summary' => 'Curso actualizada',
+                'summary' => 'Curso actualizado',
                 'detail' => 'El registro fue actualizado',
                 'code' => '201'
             ]], 201);
@@ -185,9 +186,7 @@ class CourseController extends Controller
                 ]], 404);
         }
 
-        // Es una eliminación lógica
-        $course->state = false;
-        $course->save();
+        $course->delete();
 
         return response()->json([
             'data' => $course,

@@ -18,12 +18,11 @@ class CreateCourseRequest extends FormRequest
             'course.name' => [
                 'required',
                 'min:10',
-                'max:200',
+                'max:250',
             ],
             'course.description' => [
                 'required',
                 'min:10',
-                'max:1000',
             ],
             'course.start_date' => [
                 'required',
@@ -47,7 +46,7 @@ class CreateCourseRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'certification_type.id' => [
+            'certificationType.id' => [
                 'required',
                 'integer',
             ],
@@ -64,6 +63,7 @@ class CreateCourseRequest extends FormRequest
         $messages = [
             'course.name.required' => 'El campo :attribute es obligatorio',
             'course.name.min' => 'El campo :attribute debe tener al menos :min caracteres',
+            'course.name.max' => 'El campo :attribute no debe superar los :max caracteres',
             'course.description.required' => 'El campo :attribute es obligatorio',
             'course.description.min' => 'El campo :attribute debe tener al menos :min caracteres',
             'course.start_date.required' => 'El campo :attribute es obligatorio',
@@ -76,8 +76,8 @@ class CreateCourseRequest extends FormRequest
             'type.id.integer' => 'El campo :attribute debe ser numérico',
             'institution.id.required' => 'El campo :attribute es obligatorio',
             'institution.id.integer' => 'El campo :attribute debe ser numérico',
-            'certification_type.id.required' => 'El campo :attribute es obligatorio',
-            'certification_type.id.integer' => 'El campo :attribute debe ser numérico',
+            'certificationType.id.required' => 'El campo :attribute es obligatorio',
+            'certificationType.id.integer' => 'El campo :attribute debe ser numérico',
             'area.id.required' => 'El campo :attribute es obligatorio',
             'area.id.integer' => 'El campo :attribute debe ser numérico',
         ];
@@ -92,11 +92,11 @@ class CreateCourseRequest extends FormRequest
             'course.start_date' => 'fecha inicial',
             'course.end_date' => 'fecha final', 
             'course.hours' => 'horas', 
-            'professional.id' => 'profesional-id',
-            'type.id' => 'tipo-id',
-            'institution.id.id' => 'institución-id',
-            'certification_type.id' => 'tipo certificación-id',
-            'area.id' => 'area-id',
+            'professional.id' => 'profesional-ID',
+            'type.id' => 'tipo-ID',
+            'institution.id.id' => 'institución-ID',
+            'certificationType.id' => 'tipo certificación-ID',
+            'area.id' => 'area-ID',
         ];
         return JobBoardFormRequest::attributes($attributes);
     }
