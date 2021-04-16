@@ -58,6 +58,13 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
+    public static function getInstance($id)
+    {
+        $model = new Professional();
+        $model->id = $id;
+        return $model;
+    }
+
     public function findForPassport($username)
     {
         return $this->where('username', $username)->first();

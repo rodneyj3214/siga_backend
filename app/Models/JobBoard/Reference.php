@@ -2,7 +2,6 @@
 
 namespace App\Models\JobBoard;
 
-
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -16,16 +15,21 @@ class Reference extends Model implements Auditable
     protected $fillable = [
         'institution',
         'position',
-        'contact',
-        'phone',
-        'state',
+        'contact_name',
+        'contact_phone',
+        'contact_email'
     ];
+
+    public static function getInstance($id)
+    {
+        $model = new Professional();
+        $model->id = $id;
+        return $model;
+    }
 
     public function professional()
     {
         return $this->belongsTo(Professional::class);
     }
-
-
 
 }
