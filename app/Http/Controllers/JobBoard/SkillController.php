@@ -103,7 +103,7 @@ class SkillController extends Controller
             'msg' => [
                 'summary' => 'Habilidad creada',
                 'detail' => 'El registro fue creado',
-                'code' => '400'
+                'code' => '201'
             ]], 201);
     }
 
