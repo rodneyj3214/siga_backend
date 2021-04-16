@@ -28,7 +28,33 @@ class ProfessionalController extends Controller
     
 
     function index(Request $request){
-        $professional = Professional::all();
+
+             // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
+             $professional = Professional::getInstance($request->input('professional_id'));
+
+             if ($request->has('search')) {
+                 $skills = $professional->skills()
+                     ->has_travel($request->input('search'))
+                     ->get();
+             } else {
+                 $skills = $skill::paginate($request->input('per_page'));
+             }
+     
+             if (sizeof($skills) === 0) {
+                 return response()->json([
+                     'data' => null,
+                     'msg' => [
+                         'summary' => 'No se encontraron profesionales',
+                         'detail' => 'Intente de nuevo',
+                         'code' => '404'
+                     ]], 404);
+             }
+     
+             return response()->json($skills, 200);
+         }
+     
+
+      /*  $professional = Professional::all();
  
         return response()->json([
             'data' => $professionals,
@@ -38,6 +64,9 @@ class ProfessionalController extends Controller
             ]], 200);
               
         }
+*/
+
+
         function show($professionalId)
         {
             $professional = Professional::find($professionalId);
@@ -46,7 +75,7 @@ class ProfessionalController extends Controller
     return response()->json([
         'data' => $professional ,
         'msg' => [
-            'summary' => 'Profesion no encontrada',
+            'summary' => 'Profesional no encontrada',
             'detail' => 'Vuelva a intentar'
         ]], 404);
          
@@ -116,18 +145,32 @@ class ProfessionalController extends Controller
                     'data' => null,
                     'msg' =>[
                         'summary' => 'profesional no encontrado',
-                        'detail' => 'Vuelva a intentar'
-                    ]], 404);
+                        'detail' => 'Vuelva a intentar',
+                        'code' => '400'
+                    ]], 400);
                 }
-            $professional->state = false;
-            $professional->save();
+
+                if (!$professional) {
+                    return response()->json([
+                        'data' => null,
+                        'msg' => [
+                            'summary' => 'Professional no encontrado',
+                            'detail' => 'Vuelva a intentar',
+                            'code' => '404'
+                        ]], 404);
+                }
+           // $professional->state = false;
+//            $professional->save();
+
+        $skill->delete();
 
             return response()->json([
                 'data' => $professional ,
                 'msg' => [
-                    'summary' => 'success',
-                    'detail' => ''
-                ]], 200);
+                    'summary' => 'Profesional eliminado',
+                    'detail' => 'El registro fue eliminado',
+                    'code' => '201'
+                ]], 201);
                  
         }
        

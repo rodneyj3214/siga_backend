@@ -4,13 +4,25 @@ namespace App\Models\JobBoard;
 
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Authentication\User;
+use App\Models\JobBoard\Auditing;
+use Brick\Math\BigInteger;
 
+
+/**
+ * @property BigInteger id
+ * @property string description
+ * @property boolean state
+ */
 
 class Professional extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    
+    use HasFactory;
+    use Auditing;
+    use SoftDeletes;
 
 
     protected $connection = 'pgsql-job-board';
@@ -30,7 +42,16 @@ class Professional extends Model implements Auditable
          'has_familiar_catastrophic_illness',
          'about_me',
     ];
+    //protected $appends = ['full_about_me'];
 
+    public static function getInstance($id)
+    {
+        $model = new Professional();
+        $model->id = $id;
+        return $model;
+    }
+
+//relaciones
     public function offers()
     {
         return $this->belongsToMany(Offer::class)->withPivot('id', 'status_id')->withTimestamps();
@@ -75,6 +96,27 @@ class Professional extends Model implements Auditable
     {
         return $this->hasMany(ProfessionalReference::class);
     }
+      // Mutators
+  /*    public function setAboutMeAttribute($value)
+      {
+          $this->attributes['about_me'] = strtoupper($value);
+      }
+  
+      // Scopes
+      public function scopeAboutMe($query, $about_me)
+      {
+          if ($about_me) {
+              return $query->where('about_me', 'ILIKE', "%$about_me%");
+          }
+      }
+  
+      // Accessors
+      public function getFullAboutMeAttribute()
+      {
+          return "{$this->attributes['id']}.{$this->attributes['about_me']}";
+      }
+  }*/
+  
 
 
 }
