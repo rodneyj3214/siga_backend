@@ -62,29 +62,12 @@ Route::group(['prefix' => 'offer'], function () {
     })->withoutMiddleware(['auth:api']);
 });
 
-<<<<<<< HEAD
-Route::apiResource('abilities',AbilityController::class);
 
-Route::apiResource('categories', CategoryController::class)->withoutMiddleware('auth:api');
-Route::apiResource('Companies',CompanyController::class);
-/*
- * Grupo 1
- */
-
-/* Rutas para los profesionales
-Route::group(['prefix' => 'professionals'], function () {
-    //Route::group(['middleware' => 'auth:api'], function () {
-
-    //Ruta para obtener un profesional segun el id, relación con la tabla academicFormations para la vista principal de la pagian
-    Route::get('/{id}', 'JobBoard\ProfessionalController@show');
-    //});
-=======
 Route::group(['prefix' => 'academic_formation'], function () {
     // ruta para hcer pruebas
     Route::get('test', function () {
         return 'test';
     })->withoutMiddleware(['auth:api']);
->>>>>>> 33d8fa6204c5bd9235b88ab1a6eefe2fb7bf288a
 });
 
 Route::group(['prefix' => 'course'], function () {
