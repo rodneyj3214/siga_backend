@@ -4,21 +4,21 @@ namespace App\Http\Controllers\JobBoard;
 
 // Controllers
 use App\Http\Controllers\Controller;
+
+// Models
 use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Language;
 
-
 // FormRequest
 
-use App\Http\Requests\JobBoard\Language\IndexLanguageRequest;
+use App\Http\Requests\JobBoard\Laguage\IndexLanguageRequest;
 use App\Http\Requests\JobBoard\Laguage\UpdateLanguageRequest;
 use App\Http\Requests\JobBoard\Laguage\CreateLanguageRequest;
-use App\Http\Requests\JobBoard\Laguage\IndexLanguageRequest as LaguageIndexLanguageRequest;
 
 class LanguageController extends Controller
 {
-    function index(LaguageIndexLanguageRequest $request)
+    function index(IndexLanguageRequest $request)
     {
         // Crea una instanacia del modelo Professional para poder insertar en el modelo language.
         $professional = Professional::getInstance($request->input('professional_id'));
@@ -36,7 +36,7 @@ class LanguageController extends Controller
                 'msg' => [
                     'summary' => 'success',
                     'detail' => '',
-                    'code' => '200',
+                    'code' => '200'
                 ]
             ], 404);
         }
