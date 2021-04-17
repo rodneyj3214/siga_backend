@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateJobboardReferencesTable extends Migration
 {
-
     public function up()
     {
         Schema::connection('pgsql-job-board')->create('references', function (Blueprint $table) {
