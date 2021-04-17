@@ -61,11 +61,11 @@ Route::get('test', function () {
 
 Route::post('upload', function (\Illuminate\Http\Request $request) {
     $file = \App\Models\App\File::create([
-        'code'=>'',
-        'name'=>'',
-        'description'=>'',
-        'extension'=>'',
-        'code'=>'',
+        'code' => '',
+        'name' => '',
+        'description' => '',
+        'extension' => '',
+        'code' => '',
     ]);
     foreach ($request->file('files') as $file) {
         $name = $file->getClientOriginalName();

@@ -17,15 +17,15 @@ class DatabaseSeeder extends Seeder
     }
 }
 /*
-            drop schema if exists public cascade;
-            drop schema if exists authentication cascade;
-            drop schema if exists attendance cascade;
-            drop schema if exists app cascade;
-            drop schema if exists job_board cascade;
-            drop schema if exists web cascade;
-            drop schema if exists teacher_eval cascade;
-            drop schema if exists community cascade;
-                drop schema if exists cecy cascade;
+                drop schema if exists public cascade;
+                drop schema if exists authentication cascade;
+                drop schema if exists attendance cascade;
+                drop schema if exists app cascade;
+                drop schema if exists job_board cascade;
+                drop schema if exists web cascade;
+                drop schema if exists teacher_eval cascade;
+                drop schema if exists community cascade;
+                    drop schema if exists cecy cascade;
 
             create schema authentication;
             create schema attendance;
