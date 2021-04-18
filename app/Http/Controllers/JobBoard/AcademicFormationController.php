@@ -2,147 +2,79 @@
 
 namespace App\Http\Controllers\JobBoard;
 
-use http\Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Jobboard\Professional;
-use App\Models\JobBoard\AcademicFormation;
-use Illuminate\Routing\Controller;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use App\Models\JobBoard\AcademicFormation;
+use App\Models\JobBoard\Category;
+use App\Models\JobBoard\Professional;
 
 class AcademicFormationController extends Controller
 {
-    function index(Request $request)
+    function index()
     {
-        try {
-            $professional = Professional::with(['academicFormations' => function ($query) {
-                $query->with(['state' => function ($query) {
-                    $query->where('code', '1');
-                }])->with(['category' => function ($query) {
-                    $query->with(['state' => function ($query) {
-                        $query->where('code', '1');
-                    }]);
-                }])->with(['professionalDegree' => function ($query) {
-                    $query->with(['state' => function ($query) {
-                        $query->where('code', '1');
-                    }]);
-                }]);
-            }])->with(['state' => function ($query) {
-                $query->where('code', '1');
-            }])->where('id', $request->user_id)->get();
+        $academicFormations = AcademicFormation::all();
 
-
-            return response()->json([
-                'data' => ['academicFormations' => $professional]], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 400);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
+        return response()->json([
+            'data' => $academicFormations,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => ''
+            ]], 200);
     }
 
     function show($id)
     {
-        try {
-            $academicFormation = AcademicFormation::findOrFail($id);
-            return response()->json(['academicFormation' => $academicFormation], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 400);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
+        $academicFormation = AcademicFormation::findOrFail($id);
+
+        return response()->json([
+            'data' => $academicFormation,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => ''
+            ]], 200);
     }
 
     function store(Request $request)
     {
-        try {
-            $data = $request->json()->all();
-            $dataUser = $data['user'];
-            $dataAcademicFormation = $data['academicFormation'];
-            $professional = Professional::where('user_id', $dataUser['id'])->first();
-            if ($professional) {
-                $response = $professional->academicFormations()->create([
-                    'institution' => $dataAcademicFormation ['institution'],
-                    'career' => $dataAcademicFormation ['career'],
-                    'professional_degree' => $dataAcademicFormation ['professional_degree'],
-                    'registration_date' => $dataAcademicFormation ['registration_date'],
-                    'senescyt_code' => $dataAcademicFormation ['senescyt_code'],
-                    'has_titling' => $dataAcademicFormation ['has_titling'],
-                ]);
-                return response()->json($response, 201);
-            } else {
-                return response()->json(null, 404);
-            }
-        } catch (
-        ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 400);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
+        $data = $request->json()->all();
+        $dataAcademicFormation = $data['academic_formation'];
+        $dataCategory = $data['category'];
+
+        $academicFormation = new AcademicFormation();
+        $academicFormation->professional_degree_id = $dataAcademicFormation['professional_degree_id'];
+        $academicFormation->registration_date = $dataAcademicFormation['registration_date'];
+        $academicFormation->senescyt_code = $dataAcademicFormation['senescyt_code'];
+        $academicFormation->has_titling = $dataAcademicFormation['has_titling'];
+        
+        $academicFormation->professional()->associate(Professional::firstWhere('user_id', $request->user()->id));
+        $academicFormation->category()->associate(Category::findOrFail($dataCategory['id']));
+
+        $academicFormation->save();
     }
 
-    function update(Request $request)
+    function update(Request $request, $id)
     {
-        try {
-            $data = $request->json()->all();
-            $dataAcademicFormation = $data['academicFormation'];
-            $academicFormation = AcademicFormation::findOrFail($dataAcademicFormation ['id'])->update([
-                'institution' => $dataAcademicFormation ['institution'],
-                'career' => $dataAcademicFormation ['career'],
-                'professional_degree' => $dataAcademicFormation ['professional_degree'],
-                'registration_date' => $dataAcademicFormation ['registration_date'],
-                'senescyt_code' => $dataAcademicFormation ['senescyt_code'],
-                'has_titling' => $dataAcademicFormation ['has_titling'],
-            ]);
-            return response()->json($academicFormation, 201);
-        } catch (ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 400);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
+        $data = $request->json()->all();
+        $dataAcademicFormation= $data['academic_formation'];
+        $dataCategory = $data['category'];
+
+        $academicFormation = AcademicFormation::findOrFail($id);
+        $academicFormation->registration_date = $dataAcademicFormation['registration_date'];
+        $academicFormation->senescyt_code = $dataAcademicFormation['senescyt_code'];
+        $academicFormation->has_titling = $dataAcademicFormation['has_titling'];
+
+        $academicFormation->professional()->associate(Professional::firstWhere('user_id',$request->user()->id));
+        $academicFormation->category()->associate(Category::findOrFail($dataCategory['id']));
+
+        $academicFormation->save();
     }
 
-    function destroy(Request $request)
+    function destroy($id)
     {
-        try {
-            $academicFormation = AcademicFormation::findOrFail($request->id)->delete();
-            return response()->json($academicFormation, 201);
-        } catch (ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 400);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
+        $academicFormation = AcademicFormation::findOrFail($id);
+        $academicFormation->state = false;
+
+        $academicFormation->save();
     }
 }
