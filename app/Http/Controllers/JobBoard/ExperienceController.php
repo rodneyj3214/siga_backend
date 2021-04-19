@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-// Models
+// Models commit inicial
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Experience;
 
