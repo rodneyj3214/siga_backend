@@ -16,7 +16,7 @@ use App\Models\Authentication\System;
 class Module extends Model implements Auditable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
 
@@ -41,7 +41,7 @@ class Module extends Model implements Auditable
     {
         return $this->belongsTo(Status::class);
     }
-    
+
     public function system()
     {
         return $this->belongsTo(System::class);

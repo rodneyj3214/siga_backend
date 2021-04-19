@@ -8,7 +8,7 @@ use App\Models\App\Catalogue;
 
 class Project extends Model
 {
-    //use \OwenIt\Auditing\Auditable;
+    //use OwenIt\Auditing\Auditable;
    // protected $table="vinculacion.projects";
     protected $connection = 'pgsql-community';
     //utilizacion para el tipo json

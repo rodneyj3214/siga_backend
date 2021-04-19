@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\JobBoard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Offer;
@@ -13,13 +12,8 @@ use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
 use App\Http\Requests\JobBoard\Offer\UpdateOfferRequest;
 
-// NOTA: nos se usan borrar?
-//use Carbon\Carbon;
-//use Illuminate\Support\Facades\DB;
-
 class OfferController extends Controller
 {
-
     function index(IndexOfferRequest $request)
     {
         $company = Company::getInstance($request->input('company_id'));
@@ -71,7 +65,6 @@ class OfferController extends Controller
         $offer->position()->associate($position);
         $offer->sector()->associate($sector);
         $offer->workingDay()->associate($workingDay);
-        $offer->workingDay()->associate($workingDay);
         $offer->experienceTime()->associate($experienceTime);
         $offer->trainingHours()->associate($trainingHours);
         $offer->status()->associate($status);
@@ -119,7 +112,6 @@ class OfferController extends Controller
 
     function update(UpdateOfferRequest $request, $offerId)
     {
-        // NOTA: (menos company -> no voy a cambiar company a la oferta)
         $location = Catalogue::getInstance($request->input('location.id'));
         $contractType = Catalogue::getInstance($request->input('contractType.id'));
         $position = Catalogue::getInstance($request->input('position.id'));
@@ -203,5 +195,4 @@ class OfferController extends Controller
                 'code' => '201'
             ]], 201);
     }
-    
 }

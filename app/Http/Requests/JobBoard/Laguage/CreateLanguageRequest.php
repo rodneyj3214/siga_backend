@@ -16,12 +16,11 @@ class CreateLanguageRequest extends FormRequest
     public function rules()
     {
         $rules = [
-
             'professional.id' => [
                 'required',
                 'integer',
             ],
-            'language.id' => [
+            'idiom.id' => [
                 'required',
                 'integer',
             ],
@@ -43,11 +42,10 @@ class CreateLanguageRequest extends FormRequest
     public function messages()
     {
         $messages = [
-
             'professional.id.required' => 'El campo :attribute es obligatorio',
             'professional.id.integer' => 'El campo :attribute debe ser numérico',
-            'language.id.required' => 'El campo :attribute es obligatorio',
-            'language.id.integer' => 'El campo :attribute debe ser numérico',
+            'idiom.id.required' => 'El campo :attribute es obligatorio',
+            'idiom.id.integer' => 'El campo :attribute debe ser numérico',
             'writtenLevel.id.required' => 'El campo :attribute es obligatorio',
             'writtenLevel.id.integer' => 'El campo :attribute debe ser numérico',
             'spokenLevel.id.required' => 'El campo :attribute es obligatorio',
@@ -61,12 +59,11 @@ class CreateLanguageRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-
             'professional.id' => 'profesional-ID',
-            'language.id' => 'tipo-ID',
-            'writtenLevel.id' => 'tipo-ID',
-            'spokenLeve.id' => 'tipo-ID',
-            'readLevel.id' => 'tipo-ID',
+            'idiom.id' => 'idioma-ID',
+            'writtenLevel.id' => 'nivel escritura-ID',
+            'spokenLevel.id' => 'nivel hablado-ID',
+            'readLevel.id' => 'nivel lectura-ID',
         ];
         return JobBoardFormRequest::attributes($attributes);
     }

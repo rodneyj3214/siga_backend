@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SelfResult extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
 

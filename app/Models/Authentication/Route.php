@@ -16,7 +16,7 @@ use App\Models\App\Image;
 class Route extends Model implements Auditable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
 
@@ -25,11 +25,11 @@ class Route extends Model implements Auditable
 
     protected $fillable = [
         'uri',
-        'name', 
-        'description', 
-        'icon', 
-        'order', 
-        'logo', 
+        'name',
+        'description',
+        'icon',
+        'order',
+        'logo',
         'state'
     ];
 

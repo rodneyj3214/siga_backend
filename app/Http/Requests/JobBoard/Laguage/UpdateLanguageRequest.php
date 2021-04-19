@@ -17,8 +17,7 @@ class UpdateLanguageRequest extends FormRequest
     public function rules()
     {
         $rules = [
-
-            'language.id' => [
+            'idiom.id' => [
                 'required',
                 'integer',
             ],
@@ -37,12 +36,12 @@ class UpdateLanguageRequest extends FormRequest
         ];
         return JobBoardFormRequest::rules($rules);
     }
+
     public function messages()
     {
         $messages = [
-
-            'language.id.required' => 'El campo :attribute es obligatorio',
-            'language.id.integer' => 'El campo :attribute debe ser numérico',
+            'idiom.id.required' => 'El campo :attribute es obligatorio',
+            'idiom.id.integer' => 'El campo :attribute debe ser numérico',
             'writtenLevel.id.required' => 'El campo :attribute es obligatorio',
             'writtenLevel.id.integer' => 'El campo :attribute debe ser numérico',
             'spokenLevel.id.required' => 'El campo :attribute es obligatorio',
@@ -56,11 +55,11 @@ class UpdateLanguageRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-
-            'language.id' => 'tipo-ID',
-            'writtenLevel.id' => 'tipo-ID',
-            'spokenLeve.id' => 'tipo-ID',
-            'readLevel.id' => 'tipo-ID',
+            'professional.id' => 'profesional-ID',
+            'idiom.id' => 'idioma-ID',
+            'writtenLevel.id' => 'nivel escritura-ID',
+            'spokenLevel.id' => 'nivel hablado-ID',
+            'readLevel.id' => 'nivel lectura-ID',
         ];
         return JobBoardFormRequest::attributes($attributes);
     }

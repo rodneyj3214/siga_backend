@@ -9,7 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Menus extends Model implements Auditable
 
 {
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     protected $connection = 'pgsql-web';
     protected $fillable = [
 

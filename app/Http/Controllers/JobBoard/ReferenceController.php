@@ -54,10 +54,10 @@ class ReferenceController extends Controller
                 ]], 400);
         }
 
-        $professionalReference = Reference::find($id)->first();
+        $reference = Reference::find($id)->first();
 
         // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error
-        if (!$professionalReference) {
+        if (!$reference) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -68,7 +68,7 @@ class ReferenceController extends Controller
         }
 
         return response()->json([
-            'data' => $professionalReference,
+            'data' => $reference,
             'msg' => [
                 'summary' => 'success',
                 'detail' => '',
@@ -119,8 +119,7 @@ class ReferenceController extends Controller
         $reference->contact_name = $request->input('reference.contact_name');
         $reference->contact_phone = $request->input('reference.contact_phone');
         $reference->contact_email = $request->input('reference.contact_email');
-
-        $reference->update();
+        $reference->save();
 
         return response()->json([
             'data' => $reference,
@@ -143,9 +142,9 @@ class ReferenceController extends Controller
                 ]], 400);
         }
 
-        $professionalReference = Reference::find($id);
+        $reference = Reference::find($id);
 
-        if (!$professionalReference) {
+        if (!$reference) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -155,15 +154,14 @@ class ReferenceController extends Controller
                 ]], 404);
         }
 
-        $professionalReference->delete();
+        $reference->delete();
 
         return response()->json([
-            'data' => $professionalReference,
+            'data' => $reference,
             'msg' => [
                 'summary' => 'Referencia eliminada',
                 'detail' => 'El registro fue eliminado',
                 'code' => '200'
             ]], 200);
     }
-
 }

@@ -11,7 +11,7 @@ use App\Traits\StateActiveTrait;
 class AcademicFormation extends Model implements Auditable
 {
 
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use HasFactory;
     use StateActiveTrait;
 

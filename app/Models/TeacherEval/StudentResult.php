@@ -13,7 +13,7 @@ use App\Models\App\Student;
 
 class StudentResult extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use HasFactory;
 
     protected $connection = 'pgsql-teacher-eval';

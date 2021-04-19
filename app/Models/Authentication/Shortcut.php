@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Shortcut extends Model implements Auditable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.shortcuts';

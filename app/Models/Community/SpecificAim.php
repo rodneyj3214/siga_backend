@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpecificAim extends Model
 {
-    //use \OwenIt\Auditing\Auditable;
+    //use OwenIt\Auditing\Auditable;
     //
-    
+
     protected $connection = 'pgsql-community';
     protected $casts=[
         'verifications'=>'array',

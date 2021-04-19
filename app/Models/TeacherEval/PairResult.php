@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PairResult extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
     use HasFactory;

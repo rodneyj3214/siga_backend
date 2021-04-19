@@ -17,7 +17,7 @@ use App\Models\App\Institution;
 class Role extends Model implements Auditable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
 

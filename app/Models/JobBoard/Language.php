@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
-use \OwenIt\Auditing\Auditable as Auditing;
+use OwenIt\Auditing\Auditable as Auditing;
 use Brick\Math\BigInteger;
 use App\Models\App\Catalogue;
 
@@ -32,6 +32,7 @@ class Language extends Model implements Auditable
         static::$instance->id = $id;
         return static::$instance;
     }
+
     public function professional()
     {
         return $this->belongsTo(Professional::class);

@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class ImagePages extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
 
     protected $connection = 'pgsql-web';
     protected $fillable = [

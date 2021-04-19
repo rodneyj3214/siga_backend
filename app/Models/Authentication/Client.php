@@ -4,7 +4,7 @@ namespace App\Models\Authentication;
 
 use Laravel\Passport\Client as PassportClient;
 use OwenIt\Auditing\Contracts\Auditable;
-use \OwenIt\Auditing\Auditable as Auditing;
+use OwenIt\Auditing\Auditable as Auditing;
 
 
 

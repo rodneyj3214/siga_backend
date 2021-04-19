@@ -6,13 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
-use \OwenIt\Auditing\Auditable as Auditing;
-use OwenIt\Auditing\Contracts\Auditable;
-
+use OwenIt\Auditing\Auditable as Auditing;
 use App\Models\App\Catalogue;
 use App\Models\App\Status;
 
-// NOTA: estan bien los tipos de datos?
 /**
  * @property BigInteger id
  * @property string code
@@ -23,16 +20,20 @@ use App\Models\App\Status;
  * @property string contact_cellphone
  * @property string remuneration
  * @property integer vacancies
- * @property date start_date
- * @property date end_date
- * @property text aditional_information
+ * @property Date start_date
+ * @property Date end_date
+ * @property string aditional_information
+ * @property json activities
+ * @property json requirements
  */
 class Offer extends Model implements Auditable
 {
     use HasFactory;
     use Auditing;
     use SoftDeletes;
-  
+
+    private static $instance;
+
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.offers';
 
@@ -55,6 +56,14 @@ class Offer extends Model implements Auditable
         'requirements' => 'array',
     ];
 
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }
 
     public function company()
     {

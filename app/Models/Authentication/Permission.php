@@ -15,7 +15,7 @@ use App\Models\App\Institution;
 class Permission extends Model implements Auditable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
 
@@ -26,7 +26,7 @@ class Permission extends Model implements Auditable
         'state',
         'actions'
     ];
-    
+
     protected $casts = [
         'actions' => 'array',
     ];

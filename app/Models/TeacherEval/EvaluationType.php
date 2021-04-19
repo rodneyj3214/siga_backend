@@ -11,7 +11,7 @@ use App\Models\App\Catalogue;
 
 class EvaluationType extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    use OwenIt\Auditing\Auditable;
     use HasFactory;
 
     protected $connection = 'pgsql-teacher-eval';
