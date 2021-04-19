@@ -63,6 +63,37 @@ class Professional extends Model implements Auditable
     }
 
 
+    public function academicFormations()
+    {
+        return $this->hasMany(AcademicFormation::class);
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function experiences()
+    {
+        return $this->hasMany(Experience::class);
+    }
+    public function languages()
+    {
+        return $this->hasMany(Language::class);
+    }
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
+    }
+
 
    // Mutators
       public function setAboutMeAttribute($value)
