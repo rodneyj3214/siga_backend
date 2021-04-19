@@ -22,8 +22,10 @@ Route::apiResources([
     'courses' => CourseController::class,
     'languages' => LanguageController::class,
     'experiences' => ExperienceController::class,
-    'references' => ReferenceController::class,
+//    'references' => ReferenceController::class,
 ]);
+
+Route::apiResource('references', ReferenceController::class)->withoutMiddleware(['auth:api']);
 
 Route::group(['prefix' => 'skill'], function () {
     // ruta para hcer pruebas
@@ -56,11 +58,10 @@ Route::group(['prefix' => 'professional'], function () {
 });
 
 Route::group(['prefix' => 'offer'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
 });
+Route::apiResource('professionals',ProfessionalController::class);
+
+
 
 Route::group(['prefix' => 'academic_formation'], function () {
     // ruta para hcer pruebas

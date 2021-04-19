@@ -17,8 +17,9 @@ use App\Http\Requests\JobBoard\Ability\UpdateAbilityRequest;
 
 class AbilityController extends Controller
 {
-    public function __construct(){
 
+    public function __construct()
+    {
     }
 
     function index(IndexAbilityRequest $request)
@@ -29,7 +30,9 @@ class AbilityController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
-            ]], 200);
+
+            ]
+        ], 200);
     }
 
     function show($abilityId)
@@ -41,19 +44,23 @@ class AbilityController extends Controller
                 'msg' => [
                     'summary' => 'Abilidad no encontrada',
                     'detail' => 'Vuelva a intentar'
-                ]], 404);
+
+                ]
+            ], 404);
         }
         return response()->json([
             'data' => $ability,
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
-            ]], 200);
+            ]
+        ], 200);
     }
 
     function store(CreateAbilityRequest $request)
     {
         $ability = new Ability();
+
         $ability->description = $request->input('ability.description');
         $ability->professional()->associate(Professional::findOrFail($request->input('professional.id')));
         $ability->type()->associate(Catalogue::findOrFail($request->input('type.id')));
@@ -64,14 +71,14 @@ class AbilityController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
-            ]], 201);
+            ]
+        ], 201);
     }
 
     function update(UpdateAbilityRequest $request, $abilityId)
     {
         $ability = Ability::findOrFail($abilityId);
         $ability->description = $request->input('ability.description');
-
         $ability->professional()->associate(Professional::firstWhere($request->input('professional.id')));
         $ability->type()->associate(Catalogue::findOrFail($request->input('type.id')));
         $ability->save();
@@ -81,7 +88,8 @@ class AbilityController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
-            ]], 201);
+            ]
+        ], 201);
     }
 
     function destroy($abilityId)
@@ -93,10 +101,10 @@ class AbilityController extends Controller
                 'msg' => [
                     'summary' => 'Abilidad no encontrada',
                     'detail' => 'Vuelva a intentar'
-                ]], 404);
+                ]
+            ], 404);
         }
         $ability->state = false;
-        
         $ability->save();
 
         return response()->json([
@@ -104,7 +112,8 @@ class AbilityController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
-            ]], 201);
+            ]
+        ], 201);
     }
 
     function validateDuplicate($dataAbility, $professional)

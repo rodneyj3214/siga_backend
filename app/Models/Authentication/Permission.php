@@ -22,11 +22,21 @@ class Permission extends Model implements Auditable
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.permissions';
 
-    protected $fillable = ['state','actions'];
+    protected $fillable = [
+        'state',
+        'actions'
+    ];
+    
     protected $casts = [
         'actions' => 'array',
     ];
 
+    public static function getInstance($id)
+    {
+        $model = new Permission();
+        $model->id = $id;
+        return $model;
+    }
 
     public function route()
     {

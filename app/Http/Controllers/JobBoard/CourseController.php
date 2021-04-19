@@ -17,6 +17,7 @@ use App\Http\Requests\JobBoard\Course\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
+
     // Muestra lista de cursos existentes aqqquiiiiiiiii//
     function index(IndexCourseRequest $request)
     {
@@ -39,7 +40,8 @@ class CourseController extends Controller
                     'summary' => 'No se encontraron Cursos',
                     'detail' => 'Intente de nuevo',
                     'code' => '404'
-                ]], 404);
+                ]
+            ], 404);
         }
 
         return response()->json($courses, 200);
@@ -56,7 +58,8 @@ class CourseController extends Controller
                     'summary' => 'ID no válido',
                     'detail' => 'Intente de nuevo',
                     'code' => '400'
-                ]], 400);
+                ]
+            ], 400);
         }
         $course = Course::find($courseId);
 
@@ -68,7 +71,8 @@ class CourseController extends Controller
                     'summary' => 'Curso no encontrado',
                     'detail' => 'Vuelva a intentar',
                     'code' => '404'
-                ]], 404);
+                ]
+            ], 404);
         }
 
         return response()->json([
@@ -77,50 +81,57 @@ class CourseController extends Controller
                 'summary' => 'success',
                 'detail' => '',
                 'code' => '200'
-            ]], 200);
+            ]
+        ], 200);
     }
+
 
     //Almacena los  Datos creado del curso envia//
+
     function store(CreateCourseRequest $request)
     {
-       // Crea una instanacia del modelo Professional para poder insertar en el modelo course.
-       $professional = Professional::getInstance($request->input('professional.id'));
+        // Crea una instanacia del modelo Professional para poder insertar en el modelo course.
+        $professional = Professional::getInstance($request->input('professional.id'));
 
-       // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
-       $type = Catalogue::getInstance($request->input('type.id'));
+        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
+        $type = Catalogue::getInstance($request->input('type.id'));
 
-       // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
-       $institution = Catalogue::getInstance($request->input('institution.id'));
+        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
+        $institution = Catalogue::getInstance($request->input('institution.id'));
 
-       // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
-       $certificationType = Catalogue::getInstance($request->input('certificationType.id'));
+        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
+        $certificationType = Catalogue::getInstance($request->input('certificationType.id'));
 
-       // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
-       $area = Catalogue::getInstance($request->input('area.id'));
+        // Crea una instanacia del modelo Catalogue para poder insertar en el modelo course.
+        $area = Catalogue::getInstance($request->input('area.id'));
 
-       $course = new Course();
-       $course->name = $request->input('course.name');
-       $course->description = $request->input('course.description');
-       $course->start_date = $request->input('course.start_date');
-       $course->end_date = $request->input('course.end_date');
-       $course->hours = $request->input('course.hours');
-       $course->professional()->associate($professional);
-       $course->institution()->associate($institution);
-       $course->type()->associate($type);
-       $course->certificationType()->associate($certificationType);
-       $course->area()->associate($area);
-       $course->save();
+        $course = new Course();
+        $course->name = $request->input('course.name');
+        $course->description = $request->input('course.description');
+        $course->start_date = $request->input('course.start_date');
+        $course->end_date = $request->input('course.end_date');
+        $course->hours = $request->input('course.hours');
+        $course->professional()->associate($professional);
+        $course->institution()->associate($institution);
+        $course->type()->associate($type);
+        $course->certificationType()->associate($certificationType);
+        $course->area()->associate($area);
+        $course->save();
 
-       return response()->json([
-           'data' => $course,
-           'msg' => [
-               'summary' => 'Curso creado',
-               'detail' => 'El registro fue creado',
-               'code' => '201'
-           ]], 201);
+        return response()->json([
+            'data' => $course,
+            'msg' => [
+                'summary' => 'Curso creado',
+                'detail' => 'El registro fue creado',
+                'code' => '201'
+            ]
+        ], 201);
     }
 
+
+
     //Actualiza los datos del curso creado//
+
     function update(UpdateCourseRequest $request, $courseId)
     {
         $type = Catalogue::getInstance($request->input('type.id'));
@@ -138,7 +149,8 @@ class CourseController extends Controller
                     'summary' => 'Curso no encontrado',
                     'detail' => 'Vuelva a intentar',
                     'code' => '404'
-                ]], 404);
+                ]
+            ], 404);
         }
 
         $course->name = $request->input('course.name');
@@ -158,7 +170,8 @@ class CourseController extends Controller
                 'summary' => 'Curso actualizado',
                 'detail' => 'El registro fue actualizado',
                 'code' => '201'
-            ]], 201);
+            ]
+        ], 201);
     }
 
     //Elimina los datos del curso//
@@ -171,7 +184,8 @@ class CourseController extends Controller
                     'summary' => 'ID no válido',
                     'detail' => 'Intente de nuevo',
                     'code' => '400'
-                ]], 400);
+                ]
+            ], 400);
         }
         $course = Course::find($courseId);
 
@@ -183,7 +197,8 @@ class CourseController extends Controller
                     'summary' => 'Curso no encontrado',
                     'detail' => 'Vuelva a intentar',
                     'code' => '404'
-                ]], 404);
+                ]
+            ], 404);
         }
 
         $course->delete();
@@ -194,6 +209,7 @@ class CourseController extends Controller
                 'summary' => 'Curso eliminado',
                 'detail' => 'El registro fue eliminado',
                 'code' => '201'
-            ]], 201);
+            ]
+        ], 201);
     }
 }

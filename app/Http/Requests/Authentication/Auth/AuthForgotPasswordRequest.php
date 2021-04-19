@@ -6,25 +6,32 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AuthForgotPasswordRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
             'username' => 'required'
         ];
+    }
+
+    public function messages()
+    {
+        $messages = [
+            'username.required' => 'El campo :attribute es obligatorio',
+        ];
+        return JobBoardFormRequest::messages($messages);
+    }
+
+    public function attributes()
+    {
+        $attributes = [
+            'username' => 'username',
+        ];
+        return JobBoardFormRequest::attributes($attributes);
     }
 }

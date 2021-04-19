@@ -4,10 +4,13 @@ use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Authentication\UserController;
 use App\Http\Controllers\Authentication\RoleController;
 use App\Http\Controllers\Authentication\PermissionController;
+use App\Http\Controllers\Authentication\UserTestController;
 use App\Http\Controllers\Authentication\RouteController;
 use App\Http\Controllers\Authentication\ShortcutController;
 use App\Http\Controllers\Authentication\SystemController;
 use Illuminate\Support\Facades\Route;
+
+Route::apiResource('usertest', UserTestController::class);
 
 // Without Authentication
 Route::group(['prefix' => 'auth'], function () {
