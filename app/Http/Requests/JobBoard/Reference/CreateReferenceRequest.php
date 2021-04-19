@@ -65,16 +65,16 @@ class CreateReferenceRequest extends FormRequest
             'professional.id.integer' => 'El campo :attribute debe ser numérico',
             'reference.institution.required' => 'El campo :attribute es obligatorio',
             'reference.institution.min' => 'El campo :attribute debe tener al menos :min caracteres',
-            'reference.institution.max' => 'El campo :attribute debe tener maximo :max caracteres',
+            'reference.institution.max' => 'El campo :attribute debe tener máximo :max caracteres',
             'reference.position.required' => 'El campo :attribute es obligatorio',
             'reference.position.min' => 'El campo :attribute debe tener al menos :min caracteres',
             'reference.position.max' => 'El campo :attribute debe tener maximo :max caracteres',
             'reference.contact_name.required' => 'El campo :attribute es obligatorio',
-            'reference.contact_name.max' => 'El campo :attribute debe tener maximo :max caracteres',
+            'reference.contact_name.max' => 'El campo :attribute debe tener máximo :max caracteres',
             'reference.contact_phone.required' => 'El campo :attribute es obligatorio',
             'reference.contact_phone.numeric' => 'El campo :attribute debe ser numérico',
             'reference.contact_email.required' => 'El campo :attribute es obligatorio',
-            'reference.contact_email.regex' => 'El campo :attribute debe ser un email valido',
+            'reference.contact_email.regex' => 'El campo :attribute debe ser un email válido',
         ];
         return JobBoardFormRequest::messages($messages);
     }
@@ -86,7 +86,7 @@ class CreateReferenceRequest extends FormRequest
             'reference.institution' => 'institución',
             'reference.position' => 'posición',
             'reference.contact_name' => 'nombre de contacto',
-            'reference.contact_phone' => 'teledono de contacto',
+            'reference.contact_phone' => 'teléfono de contacto',
             'reference.contact_email' => 'email de contacto',
         ];
         return JobBoardFormRequest::attributes($attributes);
