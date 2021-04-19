@@ -2,24 +2,49 @@
 
 namespace App\Models\JobBoard;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use \OwenIt\Auditing\Auditable as Auditing;
 use OwenIt\Auditing\Contracts\Auditable;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Authentication\User;
+use Brick\Math\BigInteger;
 
+/**
+ * @property BigInteger id
+ * @property string description
+ * @property boolean state
+ */
 
 class Professional extends Model implements Auditable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use Auditing;
+    use SoftDeletes;
 
-    public $skill = null;
     protected $connection = 'pgsql-job-board';
+    protected $table = 'job_board.professionals';
 
     protected $fillable = [
-        'about_me'
+        'has_travel',
+         'has_disability',
+         'has_familiar_disability',
+        'identification_familiar_disability',
+         'has_catastrophic_illness',
+         'has_familiar_catastrophic_illness',
+         'about_me',
     ];
+
+    protected $casts = [
+        'has_travel'=>'boolean',
+         'has_disability'=>'boolean',
+         'has_familiar_disability'=>'boolean',
+        'identification_familiar_disability'=>'boolean',
+         'has_catastrophic_illness'=>'boolean',
+         'has_familiar_catastrophic_illness'=>'boolean',
+         'about_me'=>'boolean',
+    ];
+
 
     public static function getInstance($id)
     {
@@ -28,50 +53,24 @@ class Professional extends Model implements Auditable
         return $model;
     }
 
-    public function offers()
-    {
-        return $this->belongsToMany(Offer::class)->withPivot('id', 'status_id')->withTimestamps();
-    }
-
-    public function companies()
-    {
-        return $this->belongsToMany(Company::class)->withTimestamps();
-    }
+//relations
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function academicFormations()
-    {
-        return $this->hasMany(AcademicFormation::class);
-    }
-
-    public function skills()
-    {
-        return $this->hasMany(Skill::class);
-    }
-
-    public function languages()
-    {
-        return $this->hasMany(Language::class);
-    }
-
-    public function courses()
-    {
-        return $this->hasMany(Course::class);
-    }
-
-    public function professionalExperiences()
-    {
-        return $this->hasMany(Experience::class);
-    }
-
-    public function professionalReferences()
+    public function references()
     {
         return $this->hasMany(Reference::class);
     }
 
+   // Mutators
+      public function setAboutMeAttribute($value)
+      {
+          $this->attributes['about_me'] = strtoupper($value);
+      }
+  }
 
-}
+
+
