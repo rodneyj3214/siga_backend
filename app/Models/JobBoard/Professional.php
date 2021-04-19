@@ -58,6 +58,14 @@ class Professional extends Model implements Auditable
         return $this->belongsTo(User::class);
     }
 
+<<<<<<< HEAD
+=======
+    public function references()
+    {
+        return $this->hasMany(Reference::class);
+    }
+    
+>>>>>>> d165f581de1ce1ef5c80ec86d9bc3ae8da6b5e14
    // Mutators
       public function setAboutMeAttribute($value)
       {
