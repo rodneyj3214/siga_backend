@@ -125,7 +125,7 @@ class CompanyController extends Controller
         // } catch (Error $e) {
         //     return response()->json($e, 500);
         // }
-
+   //HOLA//
     }
 
     function index(): JsonResponse
