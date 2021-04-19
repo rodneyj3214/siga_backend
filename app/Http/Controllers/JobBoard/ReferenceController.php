@@ -40,38 +40,6 @@ class ReferenceController extends Controller
         }
 
         return response()->json($references, 200);
-
-//        $professional = Professional::where('id', $request->user_id)->first();
-//        if (is_null($professional)){
-//            return response()->json([
-//                'response' => null,
-//                'message' => 'No existe ese dato.'
-//            ], 200);
-//        }
-//
-//        if ($professional) {
-//            $professionalReferences = Reference::where('professional_id', $professional->id)
-//                ->where('state', 'ACTIVE')
-//                ->orderby($request->field, $request->order)
-//                ->paginate($request->limit);
-//            return response()->json([
-//                'pagination' => [
-//                    'total' => $professionalReferences->total(),
-//                    'current_page' => $professionalReferences->currentPage(),
-//                    'last_page' => $professionalReferences->lastPage(),
-//                    'from' => $professionalReferences->firstItem(),
-//                    'to' => $professionalReferences->lastItem()
-//                ], 'professionalReferences' => $professionalReferences], 200);
-//        } else {
-//            return response()->json([
-//                'pagination' => [
-//                    'total' => 0,
-//                    'current_page' => 1,
-//                    'last_page' => 1,
-//                    'from' => null,
-//                    'to' => null
-//                ], 'professionalReference' => null], 404);
-//        }
     }
 
     function show($id)
@@ -130,31 +98,6 @@ class ReferenceController extends Controller
                 'detail' => 'El registro fue creado',
                 'code' => '201'
             ]], 201);
-
-//        $data = $request->json()->all();
-//        $dataUser = $data['user'];
-//        $dataProfessionalReference = $data['professionalReference'];
-//        $professional = Professional::where('user_id', $dataUser['id'])->first();
-//
-//        if ($professional) {
-//            $response = $professional->professionalReferences()->create([
-//                'institution' => strtoupper($dataProfessionalReference ['institution']),
-//                'position' => strtoupper($dataProfessionalReference ['position']),
-//                'contact_name' => strtoupper($dataProfessionalReference ['contact_name']),
-//                'contact_phone' => $dataProfessionalReference ['contact_phone'],
-//                'contact_email' => $dataProfessionalReference ['contact_email'],
-//            ]);0
-//            return response()->json([
-//                'response' => $response,
-//                'message' => 'successful'
-//            ], 200);
-//        } else {
-//            return response()->json([
-//                'response' => null,
-//                'message' => 'successful'
-//            ], 404);
-//        }
-
     }
 
     function update(UpdateReferenceRequest $request, $id)
