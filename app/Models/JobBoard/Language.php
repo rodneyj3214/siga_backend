@@ -19,22 +19,25 @@ class Language extends Model implements Auditable
     use Auditing;
     use SoftDeletes;
 
+    private static $instance;
+
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.languages';
 
     public static function getInstance($id)
     {
-        $model = new Language();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
-
     public function professional()
     {
         return $this->belongsTo(Professional::class);
     }
 
-    public function language()
+    public function idiom()
     {
         return $this->belongsTo(Catalogue::class);
     }

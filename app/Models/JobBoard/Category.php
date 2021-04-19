@@ -14,6 +14,7 @@ class Category extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
 
+    private static $instance;
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.categories';
 
@@ -23,7 +24,14 @@ class Category extends Model implements Auditable
         'icon'
     ];
 
-
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');

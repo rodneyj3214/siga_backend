@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 
 // Application
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,7 +25,7 @@ use App\Models\App\File;
 class User extends Authenticatable implements Auditable
 {
     use HasApiTokens, Notifiable, HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    use Auditing;
     use SoftDeletes;
 
     protected $connection = 'pgsql-authentication';
@@ -152,18 +153,16 @@ class User extends Authenticatable implements Auditable
         return $this->hasOne(AdministrativeStaff::class);
     }
 
-<<<<<<< HEAD
     //Accessors
 
     public function getFullNameAttribute()
     {
         return "{$this->attributes['first_name']} {$this->attributes['second_name']} {$this->attributes['first_lastname']} {$this->attributes['second_lastname']}";
-=======
+    }
+
     // Accessors
     public function getFullDescriptionAttribute()
     {
         return "{$this->attributes['id']}.{$this->attributes['description']}";
->>>>>>> ba098d26249d7672836efa4a94fd49f085e9ac9c
     }
-
 }

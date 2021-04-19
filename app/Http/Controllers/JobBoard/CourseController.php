@@ -18,10 +18,10 @@ use App\Http\Requests\JobBoard\Course\UpdateCourseRequest;
 class CourseController extends Controller
 {
 
-    // Muestra lista de cursos existentes aqqquiiiiiiiii//
+    // Devuelve un array de objetos y paginados
     function index(IndexCourseRequest $request)
     {
-        // Crea una instanacia del modelo Professional para poder insertar en el modelo course.
+        // Crea una instanacia del modelo Professional para poder consultar en el modelo course.
         $professional = Professional::getInstance($request->input('professional_id'));
 
         if ($request->has('search')) {
@@ -47,10 +47,10 @@ class CourseController extends Controller
         return response()->json($courses, 200);
     }
 
-    // Muestra el dato especifico del Curso//
+    // Devuelve un solo objeto//
     function show($courseId)
     {
-        // Valida que el id se un número, si no es un número devuelve un mensaje de error
+        // Valida que el id sea un número, si no es un número devuelve un mensaje de error
         if (!is_numeric($courseId)) {
             return response()->json([
                 'data' => null,
@@ -85,9 +85,7 @@ class CourseController extends Controller
         ], 200);
     }
 
-
     //Almacena los  Datos creado del curso envia//
-
     function store(CreateCourseRequest $request)
     {
         // Crea una instanacia del modelo Professional para poder insertar en el modelo course.
@@ -128,10 +126,7 @@ class CourseController extends Controller
         ], 201);
     }
 
-
-
     //Actualiza los datos del curso creado//
-
     function update(UpdateCourseRequest $request, $courseId)
     {
         $type = Catalogue::getInstance($request->input('type.id'));

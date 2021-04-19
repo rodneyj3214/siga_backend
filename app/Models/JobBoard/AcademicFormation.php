@@ -15,6 +15,7 @@ class AcademicFormation extends Model implements Auditable
     use HasFactory;
     use StateActiveTrait;
 
+    private static $instance;
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.academic_formations';
 
@@ -27,6 +28,15 @@ class AcademicFormation extends Model implements Auditable
     protected $casts = [
         'registration_date' => 'datetime'
     ];
+
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }
 
     public function professional()
     {

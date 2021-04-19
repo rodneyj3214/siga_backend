@@ -4,22 +4,32 @@ namespace App\Models\JobBoard;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use \OwenIt\Auditing\Auditable as Auditing;
+use Brick\Math\BigInteger;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\App\Catalogue;
-use App\Models\App\File;
-use App\Models\App\Image;
 
+/**
+ * @property BigInteger id
+ * @property string employer
+ * @property string position
+ * @property date start_date
+ * @property date end_date
+ * @property json activities
+ * @property string reason_leave
+ * @property boolean is_workign
+ */
 class Experience extends Model implements Auditable
 {
-    //use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use Auditing;
     use SoftDeletes;
 
-    protected $connection = 'pgsql-job-board';
+    private static $instance;
 
+    protected $connection = 'pgsql-job-board';
+    protected $table = 'job_board.experiences';
     protected $fillable = [
         'employer',
         'position',
@@ -31,33 +41,26 @@ class Experience extends Model implements Auditable
     ];
     protected $casts = [
         'start_date' => 'date:Y-m-d',
-        'end_date' => 'date:Y-m-d'
+        'end_date' => 'date:Y-m-d',
+        'activities' => 'array',
     ];
-    
-    protected $appends = ['full_description'];
 
     public static function getInstance($id)
     {
-        $model = new Experience();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
+
     public function professional()
     {
         return $this->belongsTo(Professional::class);
     }
+
     public function area()
     {
         return $this->belongsTo(Catalogue::class);
     }
-    public function files()
-    {
-        return $this->morphMany(File::class, 'fileable');
-    }
-    public function images()
-    {
-        return $this->morphMany(Image::class, 'imageable');
-    }
-
-
 }

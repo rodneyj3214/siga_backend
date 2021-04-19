@@ -21,9 +21,10 @@ class Reference extends Model implements Auditable
     use Auditing;
     use softDeletes;
 
+    private static $instance;
+
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.references';
-
     protected $fillable = [
         'institution',
         'position',
@@ -32,22 +33,22 @@ class Reference extends Model implements Auditable
         'contact_email'
     ];
 
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }
 
-
+    // Relationships
     public function professional()
     {
         return $this->belongsTo(Professional::class);
     }
 
-//    instancia del modelo por id
-    public static function getInstance($id): Professional
-    {
-        $model = new Professional();
-        $model->id = $id;
-        return $model;
-    }
-
-//    Mutators
+    // Mutators
     public function setInstitutionAttribute($value)
     {
         $this->attributes['institution'] = strtoupper($value);

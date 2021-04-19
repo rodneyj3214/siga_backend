@@ -88,6 +88,7 @@ class SkillController extends Controller
     {
         // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
         $professional = Professional::getInstance($request->input('professional.id'));
+//        $professional->id = $request->input('professional.id');
 
         // Crea una instanacia del modelo Catalogue para poder insertar en el modelo skill.
         $type = Catalogue::getInstance($request->input('type.id'));

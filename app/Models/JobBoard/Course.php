@@ -2,13 +2,12 @@
 
 namespace App\Models\JobBoard;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 use \OwenIt\Auditing\Auditable as Auditing;
 use Brick\Math\BigInteger;
-use App\Models\JobBoard\Professional;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\App\Catalogue;
 
 /**
@@ -24,6 +23,8 @@ class Course extends Model implements Auditable
     use HasFactory;
     use Auditing;
     use SoftDeletes;
+
+    private static $instance;
 
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.courses';
@@ -43,9 +44,11 @@ class Course extends Model implements Auditable
 
     public static function getInstance($id)
     {
-        $model = new Course();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
 
     // Relationships
@@ -79,12 +82,12 @@ class Course extends Model implements Auditable
     // Mutators
     public function setNameAttribute($value)
     {
-        $this->attributes['description'] = strtoupper($value);
+        $this->attributes['name'] = strtoupper($value);
     }
 
     public function setDescriptionAttribute($value)
     {
-        $this->attributes['name'] = strtoupper($value);
+        $this->attributes['description'] = strtoupper($value);
     }
 
     // Scopes

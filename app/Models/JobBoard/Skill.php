@@ -21,6 +21,7 @@ class Skill extends Model implements Auditable
     use HasFactory;
     use Auditing;
     use SoftDeletes;
+
     protected static $instance;
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.skills';
@@ -29,20 +30,13 @@ class Skill extends Model implements Auditable
         'description',
     ];
 
-    // protected $hidden = ['description'];
-
-    protected $appends = ['full_description'];
-
     public static function getInstance($id)
     {
         if (is_null(static::$instance)) {
             static::$instance = new static;
         }
-
+        static::$instance->id = $id;
         return static::$instance;
-//        $model = new Skill();
-//        $model->id = $id;
-//        return $model;
     }
 
     // Relationships

@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\JobBoard;
-use App\Http\Controllers\App\FileController;
-use App\Http\Controllers\App\ImageController;
 
 use App\Http\Controllers\Controller;
 
@@ -10,24 +8,22 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 // Models
-use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Experience;
-
 
 class ExperienceController extends Controller
 {
 // Muestra los datos del profesional con experiencia//
-    function index (Request $request)
+    function index(Request $request)
     {
         try {
             $professional = Professional::getInstance($request->input('professional_id'));
 
             if ($professional) {
                 $professionalExperiences = Experience::where('professional_id', $professional->id);
-                    return "Rodney";
+                return "Rodney";
 
-                    return $professionalExperiences;
+                return $professionalExperiences;
                 return response()->json([
                     'pagination' => [
                         'total' => $professionalExperiences->total(),
@@ -80,6 +76,7 @@ class ExperienceController extends Controller
             return response()->json($e, 500);
         }
     }
+
 //Almacena los  Datos creado del profesional que envia//
 
     function store(Request $request)
@@ -115,6 +112,7 @@ class ExperienceController extends Controller
             return response()->json($e, 500);
         }
     }
+
 //Actualiza los datos del profesional
     function update(Request $request)
     {
@@ -143,6 +141,7 @@ class ExperienceController extends Controller
             return response()->json($e, 500);
         }
     }
+
 //Elimina los datos del profesional
     function destroy(Request $request)
     {
