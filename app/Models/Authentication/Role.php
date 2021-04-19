@@ -30,6 +30,13 @@ class Role extends Model implements Auditable
         'state',
     ];
 
+    public static function getInstance($id)
+    {
+        $model = new Role();
+        $model->id = $id;
+        return $model;
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class);

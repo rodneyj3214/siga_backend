@@ -4,6 +4,7 @@ namespace App\Models\JobBoard;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditable as Auditing;
 use OwenIt\Auditing\Contracts\Auditable;
 use Brick\Math\BigInteger;
 
@@ -17,7 +18,7 @@ use Brick\Math\BigInteger;
  */
 class Reference extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    use Auditing;
     use softDeletes;
 
     protected $connection = 'pgsql-job-board';

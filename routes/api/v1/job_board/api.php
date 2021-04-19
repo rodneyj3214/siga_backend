@@ -25,10 +25,7 @@ Route::apiResources([
 //    'references' => ReferenceController::class,
 ]);
 
-<<<<<<< HEAD
-=======
 Route::apiResource('references', ReferenceController::class)->withoutMiddleware(['auth:api']);
->>>>>>> cc208f5e1071de0d8ae24d7b714fbf64b7e4b05a
 
 Route::group(['prefix' => 'skill'], function () {
     // ruta para hcer pruebas
