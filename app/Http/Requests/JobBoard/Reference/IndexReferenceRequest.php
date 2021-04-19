@@ -1,17 +1,27 @@
 <?php
 
-namespace App\Http\Requests\JobBoard\Skill;
+namespace App\Http\Requests\JobBoard\Reference;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\JobBoard\JobBoardFormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class IndexSkillRequest extends FormRequest
+class IndexReferenceRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
     public function authorize()
     {
         return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
         $rules = [
@@ -20,6 +30,7 @@ class IndexSkillRequest extends FormRequest
                 'integer'
             ],
         ];
+
         return JobBoardFormRequest::rules($rules);
     }
 
@@ -27,7 +38,7 @@ class IndexSkillRequest extends FormRequest
     {
         $messages = [
             'professional_id.required' => 'El campo :attribute es obligatorio',
-            'professional_id.integer' =>'El campo :attribute debe ser numérico',
+            'professional_id.integer' => 'El campo :attribute es obligatorio',
         ];
         return JobBoardFormRequest::messages($messages);
     }

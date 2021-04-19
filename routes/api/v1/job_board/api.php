@@ -22,8 +22,13 @@ Route::apiResources([
     'courses' => CourseController::class,
     'languages' => LanguageController::class,
     'experiences' => ExperienceController::class,
-    'references' => ReferenceController::class,
+//    'references' => ReferenceController::class,
 ]);
+
+<<<<<<< HEAD
+=======
+Route::apiResource('references', ReferenceController::class)->withoutMiddleware(['auth:api']);
+>>>>>>> cc208f5e1071de0d8ae24d7b714fbf64b7e4b05a
 
 Route::group(['prefix' => 'skill'], function () {
     // ruta para hcer pruebas
@@ -56,11 +61,10 @@ Route::group(['prefix' => 'professional'], function () {
 });
 
 Route::group(['prefix' => 'offer'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
 });
+Route::apiResource('professionals',ProfessionalController::class);
+
+
 
 Route::group(['prefix' => 'academic_formation'], function () {
     // ruta para hcer pruebas

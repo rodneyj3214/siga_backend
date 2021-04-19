@@ -27,7 +27,6 @@ class User extends Authenticatable implements Auditable
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
-
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.users';
 
@@ -59,14 +58,23 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
+    public static function getInstance($id)
+    {
+        $model = new Professional();
+        $model->id = $id;
+        return $model;
+    }
+
     public function findForPassport($username)
     {
         return $this->where('username', $username)->first();
     }
+
     public function professional()
     {
         $this->hasOne(Professional::class);
     }
+
     public function securityQuestions()
     {
         $this->belongsToMany(SecurityQuestion::class)->withPivot('answer')->withTimestamps();
@@ -141,4 +149,6 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasOne(AdministrativeStaff::class);
     }
+
+
 }
