@@ -22,10 +22,8 @@ Route::apiResources([
     'courses' => CourseController::class,
     'languages' => LanguageController::class,
     'experiences' => ExperienceController::class,
-//    'references' => ReferenceController::class,
+    'references' => ReferenceController::class,
 ]);
-
-Route::apiResource('references', ReferenceController::class)->withoutMiddleware(['auth:api']);
 
 Route::group(['prefix' => 'skill'], function () {
     // ruta para hcer pruebas
