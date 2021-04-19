@@ -18,7 +18,7 @@ class ReferenceController extends Controller
         $professional = Professional::getInstance($request->input('professional_id'));
 
         if ($request->has('search')) {
-            $references = $professional->professionalReferences()
+            $references = $professional->references()
                 ->institution($request->input('search'))
                 ->position($request->input('search'))
                 ->contacName($request->input('search'))
@@ -26,7 +26,7 @@ class ReferenceController extends Controller
                 ->contacEmail($request->input('search'))
                 ->get();
         } else {
-            $references = $professional->professionalReferences()->paginate($request->input('per_page'));
+            $references = $professional->references()->paginate($request->input('per_page'));
         }
 
         if (sizeof($references) === 0) {
