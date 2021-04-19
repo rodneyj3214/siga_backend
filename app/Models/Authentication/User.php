@@ -150,5 +150,10 @@ class User extends Authenticatable implements Auditable
         return $this->hasOne(AdministrativeStaff::class);
     }
 
+    // Accessors
+    public function getFullDescriptionAttribute()
+    {
+        return "{$this->attributes['id']}.{$this->attributes['description']}";
+    }
 
 }
