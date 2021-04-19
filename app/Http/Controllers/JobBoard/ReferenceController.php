@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\JobBoard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\JobBoard\Reference\CreateReferenceRequest;
+use App\Http\Requests\JobBoard\Reference\IndexReferenceRequest;
+use App\Http\Requests\JobBoard\Reference\UpdateReferenceRequest;
 use App\Models\JobBoard\Reference;
 use App\Models\JobBoard\Professional;
 
@@ -10,12 +13,12 @@ use Illuminate\Http\Request;
 
 class ReferenceController extends Controller
 {
-    function index(Request $request)
+    function index(IndexReferenceRequest $request)
     {
         $professional = Professional::getInstance($request->input('professional_id'));
 
         if ($request->has('search')) {
-            $reference = $professional->professionalReferences()
+            $references = $professional->professionalReferences()
                 ->institution($request->input('search'))
                 ->position($request->input('search'))
                 ->contacName($request->input('search'))
@@ -23,10 +26,10 @@ class ReferenceController extends Controller
                 ->contacEmail($request->input('search'))
                 ->get();
         } else {
-            $reference = $professional->professionalReferences()->paginate($request->input('per_page'));
+            $references = $professional->professionalReferences()->paginate($request->input('per_page'));
         }
 
-        if (sizeof($reference) === 0) {
+        if (sizeof($references) === 0) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -36,7 +39,7 @@ class ReferenceController extends Controller
                 ]], 404);
         }
 
-        return response()->json($reference, 200);
+        return response()->json($references, 200);
 
 //        $professional = Professional::where('id', $request->user_id)->first();
 //        if (is_null($professional)){
@@ -106,22 +109,22 @@ class ReferenceController extends Controller
 
     }
 
-    function store(Request $request)
+    function store(CreateReferenceRequest $request)
     {
         $professional = Professional::getInstance($request->input('professional.id'));
 
-        $references = new Reference();
-        $references->professional()->associate($professional);
-        $references->institution = $request->input('references.institution');
-        $references->position = $request->input('references.position');
-        $references->contact_name = $request->input('references.contact_name');
-        $references->contact_phone = $request->input('references.contact_phone');
-        $references->contact_email = $request->input('references.contact_email');
+        $reference = new Reference();
+        $reference->professional()->associate($professional);
+        $reference->institution = $request->input('reference.institution');
+        $reference->position = $request->input('reference.position');
+        $reference->contact_name = $request->input('reference.contact_name');
+        $reference->contact_phone = $request->input('reference.contact_phone');
+        $reference->contact_email = $request->input('reference.contact_email');
 
-        $references->save();
+        $reference->save();
 
         return response()->json([
-            'data' => $references,
+            'data' => $reference,
             'msg' => [
                 'summary' => 'Referencia creada',
                 'detail' => 'El registro fue creado',
@@ -154,11 +157,11 @@ class ReferenceController extends Controller
 
     }
 
-    function update(Request $request, $id)
+    function update(UpdateReferenceRequest $request, $id)
     {
-        $references = Reference::find($id)->first();
+        $reference = Reference::find($id);
 
-        if (!$references) {
+        if (!$reference) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -168,38 +171,21 @@ class ReferenceController extends Controller
                 ]], 404);
         }
 
-        $references->institution = $request->input('references.institution');
-        $references->position = $request->input('references.position');
-        $references->contact_name = $request->input('references.contact_name');
-        $references->contact_phone = $request->input('references.contact_phone');
-        $references->contact_email = $request->input('references.contact_email');
+        $reference->institution = $request->input('reference.institution');
+        $reference->position = $request->input('reference.position');
+        $reference->contact_name = $request->input('reference.contact_name');
+        $reference->contact_phone = $request->input('reference.contact_phone');
+        $reference->contact_email = $request->input('reference.contact_email');
 
-        $references->update();
+        $reference->update();
 
         return response()->json([
-            'data' => $references,
+            'data' => $reference,
             'msg' => [
                 'summary' => 'Referencia actualizada',
                 'detail' => 'El registro fue creado',
                 'code' => '201'
             ]], 201);
-//
-//        $data = $request->json()->all();
-//
-//        $dataProfessionalReference = $data['professionalReference'];
-//
-//        $professionalReference = Reference::findOrFail($dataProfessionalReference['id'])->update([
-//            'institution' => strtoupper($dataProfessionalReference ['institution']),
-//            'position' => strtoupper($dataProfessionalReference ['position']),
-//            'contact_name' => strtoupper($dataProfessionalReference ['contact_name']),
-//            'contact_phone' => $dataProfessionalReference ['contact_phone'],
-//            'contact_email' => $dataProfessionalReference ['contact_email'],
-//        ]);
-//
-//        return response()->json([
-//            'response' => $professionalReference,
-//            'message' => 'successful'
-//        ], 201);aaa
     }
 
     function destroy($id)
@@ -214,7 +200,7 @@ class ReferenceController extends Controller
                 ]], 400);
         }
 
-        $professionalReference = Reference::find($id)->first();
+        $professionalReference = Reference::find($id);
 
         if (!$professionalReference) {
             return response()->json([
@@ -226,7 +212,7 @@ class ReferenceController extends Controller
                 ]], 404);
         }
 
-        $professionalReference->deleted();
+        $professionalReference->delete();
 
         return response()->json([
             'data' => $professionalReference,

@@ -47,7 +47,7 @@ class CreateReferenceRequest extends FormRequest
             ],
             'reference.contact_phone' => [
                 'required',
-                'integer',
+                'numeric',
             ],
             'reference.contact_email' => [
                 'required',
@@ -72,7 +72,7 @@ class CreateReferenceRequest extends FormRequest
             'reference.contact_name.required' => 'El campo :attribute es obligatorio',
             'reference.contact_name.max' => 'El campo :attribute debe tener maximo :max caracteres',
             'reference.contact_phone.required' => 'El campo :attribute es obligatorio',
-            'reference.contact_phone.integer' => 'El campo :attribute debe ser numérico',
+            'reference.contact_phone.numeric' => 'El campo :attribute debe ser numérico',
             'reference.contact_email.required' => 'El campo :attribute es obligatorio',
             'reference.contact_email.regex' => 'El campo :attribute debe ser un email valido',
         ];
