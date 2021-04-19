@@ -3,16 +3,15 @@
 namespace App\Models\JobBoard;
 
 use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Auditable as Auditing;
-use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Brick\Math\BigInteger;
 
 /**
  * @property BigInteger id
  * @property string about_me
- * @property boolean state
  */
 class Professional extends Model implements Auditable
 {
