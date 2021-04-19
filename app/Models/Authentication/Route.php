@@ -23,7 +23,22 @@ class Route extends Model implements Auditable
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.routes';
 
-    protected $fillable = ['uri', 'name', 'description', 'icon', 'order', 'logo', 'state'];
+    protected $fillable = [
+        'uri',
+        'name', 
+        'description', 
+        'icon', 
+        'order', 
+        'logo', 
+        'state'
+    ];
+
+    public static function getInstance($id)
+    {
+        $model = new Route();
+        $model->id = $id;
+        return $model;
+    }
 
     public function module()
     {

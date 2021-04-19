@@ -17,44 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class  UserController extends Controller
 {
-    public function getRoles(Request $request)
-    {
-        $data = $request->json()->all();
-        $user = User::findOrFail($data['user']);
-
-        $roles = $user->roles()->with('system')
-            ->where('institution_id', $data['institution'])
-            ->get();
-        return response()->json([
-            'data' => $roles,
-            'msg' => [
-                'summary' => 'success',
-                'detail' => '',
-                'code' => '200'
-            ]], 200);
-    }
-
-    public function getPermissions(Request $request)
-    {
-        $data = $request->json()->all();
-        $role = Role::findOrFail($data['role']);
-
-        $permissions = $role->permissions()
-            ->with(['route' => function ($route) {
-                $route->with('module')->with('type')->with('status');
-            }])
-            ->with('institution')
-            ->where('institution_id', $data['institution'])
-            ->get();
-        return response()->json([
-            'data' => $permissions,
-            'msg' => [
-                'summary' => 'success',
-                'detail' => '',
-                'code' => '200'
-            ]], 200);
-    }
-
+    
     public function index(Request $request)
     {
         if ($request->has('conditions') && $request->conditions && $request->conditions != 'undefined') {
