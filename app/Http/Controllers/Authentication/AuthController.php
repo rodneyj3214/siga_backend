@@ -409,6 +409,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
+    // xd 
+    
     private function hiddenStringEmail($email, $start = 3){
         $end = strlen($email) - strpos($email, "@");
         $len = strlen($email);
