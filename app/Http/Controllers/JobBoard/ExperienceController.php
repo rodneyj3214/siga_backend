@@ -1,12 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\JobBoard;
+use App\Http\Controllers\App\FileController;
+use App\Http\Controllers\App\ImageController;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+
+// Models
+use App\Models\App\Catalogue;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Experience;
-use App\Http\Controllers\Controller;
+
 
 class ExperienceController extends Controller
 {
@@ -14,12 +21,13 @@ class ExperienceController extends Controller
     function index (Request $request)
     {
         try {
-            $professional = Professional::where('id', $request->user_id)->first();
+            $professional = Professional::getInstance($request->input('professional_id'));
+
             if ($professional) {
-                $professionalExperiences = Experience::where('professional_id', $professional->id)
-                    ->where('state', 'ACTIVE')
-                    ->orderby($request->field, $request->order)
-                    ->paginate($request->limit);
+                $professionalExperiences = Experience::where('professional_id', $professional->id);
+                    return "Rodney";
+
+                    return $professionalExperiences;
                 return response()->json([
                     'pagination' => [
                         'total' => $professionalExperiences->total(),
