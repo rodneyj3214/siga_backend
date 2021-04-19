@@ -2,260 +2,206 @@
 
 namespace App\Http\Controllers\JobBoard;
 
-
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
 use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Offer;
-use App\Models\JobBoard\Professional;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+use App\Models\App\Status;
+
+use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
+use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
+use App\Http\Requests\JobBoard\Offer\UpdateOfferRequest;
+
+// NOTA: nos se usan borrar?
+//use Carbon\Carbon;
+//use Illuminate\Support\Facades\DB;
 
 class OfferController extends Controller
 {
 
-    /**
-     * Obtiene todas las ofertas activas dentro del rango de fecha actual.
-     */
-    function getAllOffers()
+    function index(IndexOfferRequest $request)
     {
-        $now = Carbon::now();
-        $offers = Offer::with('parent')->with('children_category')
-            ->with('city')->with('province')->where('state_id', '1')
-            ->where('finish_date', '>=', $now->format('Y-m-d'))
-            ->where('start_date', '<=', $now->format('Y-m-d'))
-            ->get();
-        return response()->json(['offers' => $offers], 200);
-    }
+        $company = Company::getInstance($request->input('company_id'));
 
-    function getOffers(Request $request)
-    {
-        $now = Carbon::now();
-        $offers = Offer::where('state_id', '1')
-            ->where('end_date', '>=', $now->format('Y-m-d'))
-            ->where('start_date', '<=', $now->format('Y-m-d'))
-            ->orderby($request->field, $request->order)
-            ->paginate($request->limit);
-        return response()->json([
-            'pagination' => [
-                'total' => $offers->total(),
-                'current_page' => $offers->currentPage(),
-                'per_page' => $offers->perPage(),
-                'last_page' => $offers->lastPage(),
-                'from' => $offers->firstItem(),
-                'to' => $offers->lastItem()
-            ], 'offers' => $offers], 200);
-    }
-
-    function filterOffers(Request $request)
-    {
-        $now = Carbon::now();
-        $data = $request->json()->all();
-        $dataFilter = $data['filters'];
-        $offers = Offer::with(['father_category' => function ($query) use($dataFilter) {
-            foreach ($dataFilter['conditionsCategoryChildren'] as $key) {
-                // $i++;
-                $query->orWhere($key);
-            }
-
-            // $query->orWhere($dataFilter['conditionsCategoryFather']);
-        }])
-            ->with(['children_category' => function ($query) use($dataFilter) {
-                // $query->orWhere($dataFilter['conditionsCategoryChildren']);
-                foreach ($dataFilter['conditionsCategoryChildren'] as $key) {
-                    // $i++;
-                    $query->orWhere($key);
-                }
-            }])
-            ->with(['city' => function ($query) use($dataFilter) {
-                $query->orWhere($dataFilter['conditionsCity']);
-            }])
-            ->with(['province' => function ($query) use($dataFilter) {
-                $query->orWhere($dataFilter['conditionsProvince']);
-            }])
-            ->orWhere($dataFilter['conditions'])
-            ->where('state_id', 1)
-            ->where('finish_date', '>=', $now->format('Y-m-d'))
-            ->where('start_date', '<=', $now->format('Y-m-d'))
-            ->orderby($request->field, $request->order)
-            ->paginate($request->limit);
-        return response()->json([
-            'pagination' => [
-                'total' => $offers->total(),
-                'current_page' => $offers->currentPage(),
-                'per_page' => $offers->perPage(),
-                'last_page' => $offers->lastPage(),
-                'from' => $offers->firstItem(),
-                'to' => $offers->lastItem()
-            ], 'offers' => $offers], 200);
-    }
-
-    function getTotalOffers()
-    {
-        $now = Carbon::now();
-        $totalOffers = Offer::where('state_id', '1')
-            ->where('end_date', '>=', $now->format('Y-m-d'))
-            ->where('start_date', '<=', $now->format('Y-m-d'))
-            ->count();
-        return response()->json(['totalOffers' => $totalOffers], 200);
-    }
-
-    function validateAppliedOffer(Request $request)
-    {
-        try {
-            $professional = Professional::where('user_id', $request->user_id)->first();
-            if ($professional) {
-                $appliedOffer = DB::table('job_board.offer_professional')
-                    ->where('offer_id', $request->offer_id)
-                    ->where('professional_id', $professional->id)
-                    ->first();
-                if ($appliedOffer) {
-                    return response()->json(true, 200);
-                } else {
-                    return response()->json(false, 200);
-                }
-            } else {
-                return response()->json(null, 404);
-            }
-
-        } catch (ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 409);
-        } catch (\PDOException $e) {
-            return response()->json($e, 409);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
-    }
-
-    function applyOffer(Request $request)
-    {
-        try {
-            $data = $request->json()->all();
-            $user = $data['user'];
-            $offer = $data['offer'];
-            $professional = Professional::where('user_id', $user['id'])->first();
-            if ($professional) {
-                $appliedOffer = DB::table('job_board.offer_professional')
-                    ->where('offer_id', $offer['id'])
-                    ->where('professional_id', $professional->id)
-                    ->first();
-                if (!$appliedOffer) {
-                    $professional->offers()->attach($offer['id']);
-                    return response()->json(true, 201);
-                } else {
-                    return response()->json(false, 201);
-                }
-            } else {
-                return response()->json(null, 404);
-            }
-        } catch (ModelNotFoundException $e) {
-            return response()->json($e, 405);
-        } catch (NotFoundHttpException  $e) {
-            return response()->json($e, 405);
-        } catch (QueryException $e) {
-            return response()->json($e, 409);
-        } catch (\PDOException $e) {
-            return response()->json($e, 409);
-        } catch (Exception $e) {
-            return response()->json($e, 500);
-        } catch (Error $e) {
-            return response()->json($e, 500);
-        }
-
-    }
-    /*
-     * FinGrupo 2
-     */
-
-    /*
-     * Grupo 3
-     */
-    function indexOffers()
-    {
-        $offers = Offer::get();
-        return response()->json([
-            'data' => [
-                'type' => 'offer',
-                'attributes' => $offers
-            ]
-        ], 200);
-    }
-    /*
-     * FinGrupo 3
-     */
-
-    /*
-     * Grupo 6
-     */
-    public function index(Request $request)
-    {
         if ($request->has('search')) {
-            $offerts = Offert::where('code', 'like', '%' . $request->search . '%')
-                ->orWhere('position', 'like', '%' . $request->search . '%')
-                ->limit(1000)
+            $offer = $company->offers()
+                ->description($request->input('search'))
                 ->get();
         } else {
-            $offerts = Offert::all();
+            $offer = $company->offers()->paginate($request->input('per_page'));
         }
 
-        return response()->json([
-            'data' => [
-                'attributes' => $offerts,
-                'type' => 'offerts'
-            ]
-        ], 200);
+        if (sizeof($offer) === 0) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'No se encontraron Ofertas',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '404'
+                ]], 404);
+        }
+
+        return response()->json($offer, 200);
     }
 
-    public function store(Request $request)
+    function store(CreateOfferRequest $request)
     {
-        $data = $request->all();
-        $state = State::firstWhere('code', State::ACTIVE);
-        $offert = $state->offert()->create($data);
+        $company = Company::getInstance($request->input('company.id'));
+        $location = Catalogue::getInstance($request->input('location.id'));
+        $contractType = Catalogue::getInstance($request->input('contractType.id'));
+        $position = Catalogue::getInstance($request->input('position.id'));
+        $sector = Catalogue::getInstance($request->input('sector.id'));
+        $workingDay = Catalogue::getInstance($request->input('workingDay.id'));
+        $experienceTime = Catalogue::getInstance($request->input('experienceTime.id'));
+        $trainingHours = Catalogue::getInstance($request->input('trainingHours.id'));
+        $status = Status::getInstance($request->input('status.id'));
+
+        $offer = new Offer();
+        $offer->code = $request->input('offer.code');
+        $offer->description = $request->input('offer.description');
+        $offer->contact_name = $request->input('offer.contact_name');
+        $offer->contact_email = $request->input('offer.contact_email');
+        $offer->start_date = $request->input('offer.start_date');
+        $offer->end_date = $request->input('offer.end_date');
+        $offer->activities = $request->input('offer.activities');
+        $offer->requirements = $request->input('offer.requirements');
+        $offer->location()->associate($location);
+        $offer->contractType()->associate($contractType);
+        $offer->position()->associate($position);
+        $offer->sector()->associate($sector);
+        $offer->workingDay()->associate($workingDay);
+        $offer->workingDay()->associate($workingDay);
+        $offer->experienceTime()->associate($experienceTime);
+        $offer->trainingHours()->associate($trainingHours);
+        $offer->status()->associate($status);
+        $offer->save();
+
         return response()->json([
-            'data' => [
-                'attributes' => $offert,
-                'type' => 'offert'
-            ]
-        ], 201);
+            'data' => $offer,
+            'msg' => [
+                'summary' => 'Oferta creada',
+                'detail' => 'El registro fue creado',
+                'code' => '201'
+            ]], 201);
     }
 
-    public function show(Offert $offert)
+    function show($offerId)
     {
-        return $offert;
+        if (!is_numeric($offerId)) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'ID no válido',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '400'
+                ]], 400);
+        }
+        $offer = Offer::find($offerId);
+
+        if (!$offer) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Oferta no encontrada',
+                    'detail' => 'Vuelva a intentar',
+                    'code' => '404'
+                ]], 404);
+        }
+        return response()->json([
+            'data' => $offer,
+            'msg' => [
+                'summary' => 'success',
+                'detail' => '',
+                'code' => '200'
+            ]], 200);
     }
 
-    public function update(Request $request)
+    function update(UpdateOfferRequest $request, $offerId)
     {
-        $data = $request->all();
-        $offert = $offert->update($data);
+        // NOTA: (menos company -> no voy a cambiar company a la oferta)
+        $location = Catalogue::getInstance($request->input('location.id'));
+        $contractType = Catalogue::getInstance($request->input('contractType.id'));
+        $position = Catalogue::getInstance($request->input('position.id'));
+        $sector = Catalogue::getInstance($request->input('sector.id'));
+        $workingDay = Catalogue::getInstance($request->input('workingDay.id'));
+        $experienceTime = Catalogue::getInstance($request->input('experienceTime.id'));
+        $trainingHours = Catalogue::getInstance($request->input('trainingHours.id'));
+        $status = Status::getInstance($request->input('status.id'));
+
+        $offer = Offer::find($offerId);
+
+        if (!$offer) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Oferta no encontrada',
+                    'detail' => 'Vuelva a intentar',
+                    'code' => '404'
+                ]], 404);
+        }
+
+        $offer->code = $request->input('offer.code');
+        $offer->description = $request->input('offer.description');
+        $offer->contact_name = $request->input('offer.contact_name');
+        $offer->contact_email = $request->input('offer.contact_email');
+        $offer->start_date = $request->input('offer.start_date');
+        $offer->end_date = $request->input('offer.end_date');
+        $offer->activities = $request->input('offer.activities');
+        $offer->requirements = $request->input('offer.requirements');
+        $offer->location()->associate($location);
+        $offer->contractType()->associate($contractType);
+        $offer->position()->associate($position);
+        $offer->sector()->associate($sector);
+        $offer->workingDay()->associate($workingDay);
+        $offer->workingDay()->associate($workingDay);
+        $offer->experienceTime()->associate($experienceTime);
+        $offer->trainingHours()->associate($trainingHours);
+        $offer->status()->associate($status);
+
+        $offer->save();
+
         return response()->json([
-            'data' => [
-                'attributes' => $offert,
-                'type' => 'offert'
-            ]
-        ], 201);
+            'data' => $offer,
+            'msg' => [
+                'summary' => 'Oferta actualizada',
+                'detail' => 'El registro fue actualizado',
+                'code' => '201'
+            ]], 201);
     }
 
-    public function destroy($id)
+    function destroy($offerId)
     {
-        $state = State::where('code', '3')->first();
-        $offert = Offert::findOrFail($id);
-        $offert->state()->associate($state);
-        $offert->update();
+        if (!is_numeric($offerId)) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'ID no válido',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '400'
+                ]], 400);
+        }
+        $offer = Offer::find($offerId);
+
+        if (!$offer) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Oferta no encontrada',
+                    'detail' => 'Vuelva a intentar',
+                    'code' => '404'
+                ]], 404);
+        }
+
+        $offer->delete();
+
         return response()->json([
-            'data' => [
-                'attributes' => $offert,
-                'type' => 'offert'
-            ]
-        ], 201);
+            'data' => $offer,
+            'msg' => [
+                'summary' => 'Oferta eliminada',
+                'detail' => 'El registro fue eliminado',
+                'code' => '201'
+            ]], 201);
     }
-    /*
-     * FinGrupo 6
-     */
+    
 }

@@ -91,13 +91,8 @@ Route::group(['prefix' => 'experience'], function () {
 });
 
 Route::group(['prefix' => 'reference'], function () {
-<<<<<<< HEAD
-    Route::get('test', [ReferenceController::class, 'test']);
-});
-=======
     // ruta para hcer pruebas
     Route::get('test', function () {
         return 'test';
     })->withoutMiddleware(['auth:api']);
 });
->>>>>>> ce96b501a2d51c1243d6d9877d7cfcafa3fa6eda

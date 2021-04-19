@@ -3,19 +3,38 @@
 namespace App\Models\JobBoard;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
-use App\Models\JobBoard\Company;
-use App\Models\JobBoard\Professional;
-use App\Models\JobBoard\Location;
+use \OwenIt\Auditing\Auditable as Auditing;
+use OwenIt\Auditing\Contracts\Auditable;
+
 use App\Models\App\Catalogue;
 use App\Models\App\Status;
 
-
+// NOTA: estan bien los tipos de datos?
+/**
+ * @property BigInteger id
+ * @property string code
+ * @property string description
+ * @property string contact_name
+ * @property string contact_email
+ * @property string contact_phone
+ * @property string contact_cellphone
+ * @property string remuneration
+ * @property integer vacancies
+ * @property date start_date
+ * @property date end_date
+ * @property text aditional_information
+ */
 class Offer extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
-
+    use HasFactory;
+    use Auditing;
+    use SoftDeletes;
+  
     protected $connection = 'pgsql-job-board';
+    protected $table = 'job_board.offers';
 
     protected $fillable = [
         'code',
@@ -29,7 +48,6 @@ class Offer extends Model implements Auditable
         'start_date',
         'end_date',
         'aditional_information',
-        'state',
     ];
 
     protected $casts = [
