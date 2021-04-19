@@ -12,6 +12,8 @@ use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
 use App\Http\Requests\JobBoard\Offer\UpdateOfferRequest;
 
+// PROBRANDO SUBIR CAMBIOS
+
 class OfferController extends Controller
 {
     function index(IndexOfferRequest $request)
