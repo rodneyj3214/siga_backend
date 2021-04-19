@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\JobBoard\Skill;
+namespace App\Http\Requests\JobBoard\Course;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\JobBoard\JobBoardFormRequest;
 
-class IndexSkillRequest extends FormRequest
+class IndexCourseRequest extends FormRequest
 {
     public function authorize()
     {

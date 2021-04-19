@@ -17,6 +17,7 @@ use App\Http\Requests\JobBoard\Ability\UpdateAbilityRequest;
 
 class AbilityController extends Controller
 {
+
     public function __construct()
     {
     }
@@ -29,6 +30,7 @@ class AbilityController extends Controller
             'msg' => [
                 'summary' => 'success',
                 'detail' => ''
+
             ]
         ], 200);
     }
@@ -42,6 +44,7 @@ class AbilityController extends Controller
                 'msg' => [
                     'summary' => 'Abilidad no encontrada',
                     'detail' => 'Vuelva a intentar'
+
                 ]
             ], 404);
         }
@@ -61,7 +64,6 @@ class AbilityController extends Controller
         $ability->description = $request->input('ability.description');
         $ability->professional()->associate(Professional::findOrFail($request->input('professional.id')));
         $ability->type()->associate(Catalogue::findOrFail($request->input('type.id')));
-
         $ability->save();
 
         return response()->json([
@@ -74,15 +76,11 @@ class AbilityController extends Controller
     }
 
     function update(UpdateAbilityRequest $request, $abilityId)
-
     {
         $ability = Ability::findOrFail($abilityId);
         $ability->description = $request->input('ability.description');
-
-
         $ability->professional()->associate(Professional::firstWhere($request->input('professional.id')));
         $ability->type()->associate(Catalogue::findOrFail($request->input('type.id')));
-
         $ability->save();
 
         return response()->json([

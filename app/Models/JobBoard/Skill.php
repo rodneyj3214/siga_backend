@@ -15,7 +15,6 @@ use App\Models\App\Catalogue;
 /**
  * @property BigInteger id
  * @property string description
- * @property boolean state
  */
 class Skill extends Model implements Auditable
 {
@@ -28,7 +27,6 @@ class Skill extends Model implements Auditable
 
     protected $fillable = [
         'description',
-        'state',
     ];
 
     // protected $hidden = ['description'];
