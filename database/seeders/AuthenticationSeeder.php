@@ -230,7 +230,7 @@ class AuthenticationSeeder extends Seeder
         Institution::factory()->create(
             [
                 'code' => 'bj_1',
-                'name' => 'INSTITUTO SUPERIOR TECNOLÓGICO BENITO JUAREZ',
+                'name' => 'BENITO JUAREZ',
                 'logo' => 'institutions/1.png',
                 'acronym' => 'BJ',
                 'short_name' => 'BENITO JUAREZ'
@@ -238,7 +238,7 @@ class AuthenticationSeeder extends Seeder
         Institution::factory()->create(
             [
                 'code' => 'y_2',
-                'name' => 'INSTITUTO SUPERIOR TECNOLÓGICO DE TURISMO Y PATRIMONIO YAVIRAC',
+                'name' => 'DE TURISMO Y PATRIMONIO YAVIRAC',
                 'logo' => 'institutions/2.png',
                 'acronym' => 'Y',
                 'short_name' => 'YAVIRAC'
@@ -246,7 +246,7 @@ class AuthenticationSeeder extends Seeder
         Institution::factory()->create(
             [
                 'code' => '24mayo_3',
-                'name' => 'INSTITUTO SUPERIOR TECNOLÓGICO 24 DE MAYO',
+                'name' => '24 DE MAYO',
                 'logo' => 'institutions/3.png',
                 'acronym' => '24MAYO',
                 'short_name' => '24 DE MAYO'
@@ -768,6 +768,10 @@ class AuthenticationSeeder extends Seeder
 
     private function createUsers()
     {
+        User::factory()->create([
+            'username'=>'1234567890',
+            'identification'=>'1234567890',
+        ]);
         User::factory()->count(10)->create();
     }
 

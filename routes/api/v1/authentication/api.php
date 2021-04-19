@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Route;
 
 // Without Authentication
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('forgot_password', [AuthController::class, 'forgotPassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::post('user_unlock', [AuthController::class, 'unlockUser'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::post('reset_password', [AuthController::class, 'resetPassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
+    Route::post('user-unlock', [AuthController::class, 'unlockUser'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
     Route::post('unlock', [AuthController::class, 'unlock'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
     Route::get('attempts/{username}', [AuthController::class, 'attempts'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::put('change_password', [AuthController::class, 'changePassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::get('reset_attempts/{username}', [AuthController::class, 'resetAttempts'])->withoutMiddleware(['check-institution', 'check-role', 'check-permissions']);
+    Route::put('change-password', [AuthController::class, 'changePassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
+    Route::get('reset-attempts/{username}', [AuthController::class, 'resetAttempts'])->withoutMiddleware(['check-institution', 'check-role', 'check-permissions']);
 });
 
 Route::group(['prefix' => 'users'], function () {
@@ -58,18 +58,3 @@ Route::get('test', function () {
     return \App\Models\Authentication\Route::with('image')->get();
 //    return response()->json(\App\Models\Authentication\User::withoutGlobalScope('isActive')->get());
 })->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-
-Route::post('upload', function (\Illuminate\Http\Request $request) {
-    $file = \App\Models\App\File::create([
-        'code' => '',
-        'name' => '',
-        'description' => '',
-        'extension' => '',
-        'code' => '',
-    ]);
-    foreach ($request->file('files') as $file) {
-        $name = $file->getClientOriginalName();
-        $file->storePubliclyAs('public/files', $name);
-    }
-    return $request;
-});

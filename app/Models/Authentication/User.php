@@ -50,6 +50,8 @@ class User extends Authenticatable implements Auditable
         'attempts'
     ];
 
+    protected $appends = ['full_name'];
+
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -60,7 +62,7 @@ class User extends Authenticatable implements Auditable
 
     public function findForPassport($username)
     {
-        return $this->where('username', $username)->first();
+        return $this->firstWhere('username', $username);
     }
 
     public function professional()
@@ -143,5 +145,11 @@ class User extends Authenticatable implements Auditable
         return $this->hasOne(AdministrativeStaff::class);
     }
 
+    //Accessors
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->attributes['first_name']} {$this->attributes['second_name']} {$this->attributes['first_lastname']} {$this->attributes['second_lastname']}";
+    }
 
 }

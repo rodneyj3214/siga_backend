@@ -12,6 +12,7 @@ class InstitutionFactory extends Factory
     public function definition()
     {
         return [
+            'denomination' => 'INSTITUTO SUPERIOR TECNOLÓGICO',
         ];
     }
 }
