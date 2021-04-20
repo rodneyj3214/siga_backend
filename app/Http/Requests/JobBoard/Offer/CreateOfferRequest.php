@@ -61,7 +61,7 @@ class CreateOfferRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'contract_type.id' => [
+            'contractType.id' => [
                 'required',
                 'integer',
             ],
