@@ -4,10 +4,20 @@ namespace App\Http\Controllers\JobBoard;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+//Controllers
 use App\Http\Controllers\Controller;
 
+//Models
 use App\Models\App\Catalogue;
+use App\Models\Authentication\User;
 use App\Models\JobBoard\Company;
+use App\Models\JobBoard\Offer;
+use App\Models\JobBoard\Professional;
+
+// FormRequest
+use App\Http\Requests\JobBoard\Company\CreateCompanyRequest;
+use App\Http\Requests\JobBoard\Company\IndexCompanyRequest;
+use App\Http\Requests\JobBoard\Company\UpdateCompanyRequest;
 
 class CompanyController extends Controller
 {
@@ -128,45 +138,106 @@ class CompanyController extends Controller
    //HOLA//
     }
 
-    function index(): JsonResponse
+//    function index(): JsonResponse
+//    {
+//        $dataCompany = Company::all();
+//
+//        return response()->json([
+//            'data' => $dataCompany,
+//            'msg' => 'no me recuerdo'
+//        ], 200);
+//    }
+ //buena ing
+//    function  index(IndexCompanyRequest $request){
+//        // Crea una instanacia del modelo Company para poder consultar en el modelo course.//
+//
+//        $professional = Professional::getInstance($request->input('professional_id'));
+//
+//        if ($request->has('search')) {
+//            $companies = $professional->companies()
+//                ->trade_name($request->input('search'))
+//                ->comercial_activity($request->input('search'))
+//                ->web($request->input('search'))
+//                ->get();
+//        } else {
+//            $companies = $professional->companies()->paginate($request->input('per_page'));
+//        }
+//
+//        if (sizeof($companies) === 0) {
+//            return response()->json([
+//                'data' => null,
+//                'msg' => [
+//                    'summary' => 'No se encontraron Empresas',
+//                    'detail' => 'Intente de nuevo',
+//                    'code' => '404'
+//                ]], 404);
+//        }
+//
+//        return response()->json($companies, 200);
+//    }
+
+//    function store(Request $request): JsonResponse
+//    {
+//        $data = response()->json()->all();//aqui vine mas de un objeto
+//
+//        $dataType = $data['type'];
+//        $dataCompany = $data['company'];
+//
+//        $company = new Company();
+//        $company->trade_name = $dataCompany['trade_name'];
+//        $company->comercial_activity = $dataCompany['comercial_activity'];
+//        $company->web_page = $dataCompany['web_page'];
+//
+//        $company->type()->associate(Catalogue::findOrFail($dataType['id']));
+//
+//        $company->save();
+//
+//        return response()->json([
+//            'data' => $company,
+//            'msg' => [
+//                'summary' => 'success',
+//                'detail' => ''
+//            ]], 201);
+//    }
+
+//    function show($id)
+//    {
+//        $company = Company::where('user_id', $id)->get();
+//        return response()->json(['company' => $company], 200);
+//
+//    }
+
+    function show($companyId)
     {
-        $dataCompany = Company::all();
+        // Valida que el id se un número, si no es un número devuelve un mensaje de error
+        if (!is_numeric($companyId)) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'ID no válido',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '400'
+                ]], 400);
+        }
+        $company = Company::find($companyId);
 
-        return response()->json([
-            'data' => $dataCompany,
-            'msg' => 'no me recuerdo'
-        ], 200);
-    }
-
-    function store(Request $request): JsonResponse
-    {
-        $data = response()->json()->all();//aqui vine mas de un objeto
-
-        $dataType = $data['type'];
-        $dataCompany = $data['company'];
-
-        $company = new Company();
-        $company->trade_name = $dataCompany['trade_name'];
-        $company->comercial_activity = $dataCompany['comercial_activity'];
-        $company->web_page = $dataCompany['web_page'];
-
-        $company->type()->associate(Catalogue::findOrFail($dataType['id']));
-
-        $company->save();
-
+        // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error
+        if (!$company) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Empresa no encontrada',
+                    'detail' => 'Vuelva a intentar',
+                    'code' => '404'
+                ]], 404);
+        }
         return response()->json([
             'data' => $company,
             'msg' => [
                 'summary' => 'success',
-                'detail' => ''
-            ]], 201);
-    }
-
-    function show($id)
-    {
-        $company = Company::where('user_id', $id)->get();
-        return response()->json(['company' => $company], 200);
-
+                'detail' => '',
+                'code' => '200'
+            ]], 200);
     }
 
     function update(Request $request, $id)
