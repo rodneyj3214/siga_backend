@@ -18,8 +18,6 @@ use App\Models\App\Institution;
 class Role extends Model implements Auditable
 {
     use HasFactory;
-    use SoftDeletes;
-    use HasFactory;
     use Auditing;
     use SoftDeletes;
 
