@@ -41,10 +41,10 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('roles', RoleController::class);
 Route::apiResource('systems', SystemController::class)->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
 
-Route::group(['prefix' => 'users'], function () {
+Route::group(['prefix' => 'user'], function () {
     Route::post('filters', [UserController::class, 'index']);
-    Route::post('roles', [UserController::class, 'getRoles'])->withoutMiddleware(['check-permissions']);
-    Route::post('permissions', [UserController::class, 'getPermissions']);
+    Route::get('roles', [AuthController::class, 'getRoles'])->withoutMiddleware(['check-permissions']);
+    Route::get('permissions', [AuthController::class, 'getPermissions']);
     Route::post('avatars', [UserController::class, 'uploadAvatar']);
     Route::get('export/', [UserController::class, 'export']);
 });

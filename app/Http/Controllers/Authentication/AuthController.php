@@ -409,7 +409,6 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    // xd 
     
     private function hiddenStringEmail($email, $start = 3){
         $end = strlen($email) - strpos($email, "@");
@@ -417,8 +416,9 @@ class  AuthController extends Controller
         return substr($email, 0, $start) . str_repeat('*', $len - ($start + $end)) . substr($email, $len - $end, $end);
     }
 
-    public function getRoles(Request $request){
-        $user = User::findOrFail($request->input('user'));
+    public function getRoles(Request $request)
+    {
+        $user = $request->user();
 
         $roles = $user->roles()->with('system')
             ->where('institution_id', $request->input('institution'))
@@ -432,7 +432,8 @@ class  AuthController extends Controller
             ]], 200);
     }
 
-    public function getPermissions(Request $request){
+    public function getPermissions(Request $request)
+    {
         $role = Role::findOrFail($request->input('role'));
 
         $permissions = $role->permissions()

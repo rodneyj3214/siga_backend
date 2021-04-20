@@ -6,6 +6,7 @@ namespace App\Models\Authentication;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 
 // Application
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +18,9 @@ use App\Models\App\Institution;
 class Role extends Model implements Auditable
 {
     use HasFactory;
-    use OwenIt\Auditing\Auditable;
+    use SoftDeletes;
+    use HasFactory;
+    use Auditing;
     use SoftDeletes;
 
 
@@ -29,13 +32,6 @@ class Role extends Model implements Auditable
         'name',
         'state',
     ];
-
-    public static function getInstance($id)
-    {
-        $model = new Role();
-        $model->id = $id;
-        return $model;
-    }
 
     public function users()
     {
