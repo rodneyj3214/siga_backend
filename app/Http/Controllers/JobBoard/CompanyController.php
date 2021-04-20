@@ -240,21 +240,52 @@ class CompanyController extends Controller
             ]], 200);
     }
 
-    function update(Request $request, $id)
-    {
-        $data = response()->json()->all();
-        $company = Company::findOrFail($id)->first();
+    function update(UpdateCompanyRequest $request, $companyId){
+        $type = Catalogue::getInstance($request->input('type.id'));
+        $activityType = Catalogue::getInstance($request->input('activityType.id'));
+        $personType = Catalogue::getInstance($request->input('personType.id'));
+        $offer = Offer::getInstance($request->input('offer.id'));
 
-        $company->trade_name = $data['trade_name'];
-        $company->comercial_activity = $data['comercial_activity'];
-        $company->web_page = $data['web_page'];
+        $company = Company:: find($companyId);
 
+        // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error
+        if (!$company) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Empresa no encontrada',
+                    'detail' => 'Vuelva a intentar',
+                    'code' => '404'
+                ]], 404);
+        }
+        $company->trade_name = $request->input('company.trade_name');
+        $company->comercial_activity = $request->input('company.comercial_activity');
+        $company->web = $request->input('company.web');
+        $company->activityType()->associate($activityType);
+        $company->type()->associate($type);
+        $company->personType()->associate($personType);
+        $company->offer()->associate($offer);
         $company->save();
 
-        return response()->json([
-            'data' => null,
-            'msg' => 'no me recuerdo'
-        ], 200);
+    }
+
+
+
+//    function update(Request $request, $id)
+//    {
+//        $data = response()->json()->all();
+//        $company = Company::findOrFail($id)->first();
+//
+//        $company->trade_name = $data['trade_name'];
+//        $company->comercial_activity = $data['comercial_activity'];
+//        $company->web_page = $data['web_page'];
+//
+//        $company->save();
+//
+//        return response()->json([
+//            'data' => null,
+//            'msg' => 'no me recuerdo'
+//        ], 200);
 
 //        try {
 //            $data = $request->json()->all();
@@ -284,20 +315,20 @@ class CompanyController extends Controller
 //        } catch (Error $e) {
 //            return response()->json($e, 500);
 //        }
-    }
+  //  }
 
-    function destroy($id)
-    {
-        $company = Company::findOrFail($id)->first();
-
-        $company->state = true;
-
-        $company->save();
-
-        return response()->json([
-            'data' => null,
-            'msg' => 'no me recuerdo'
-        ], 200);
-    }
+//    function destroy($id)
+//    {
+//        $company = Company::findOrFail($id)->first();
+//
+//        $company->state = true;
+//
+//        $company->save();
+//
+//        return response()->json([
+//            'data' => null,
+//            'msg' => 'no me recuerdo'
+//        ], 200);
+//    }
 
 }
