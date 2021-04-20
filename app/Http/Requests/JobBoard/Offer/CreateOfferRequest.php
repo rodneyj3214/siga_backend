@@ -114,7 +114,8 @@ class CreateOfferRequest extends FormRequest
             'trainingHours.id.required' => 'El campo : horas de entrenamiento es obligatorio',
             'status.id.required' => 'El campo : stado es obligatorio',
             'offer.code.min' => 'El campo : codigo debe tener al menos : 10 caracteres',
-            'offer.description.min' => 'El campo : descripcion debe tener al menos : 10 caracteres',
+            // cambiar a todos
+            'offer.description.min' => 'El campo :offer.description debe tener al menos :min caracteres',
             'offer.contact_name.min' => 'El campo : nombre debe tener al menos : 10 caracteres',
             'offer.contact_email.min' => 'El campo : email debe tener al menos : 10 caracteres',
             'offer.code.max' => 'El campo : codigo debe tener maximo : 1000 caracteres',
@@ -134,5 +135,16 @@ class CreateOfferRequest extends FormRequest
             'status.id.integer' => 'El campo : stado debe ser numérico',
         ];
         return JobBoardFormRequest::messages($messages);
+    }
+
+    public function attributes()
+    {
+        $attributes = [
+            // poner todo los campos 
+            'offer.description' => 'descripción',
+            'professional.id' => 'profesional-id',
+            'type.id' => 'tipo-id',
+        ];
+        return JobBoardFormRequest::attributes($attributes);
     }
 }
