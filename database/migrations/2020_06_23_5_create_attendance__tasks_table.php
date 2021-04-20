@@ -10,11 +10,11 @@ class CreateAttendanceTasksTable extends Migration
     {
         Schema::connection('pgsql-attendance')->create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attendance_id');
+            $table->foreignId('attendance_id')->constrained('attendance.attendances');
             $table->foreignId('type_id')->constrained('app.catalogues');
-            $table->softDeletes();
             $table->text('description')->nullable();
             $table->unsignedDouble('percentage_advance')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
