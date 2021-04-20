@@ -228,5 +228,4 @@ class CompanyController extends Controller
             'msg' => 'no me recuerdo'
         ], 200);
     }
-
 }
