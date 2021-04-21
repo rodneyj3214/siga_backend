@@ -17,6 +17,8 @@ class Status extends Model implements Auditable
     use Auditing;
     use SoftDeletes;
 
+    private static $instance;
+
     protected $connection = 'pgsql-app';
     protected $table = 'app.status';
 
