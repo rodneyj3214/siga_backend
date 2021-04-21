@@ -21,7 +21,7 @@ class CreateCompanyRequest extends FormRequest
                 'min:10',
                 'max:1000',
             ],
-            'company.comercial_activity' => [
+            'company.comercial_activities' => [
                 'required',
                 'json',
             ],
@@ -30,14 +30,14 @@ class CreateCompanyRequest extends FormRequest
                 'min:10',
                 'max:1000',
             ],
-            'offer.id' => [
-                'required',
-                'integer',
-            ],
-            'user.id' => [
-                'required',
-                'integer',
-            ],
+//            'offer.id' => [
+//                'required',
+//                'integer',
+//            ],
+//            'user.id' => [
+//                'required',
+//                'integer',
+//            ],
             'type.id' => [
                 'required',
                 'integer',
@@ -64,11 +64,11 @@ class CreateCompanyRequest extends FormRequest
         $messages = [
             'company.trade_name.required' => 'El campo :attribute es obligatorio',
             'company.trade_name.min' => 'El campo :attribute debe tener al menos :min caracteres',
-            'company.comercial_activity.required' => 'El campo :attribute es obligatorio',
+//            'company.comercial_activity.required' => 'El campo :attribute es obligatorio',
             'company.web.required' => 'El campo :attribute es obligatorio',
             'company.web.min' => 'El campo : attribute debe tener al menos :min carecteres',
-            'offer.id.integer' => 'El campo :attribute debe ser numérico',
-            'user.id.integer' => 'El campo :attribute debe ser numérico',
+//            'offer.id.integer' => 'El campo :attribute debe ser numérico',
+//            'user.id.integer' => 'El campo :attribute debe ser numérico',
             'type.id.integer' => 'El campo :attribute debe ser numérico',
             'activityType.id.integer' => 'El campo :attribute debe ser numérico',
             'personType.id.integer' => 'El campo :attribute debe ser numérico',
@@ -81,10 +81,10 @@ class CreateCompanyRequest extends FormRequest
     {
         $attributes = [
             'company.trade_name' => 'nombre comercial',
-            'company.comercial_activity' => 'actividad comercial',
+            'company.comercial_activities' => 'actividad comercial',
             'company.web' => 'web',
-            'offer.id' => 'oferta-ID',
-            'user.id' => 'usuario-ID',
+//            'offer.id' => 'oferta-ID',
+//            'user.id' => 'usuario-ID',
             'type.id' => 'tipo-ID',
             'activityType.id' => 'tipo de actividad-ID',
             'personType.id' => 'tipo de persona-ID',

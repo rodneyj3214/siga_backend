@@ -244,7 +244,7 @@ class CompanyController extends Controller
         $type = Catalogue::getInstance($request->input('type.id'));
         $activityType = Catalogue::getInstance($request->input('activityType.id'));
         $personType = Catalogue::getInstance($request->input('personType.id'));
-        $offer = Offer::getInstance($request->input('offer.id'));
+        //$offer = Offer::getInstance($request->input('offer.id'));
 
         $company = Company:: find($companyId);
 
@@ -259,12 +259,12 @@ class CompanyController extends Controller
                 ]], 404);
         }
         $company->trade_name = $request->input('company.trade_name');
-        $company->comercial_activity = $request->input('company.comercial_activity');
+        $company->comercial_activities = $request->input('company.comercial_activities');
         $company->web = $request->input('company.web');
         $company->activityType()->associate($activityType);
         $company->type()->associate($type);
         $company->personType()->associate($personType);
-        $company->offer()->associate($offer);
+       // $company->offer()->associate($offer);
         $company->save();
 
     }
