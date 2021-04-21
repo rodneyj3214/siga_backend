@@ -7,7 +7,7 @@ use \Illuminate\Support\Facades\Artisan;
 use \App\Models\Authentication\Client;
 
 Route::get('init', function (CreateClientRequest $request) {
-    if (env('APP_ENV') === 'production') {
+    if (env('APP_ENV') != 'local') {
         return 'El sistema se encuentra en producción.';
     }
 
