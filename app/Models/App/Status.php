@@ -21,4 +21,13 @@ class Status extends Model implements Auditable
     protected $table = 'app.status';
 
     protected $fillable = ['code', 'name', 'state'];
+
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }
 }
