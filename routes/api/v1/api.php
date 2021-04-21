@@ -27,7 +27,7 @@ Route::get('init', function (CreateClientRequest $request) {
         '--quiet' => true,
     ]);
 
-    $clientSecret = DB::select('select secret from oauth_clients limit 1');
+    $clientSecret = DB::select("select secret from oauth_clients where name='" . $request->input('client_name') . "'");
 
     return response()->json([
         'msg' => [
