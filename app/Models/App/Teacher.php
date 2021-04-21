@@ -6,6 +6,7 @@ namespace App\Models\App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 
 // Traits State
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,7 +19,7 @@ use App\Models\Attendance\Attendance;
 class Teacher extends Model implements Auditable
 {
     use HasFactory;
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
     use SoftDeletes;
 
 
