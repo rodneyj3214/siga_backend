@@ -25,11 +25,14 @@ Route::get('init', function (CreateClientRequest $request) {
         '--quiet' => true,
     ]);
 
+    $clientSecret = DB::select("select secret from oauth_clients where name='" . $request->input('client_name') . "'");
+
     return response()->json([
         'msg' => [
             'Los esquemas fueron creados correctamente.',
             'Las migraciones fueron creadas correctamente',
             'Cliente para la aplicación creado correctamente',
+            $clientSecret
         ]
 
     ]);
