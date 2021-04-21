@@ -12,7 +12,7 @@ class CreateAppInstitutionsTable extends Migration
             $table->id();
             $table->foreignId('address_id')->nullable()->constrained('app.address');
             $table->string('code')->unique()->comment('Generado automaticamente por el acronym y el id ej: abc1');
-            $table->string('denomination')->unique();
+            $table->string('denomination')->nullable();
             $table->string('name')->unique();
             $table->string('short_name')->unique();
             $table->string('acronym')->nullable();
