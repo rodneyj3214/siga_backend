@@ -19,7 +19,6 @@ class JobBoardSeeder extends Seeder
         $this->createLanguageCatalogues();
         $this->createCourseCatalogues();
         $this->createSkillCatalogues();
-
         $this->createProfessionals();
         $this->createCompanies();
         $this->createSkills();
