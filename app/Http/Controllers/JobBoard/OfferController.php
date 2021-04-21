@@ -46,7 +46,7 @@ class OfferController extends Controller
     function store(CreateOfferRequest $request)
     {
         $company = Company::getInstance($request->input('company.id'));
-        $location = Catalogue::getInstance($request->input('location.id'));
+        $location = Location::getInstance($request->input('location.id'));
         $contractType = Catalogue::getInstance($request->input('contractType.id'));
         $position = Catalogue::getInstance($request->input('position.id'));
         $sector = Catalogue::getInstance($request->input('sector.id'));
@@ -64,6 +64,8 @@ class OfferController extends Controller
         $offer->end_date = $request->input('offer.end_date');
         $offer->activities = $request->input('offer.activities');
         $offer->requirements = $request->input('offer.requirements');
+        $offer->company()->associate($company);
+        // llenar en la base todos estos catalogos
         $offer->location()->associate($location);
         $offer->contractType()->associate($contractType);
         $offer->position()->associate($position);

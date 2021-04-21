@@ -9,6 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
 use App\Models\App\Catalogue;
 use App\Models\App\Status;
+use App\Models\App\Location;
 
 /**
  * @property BigInteger id
