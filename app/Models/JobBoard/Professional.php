@@ -8,6 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Brick\Math\BigInteger;
+use App\Models\Authentication\User;
 
 /**
  * @property BigInteger id
@@ -54,6 +55,11 @@ class Professional extends Model implements Auditable
     }
 
     // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function offers()
     {
         return $this->belongsToMany(Offer::class);

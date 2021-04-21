@@ -16,8 +16,8 @@ class CreateJobboardCompaniesTable extends Migration
             $table->foreignId('activity_type_id')->constrained('app.catalogues');
             $table->foreignId('person_type_id')->constrained('app.catalogues');
             $table->text('trade_name');
-            $table->json('comercial_activities');
-            $table->string('web');
+            $table->json('comercial_activities')->nullable();
+            $table->string('web')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
