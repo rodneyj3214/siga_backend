@@ -9,12 +9,13 @@ use App\Models\App\Catalogue;
 use App\Models\App\SchoolPeriod;
 use App\Models\App\Teacher;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Evaluation extends Model implements Auditable
 {
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
     use SoftDeletes;
 
     use HasFactory;

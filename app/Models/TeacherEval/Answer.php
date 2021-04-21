@@ -5,14 +5,14 @@ namespace App\Models\TeacherEval;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 
 use App\Models\App\Catalogue;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Answer extends Model implements Auditable
 {
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
     use HasFactory;
     use SoftDeletes;
 

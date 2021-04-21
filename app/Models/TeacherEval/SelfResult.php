@@ -8,12 +8,13 @@ use App\Models\App\Teacher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class SelfResult extends Model implements Auditable
 {
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
     use SoftDeletes;
 
 

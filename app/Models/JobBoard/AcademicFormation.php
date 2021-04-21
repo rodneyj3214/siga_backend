@@ -5,13 +5,14 @@ namespace App\Models\JobBoard;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 
 use App\Traits\StateActiveTrait;
 
 class AcademicFormation extends Model implements Auditable
 {
 
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
     use HasFactory;
     use StateActiveTrait;
 

@@ -6,14 +6,14 @@ namespace App\Models\TeacherEval;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 use App\Models\App\SubjectTeacher;
 use App\Models\App\Student;
 
 
-
 class StudentResult extends Model implements Auditable
 {
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
     use HasFactory;
 
     protected $connection = 'pgsql-teacher-eval';
@@ -27,7 +27,6 @@ class StudentResult extends Model implements Auditable
     {
         return $this->belongsTo(Student::class);
     }
-
 
 
     public function answerQuestion()

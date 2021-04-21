@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\App\Teacher;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 
 use App\Models\App\Catalogue;
 
@@ -17,7 +18,7 @@ class Attendance extends Model implements Auditable
 {
 
     use HasFactory;
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
     use SoftDeletes;
 
 
