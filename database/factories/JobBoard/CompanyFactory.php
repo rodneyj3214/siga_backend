@@ -22,9 +22,8 @@ class CompanyFactory extends Factory
     public function definition()
     {
         return [
-            'trade_name'=>$this->faker->company,
-            'comercial_activity'=>$this->faker->catchPhrase,
-            'web'=>$this->faker->url,
+            'trade_name' => $this->faker->company,
+            'web' => $this->faker->url,
 
         ];
     }
