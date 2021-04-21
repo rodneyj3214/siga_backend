@@ -8,6 +8,7 @@ use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Offer;
 use App\Models\App\Status;
 use App\Models\App\Catalogue;
+use App\Models\App\Location; 
 
 use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
@@ -115,7 +116,7 @@ class OfferController extends Controller
 
     function update(UpdateOfferRequest $request, $offerId)
     {
-        $location = Catalogue::getInstance($request->input('location.id'));
+        $location = Location::getInstance($request->input('location.id'));
         $contractType = Catalogue::getInstance($request->input('contractType.id'));
         $position = Catalogue::getInstance($request->input('position.id'));
         $sector = Catalogue::getInstance($request->input('sector.id'));
