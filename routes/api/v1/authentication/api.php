@@ -32,6 +32,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('transactional_code/{username}', [AuthController::class, 'transactionalCode']);
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('logout_all', [AuthController::class, 'logoutAll']);
+    Route::post('permissions', [AuthController::class, 'getPermissions']);
 });
 
 Route::apiResource('permissions', PermissionController::class);
