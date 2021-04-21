@@ -22,6 +22,7 @@ class Role extends Model implements Auditable
     use SoftDeletes;
 
 
+
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.roles';
 

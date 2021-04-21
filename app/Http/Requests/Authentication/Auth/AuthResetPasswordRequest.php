@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Authentication\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
 class AuthResetPasswordRequest extends FormRequest
 {
@@ -40,7 +41,7 @@ class AuthResetPasswordRequest extends FormRequest
             'password_confirm.required' => 'El campo :attribute es obligatorio',
             'password_confirm.same' => 'El campo :attribute no coincide',
         ];
-        return JobBoardFormRequest::messages($messages);
+        return AuthenticationFormRequest::messages($messages);
     }
 
     public function attributes()
@@ -50,6 +51,6 @@ class AuthResetPasswordRequest extends FormRequest
             'password' => 'password',
             'password_confirm' => 'password confirm',
         ];
-        return JobBoardFormRequest::attributes($attributes);
+        return AuthenticationFormRequest::attributes($attributes);
     }
 }

@@ -16,6 +16,7 @@ use App\Models\App\Status;
 use App\Models\Authentication\TransactionalCode;
 use App\Models\Authentication\UserUnlock;
 use App\Models\Authentication\User;
+use App\Models\Authentication\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
