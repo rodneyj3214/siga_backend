@@ -8,6 +8,8 @@ use App\Http\Requests\Authentication\Auth\AuthForgotPasswordRequest;
 use App\Http\Requests\Authentication\Auth\AuthResetPasswordRequest;
 use App\Http\Requests\Authentication\Auth\AuthUnlockRequest;
 use App\Http\Requests\Authentication\Auth\AuthUnlockUserRequest;
+use App\Http\Requests\Authentication\Auth\AuthGetRolesRequest;
+use App\Http\Requests\Authentication\Auth\AuthGetPermissionsRequest;
 use App\Mail\AuthMailable;
 use App\Mail\EmailMailable;
 use App\Models\Authentication\Client;
@@ -417,7 +419,7 @@ class  AuthController extends Controller
         return substr($email, 0, $start) . str_repeat('*', $len - ($start + $end)) . substr($email, $len - $end, $end);
     }
 
-    public function getRoles(Request $request)
+    public function getRoles(AuthGetRolesRequest $request)
     {
         $user = $request->user();
 
@@ -433,7 +435,7 @@ class  AuthController extends Controller
             ]], 200);
     }
 
-    public function getPermissions(Request $request)
+    public function getPermissions(AuthGetPermissionsRequest $request)
     {
         $role = Role::findOrFail($request->input('role'));
 
