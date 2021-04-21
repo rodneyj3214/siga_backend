@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Offer;
 use App\Models\App\Status;
+use App\Models\App\Catalogue;
 
 use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
