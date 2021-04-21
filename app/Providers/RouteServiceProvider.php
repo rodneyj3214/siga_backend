@@ -39,11 +39,6 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             $this->mapApiRoutes();
-//            Route::prefix('api')
-//                ->middleware('api')
-//                ->namespace($this->namespace)
-//                ->group(base_path('routes/api.php'));
-
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
@@ -57,42 +52,21 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path("routes/api/$version/api.php"));
+
         Route::prefix("$version/authentication")
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path("routes/api/$version/authentication/api.php"));
-        Route::prefix("$version/attendance")
-            ->middleware("api")
-            ->namespace($this->namespace)
-            ->group(base_path("routes/api/$version/attendance/api.php"));
-        Route::prefix("$version/job_board")
-            ->middleware("api")
-            ->namespace($this->namespace)
-            ->group(base_path("routes/api/$version/job_board/api.php"));
-        Route::prefix("$version/cecy")
-            ->middleware("api")
-            ->namespace($this->namespace)
-            ->group(base_path("routes/api/$version/cecy/api.php"));
-        Route::prefix("$version/web")
-            ->middleware("api")
-            ->namespace($this->namespace)
-            ->group(base_path("routes/api/$version/web/api.php"));
+
         Route::prefix("$version/app")
             ->middleware("api")
             ->namespace($this->namespace)
             ->group(base_path("routes/api/$version/app/api.php"));
-        Route::prefix("$version/teacher_eval")
+
+        Route::prefix("$version/job_board")
             ->middleware("api")
             ->namespace($this->namespace)
-            ->group(base_path("routes/api/$version/teacher_eval/api.php"));
-        Route::prefix("$version/community")
-            ->middleware("api")
-            ->namespace($this->namespace)
-            ->group(base_path("routes/api/$version/community/api.php"));
-        Route::prefix("$version/voting")
-            ->middleware("api")
-            ->namespace($this->namespace)
-            ->group(base_path("routes/api/$version/voting/api.php"));
+            ->group(base_path("routes/api/$version/job_board/api.php"));
     }
 
     /**

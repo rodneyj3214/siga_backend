@@ -6,11 +6,12 @@ namespace App\Models\Authentication;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as Auditing;
 
 class Shortcut extends Model implements Auditable
 {
     use HasFactory;
-    use OwenIt\Auditing\Auditable;
+    use Auditing;
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.shortcuts';

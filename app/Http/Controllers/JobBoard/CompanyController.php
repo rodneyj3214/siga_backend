@@ -317,18 +317,5 @@ class CompanyController extends Controller
 //        }
   //  }
 
-//    function destroy($id)
-//    {
-//        $company = Company::findOrFail($id)->first();
-//
-//        $company->state = true;
-//
-//        $company->save();
-//
-//        return response()->json([
-//            'data' => null,
-//            'msg' => 'no me recuerdo'
-//        ], 200);
-//    }
 
 }

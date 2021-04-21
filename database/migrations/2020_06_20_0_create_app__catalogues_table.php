@@ -11,7 +11,6 @@ class CreateAppCataloguesTable extends Migration
         Schema::connection('pgsql-app')->create('catalogues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('parent_id')->nullable()->comment('Un catalogo puede tener catalogos hijos')->constrained('app.catalogues');
-            $table->softDeletes();
             $table->string('code')->comment('No debe ser modificado una vez que se lo crea');
             $table->text('name');
             $table->text('description')->nullable();
@@ -19,6 +18,7 @@ class CreateAppCataloguesTable extends Migration
             $table->string('type')->comment('Para categorizar los catalogos');
             $table->string('icon')->nullable()->comment('Icono de la libreria que se usa en el frontend');
             $table->unique(['parent_id', 'code', 'type']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
