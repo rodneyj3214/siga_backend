@@ -45,7 +45,7 @@ class AuthChangePasswordRequest extends FormRequest
             'user.password_confirmation.required' => 'El campo :attribute es obligatorio',
             'user.password_required.same' => 'El campo :attribute coincide',
         ];
-        return JobBoardFormRequest::messages($messages);
+        return $messages;
     }
 
     public function attributes()
@@ -57,6 +57,6 @@ class AuthChangePasswordRequest extends FormRequest
             'user.password_confirmation' => 'password confirmation',
 
         ];
-        return JobBoardFormRequest::attributes($attributes);
+        return $attributes;
     }
 }

@@ -99,7 +99,7 @@ class  AuthController extends Controller
 
     public function logoutAll(Request $request){
         DB::table('oauth_access_tokens')
-            ->where('user_id', $request->user_id)
+            ->where('user_id', $request->input('user_id'))
             ->update([
                 'revoked' => true
             ]);
@@ -113,8 +113,7 @@ class  AuthController extends Controller
     }
 
     public function changePassword(AuthChangePasswordRequest $request){
-        $user = $request->input('user.id');
-        $user = User::findOrFail($dataUser['id']);
+        $user = User::findOrFail($request->input('user.id'));
         if (!$user) {
             return response()->json([
                 'data' => null,
@@ -124,8 +123,7 @@ class  AuthController extends Controller
                     'code' => '404'
                 ]], 404);
         }
-
-        if (!Hash::check(trim($dataUser['password']), $user->password)) {
+        if (!Hash::check(trim($request->input('user.password')), $user->password)) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -134,7 +132,7 @@ class  AuthController extends Controller
                     'code' => '400'
                 ]], 400);
         }
-        $user->update(['password' => Hash::make(trim($dataUser['new_password'])), 'change_password' => true]);
+        $user->update(['password' => Hash::make(trim($request->input('user.new_password'))), 'change_password' => true]);
         return response()->json([
             'data' => $user,
             'msg' => [
@@ -146,9 +144,9 @@ class  AuthController extends Controller
 
     public function forgotPassword(AuthForgotPasswordRequest $request){
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
-        $user = User::where('username', $request->username)
-            ->orWhere('email', $request->username)
-            ->orWhere('personal_email', $request->username)
+        $user = User::where('username', $request->input('username'))
+            ->orWhere('email', $request->input('username'))
+            ->orWhere('personal_email', $request->input('username'))
             ->first();
         if (!$user) {
             return response()->json([
@@ -182,9 +180,9 @@ class  AuthController extends Controller
     }
 
     public function unlockUser(AuthUnlockUserRequest $request){
-        $user = User::where('username', $request->username)
-            ->orWhere('email', $request->username)
-            ->orWhere('personal_email', $request->username)
+        $user = User::where('username', $request->input('username'))
+            ->orWhere('email', $request->input('username'))
+            ->orWhere('personal_email', $request->input('username'))
             ->first();
         if (!$user) {
             return response()->json([

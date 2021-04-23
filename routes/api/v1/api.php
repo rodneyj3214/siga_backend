@@ -7,7 +7,7 @@ use \Illuminate\Support\Facades\Artisan;
 use \App\Models\Authentication\Client;
 
 Route::get('init', function (CreateClientRequest $request) {
-    if (env('APP_ENV') === 'production') {
+    if (env('APP_ENV') != 'local') {
         return 'El sistema se encuentra en producción.';
     }
 
@@ -27,7 +27,7 @@ Route::get('init', function (CreateClientRequest $request) {
         '--quiet' => true,
     ]);
 
-    $clientSecret = DB::select('select secret from oauth_clients limit 1');
+    $clientSecret = DB::select("select secret from oauth_clients where name='" . $request->input('client_name') . "'");
 
     return response()->json([
         'msg' => [

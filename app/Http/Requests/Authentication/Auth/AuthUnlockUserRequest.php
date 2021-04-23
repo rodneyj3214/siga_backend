@@ -23,7 +23,7 @@ class AuthUnlockUserRequest extends FormRequest
         $messages = [
             'username.required' => 'El campo :attribute es obligatorio',
         ];
-        return JobBoardFormRequest::messages($messages);
+        return $messages;
     }
 
     public function attributes()
@@ -31,6 +31,6 @@ class AuthUnlockUserRequest extends FormRequest
         $attributes = [
             'username' => 'username',
         ];
-        return JobBoardFormRequest::attributes($attributes);
+        return $attributes;
     }
 }
