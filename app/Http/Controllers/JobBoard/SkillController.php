@@ -9,6 +9,7 @@ use App\Http\Controllers\App\ImageController;
 
 // Models
 use App\Models\App\Catalogue;
+use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Skill;
 
@@ -29,15 +30,8 @@ class SkillController extends Controller
     function  test(Request $request){
 //        return Professional::find(2)->skills()->get();
 
-        return Professional::find(2)
-        ->with('offers')
-            ->get();
-
-        return Professional::
-        with('skills')
-        ->with('skills')
-            ->get();
-       return Skill::where('professional_id','=',1)->get();
+        $professionals =  Company::find(1)->with('professionals')->get();
+        return $professionals;
     }
 
     function index(IndexSkillRequest $request)
@@ -48,7 +42,7 @@ class SkillController extends Controller
         if ($request->has('search')) {
             $skills = $professional->skills()
                 ->description($request->input('search'))
-                ->get();
+                ->paginate($request->input('per_page'));
         } else {
             $skills = $professional->skills()->paginate($request->input('per_page'));
         }

@@ -65,6 +65,11 @@ class Professional extends Model implements Auditable
         return $this->belongsToMany(Offer::class);
     }
 
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class);
+    }
+
     public function references()
     {
         return $this->hasMany(Reference::class);
