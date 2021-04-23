@@ -27,9 +27,7 @@ Route::apiResources([
 
 Route::group(['prefix' => 'skill'], function () {
     // ruta para hcer pruebas
-    Route::get('test', function () {
-        return \App\Models\JobBoard\Skill::find(1);
-    })->withoutMiddleware(['auth:api']);
+    Route::get('test', [SkillController::class,'test']);
 
     Route::post('image', [SkillController::class, 'uploadImages']);
     Route::post('image/{image}', [SkillController::class, 'updateImage']);

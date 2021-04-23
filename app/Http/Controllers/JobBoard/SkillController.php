@@ -22,9 +22,24 @@ use App\Http\Requests\App\File\UpdateFileRequest;
 use App\Http\Requests\App\File\UploadFileRequest;
 use App\Http\Requests\App\File\IndexFileRequest;
 use App\Http\Requests\App\Image\IndexImageRequest;
+use Illuminate\Support\Facades\Request;
 
 class SkillController extends Controller
 {
+    function  test(Request $request){
+//        return Professional::find(2)->skills()->get();
+
+        return Professional::find(2)
+        ->with('offers')
+            ->get();
+
+        return Professional::
+        with('skills')
+        ->with('skills')
+            ->get();
+       return Skill::where('professional_id','=',1)->get();
+    }
+
     function index(IndexSkillRequest $request)
     {
         // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
