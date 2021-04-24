@@ -28,10 +28,7 @@ use Illuminate\Support\Facades\Request;
 class SkillController extends Controller
 {
     function  test(Request $request){
-//        return Professional::find(2)->skills()->get();
-
-        $professionals =  Company::find(1)->with('professionals')->get();
-        return $professionals;
+        return Professional::select('about_me','has_travel')->with('academicFormations')->get();
     }
 
     function index(IndexSkillRequest $request)
