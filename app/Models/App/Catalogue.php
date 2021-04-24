@@ -19,6 +19,7 @@ class Catalogue extends Model implements Auditable
     use Auditing;
     use SoftDeletes;
 
+    protected static $instance;
 
     protected $connection = 'pgsql-app';
     protected $table = 'app.catalogues';
@@ -31,12 +32,16 @@ class Catalogue extends Model implements Auditable
         'icon',
         'state'
     ];
+
     public static function getInstance($id)
     {
-        $model = new Catalogue();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
+
     public function setCodeAttribute($value)
     {
         $this->attributes['code'] = strtoupper($value);
