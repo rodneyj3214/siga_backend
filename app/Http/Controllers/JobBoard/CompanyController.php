@@ -205,7 +205,7 @@ class CompanyController extends Controller
     }
     function store(CreateCompanyRequest  $request)
     {
-        $location = Location::getInstance($request->input('location.id'));
+        $address = Address::getInstance($request->input('address.id'));
         $identificationType = Catalogue::getInstance($request->input('identificationType.id'));
         $sex = Catalogue::getInstance($request->input('sex.id'));
         $gender = Catalogue::getInstance($request->input('gender.id'));
@@ -222,7 +222,7 @@ class CompanyController extends Controller
         $user->personal_email = $request->input('user.personal_email');
         $user->email = $request->input('user.email');
         $user->password = $request->input('user.password');
-        $user->location()->associate($location);
+        $user->address()->associate($address);
         $user->identificationType()->associate($identificationType);
         $user->sex()->associate($sex);
         $user->gender()->associate($gender);
