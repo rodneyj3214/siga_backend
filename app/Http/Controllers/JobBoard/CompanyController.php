@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\JobBoard;
 
+use App\Models\App\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 //Controllers
@@ -18,6 +19,7 @@ use App\Models\JobBoard\Professional;
 use App\Http\Requests\JobBoard\Company\CreateCompanyRequest;
 use App\Http\Requests\JobBoard\Company\IndexCompanyRequest;
 use App\Http\Requests\JobBoard\Company\UpdateCompanyRequest;
+use phpDocumentor\Reflection\Location;
 
 class CompanyController extends Controller
 {
@@ -138,15 +140,7 @@ class CompanyController extends Controller
    //HOLA//
     }
 
-//    function index(): JsonResponse
-//    {
-//        $dataCompany = Company::all();
-//
-//        return response()->json([
-//            'data' => $dataCompany,
-//            'msg' => 'no me recuerdo'
-//        ], 200);
-//    }
+
  //buena ing
 //    function  index(IndexCompanyRequest $request){
 //        // Crea una instanacia del modelo Company para poder consultar en el modelo course.//
@@ -176,36 +170,6 @@ class CompanyController extends Controller
 //        return response()->json($companies, 200);
 //    }
 
-//    function store(Request $request): JsonResponse
-//    {
-//        $data = response()->json()->all();//aqui vine mas de un objeto
-//
-//        $dataType = $data['type'];
-//        $dataCompany = $data['company'];
-//
-//        $company = new Company();
-//        $company->trade_name = $dataCompany['trade_name'];
-//        $company->comercial_activity = $dataCompany['comercial_activity'];
-//        $company->web_page = $dataCompany['web_page'];
-//
-//        $company->type()->associate(Catalogue::findOrFail($dataType['id']));
-//
-//        $company->save();
-//
-//        return response()->json([
-//            'data' => $company,
-//            'msg' => [
-//                'summary' => 'success',
-//                'detail' => ''
-//            ]], 201);
-//    }
-
-//    function show($id)
-//    {
-//        $company = Company::where('user_id', $id)->get();
-//        return response()->json(['company' => $company], 200);
-//
-//    }
 
     function show($companyId)
     {
@@ -239,12 +203,64 @@ class CompanyController extends Controller
                 'code' => '200'
             ]], 200);
     }
+    function store(CreateCompanyRequest  $request)
+    {
+      //  $location = Location::getInstance($request->input('location.id'));
+        $identificationType = Catalogue::getInstance($request->input('identificationType.id'));
+        $sex = Catalogue::getInstance($request->input('sex.id'));
+        $gender = Catalogue::getInstance($request->input('gender.id'));
+        $bloodType = Catalogue::getInstance($request->input('bloodType.id'));
+        $status = Status::getInstance($request->input('status.id'));
+
+        $user = new User();
+        $user->username = $request->input('user.username');
+        $user->identification= $request->input('user.identification');
+        $user->first_name = $request->input('user.first_name');
+        $user->second_name = $request->input('user.second_name');
+        $user->first_lastname = $request->input('user.first_lastname');
+        $user->second_lastname = $request->input('user.second_lastname');
+        $user->personal_email = $request->input('user.personal_email');
+        $user->email = $request->input('user.email');
+        $user->password = $request->input('user.password');
+     //   $user->location()->associate($location);
+        $user->identificationType()->associate($identificationType);
+        $user->sex()->associate($sex);
+        $user->gender()->associate($gender);
+        $user->bloodType()->associate($bloodType);
+        $user->status()->associate($status);
+        $user->save();
+
+
+        $type = Catalogue::getInstance($request->input('type.id'));
+        $activityType = Catalogue::getInstance($request->input('activityType.id'));
+        $personType = Catalogue::getInstance($request->input('personType.id'));
+
+        $company = new Company();
+        $company->trade_name = $request->input('company.trade_name');
+        $company->comercial_activities = $request->input('company.comercial_activities');
+        $company->web = $request->input('company.web');
+        $company->user()->associate($user);
+        $company->activityType()->associate($activityType);
+        $company->type()->associate($type);
+        $company->personType()->associate($personType);
+        $company->save();
+
+        return response()->json([
+            'data' => $company,
+            'msg' => [
+                'summary' => 'Empresa creada',
+                'detail' => 'El registro fue creado',
+                'code' => '201'
+            ]], 201);
+
+
+    }
 
     function update(UpdateCompanyRequest $request, $companyId){
         $type = Catalogue::getInstance($request->input('type.id'));
         $activityType = Catalogue::getInstance($request->input('activityType.id'));
         $personType = Catalogue::getInstance($request->input('personType.id'));
-        //$offer = Offer::getInstance($request->input('offer.id'));
+
 
         $company = Company:: find($companyId);
 
@@ -264,8 +280,15 @@ class CompanyController extends Controller
         $company->activityType()->associate($activityType);
         $company->type()->associate($type);
         $company->personType()->associate($personType);
-       // $company->offer()->associate($offer);
         $company->save();
+
+        return response()->json([
+            'data' => $company,
+            'msg' => [
+                'summary' => 'Empresa actualizada',
+                'detail' => 'El registro fue actualizado',
+                'code' => '201'
+            ]], 201);
 
     }
 

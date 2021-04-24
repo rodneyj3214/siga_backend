@@ -22,8 +22,8 @@ class CreateCompanyRequest extends FormRequest
                 'max:1000',
             ],
             'company.comercial_activities' => [
-                'required',
-                'json',
+//                'required',
+//                'json',
             ],
             'company.web' => [
                 'required',
@@ -51,8 +51,8 @@ class CreateCompanyRequest extends FormRequest
                 'integer',
             ],
             'professional.id' => [
-                'required',
-                'integer',
+//                'required',
+//                'integer',
             ],
 
 
@@ -72,7 +72,7 @@ class CreateCompanyRequest extends FormRequest
             'type.id.integer' => 'El campo :attribute debe ser numérico',
             'activityType.id.integer' => 'El campo :attribute debe ser numérico',
             'personType.id.integer' => 'El campo :attribute debe ser numérico',
-            'professional.id.integer' => 'El campo :attribute debe ser numérico',
+    //        'professional.id.integer' => 'El campo :attribute debe ser numérico',
         ];
         return JobBoardFormRequest::messages($messages);
     }
@@ -88,7 +88,7 @@ class CreateCompanyRequest extends FormRequest
             'type.id' => 'tipo-ID',
             'activityType.id' => 'tipo de actividad-ID',
             'personType.id' => 'tipo de persona-ID',
-            'professional.id' => 'profesion-ID',
+        //    'professional.id' => 'profesion-ID',
         ];
         return JobBoardFormRequest::attributes($attributes);
     }
