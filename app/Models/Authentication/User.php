@@ -3,6 +3,7 @@
 namespace App\Models\Authentication;
 
 // Laravel
+use App\Models\App\Address;
 use App\Models\JobBoard\Professional;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -108,9 +109,9 @@ class User extends Authenticatable implements Auditable
         return $this->belongsTo(Catalogue::class);
     }
 
-    public function location()
+    public function address()
     {
-        return $this->belongsTo(Catalogue::class);
+        return $this->belongsTo(Address::class);
     }
 
     public function identificationType()

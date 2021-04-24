@@ -21,6 +21,7 @@ class Role extends Model implements Auditable
     use Auditing;
     use SoftDeletes;
 
+    private static $instance;
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.roles';
@@ -33,9 +34,11 @@ class Role extends Model implements Auditable
 
     public static function getInstance($id)
     {
-        $model = new Role();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
 
     public function users()

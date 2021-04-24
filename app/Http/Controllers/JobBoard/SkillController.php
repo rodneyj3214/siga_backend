@@ -9,6 +9,7 @@ use App\Http\Controllers\App\ImageController;
 
 // Models
 use App\Models\App\Catalogue;
+use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Skill;
 
@@ -22,9 +23,14 @@ use App\Http\Requests\App\File\UpdateFileRequest;
 use App\Http\Requests\App\File\UploadFileRequest;
 use App\Http\Requests\App\File\IndexFileRequest;
 use App\Http\Requests\App\Image\IndexImageRequest;
+use Illuminate\Support\Facades\Request;
 
 class SkillController extends Controller
 {
+    function  test(Request $request){
+        return Professional::select('about_me','has_travel')->with('academicFormations')->get();
+    }
+
     function index(IndexSkillRequest $request)
     {
         // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
@@ -33,7 +39,7 @@ class SkillController extends Controller
         if ($request->has('search')) {
             $skills = $professional->skills()
                 ->description($request->input('search'))
-                ->get();
+                ->paginate($request->input('per_page'));
         } else {
             $skills = $professional->skills()->paginate($request->input('per_page'));
         }

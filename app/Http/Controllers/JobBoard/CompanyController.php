@@ -10,16 +10,16 @@ use App\Http\Controllers\Controller;
 
 //Models
 use App\Models\App\Catalogue;
+use App\Models\App\Location;
 use App\Models\Authentication\User;
 use App\Models\JobBoard\Company;
-use App\Models\JobBoard\Offer;
-use App\Models\JobBoard\Professional;
+
 
 // FormRequest
 use App\Http\Requests\JobBoard\Company\CreateCompanyRequest;
 use App\Http\Requests\JobBoard\Company\IndexCompanyRequest;
 use App\Http\Requests\JobBoard\Company\UpdateCompanyRequest;
-use phpDocumentor\Reflection\Location;
+
 
 class CompanyController extends Controller
 {
@@ -205,7 +205,7 @@ class CompanyController extends Controller
     }
     function store(CreateCompanyRequest  $request)
     {
-      //  $location = Location::getInstance($request->input('location.id'));
+        $location = Location::getInstance($request->input('location.id'));
         $identificationType = Catalogue::getInstance($request->input('identificationType.id'));
         $sex = Catalogue::getInstance($request->input('sex.id'));
         $gender = Catalogue::getInstance($request->input('gender.id'));
@@ -222,7 +222,7 @@ class CompanyController extends Controller
         $user->personal_email = $request->input('user.personal_email');
         $user->email = $request->input('user.email');
         $user->password = $request->input('user.password');
-     //   $user->location()->associate($location);
+        $user->location()->associate($location);
         $user->identificationType()->associate($identificationType);
         $user->sex()->associate($sex);
         $user->gender()->associate($gender);
