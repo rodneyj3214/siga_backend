@@ -111,4 +111,27 @@ class Offer extends Model implements Auditable
         return $this->belongsTo(Status::class);
     }
 
+    // Scopes
+    public function scopeAditional_information($query, $aditional_information)
+    {
+        if ($aditional_information) {
+            return $query->Where('aditional_information', 'ILIKE', "%$aditional_information%");
+        }
+    }
+
+    public function scopeCode($query, $code)
+    {
+        if ($code) {
+            return $query->orWhere('code', 'ILIKE', "%$code%");
+        }
+    }
+
+    public function scopeDescription($query, $description)
+    {
+        if ($description) {
+            return $query->orWhere('description', 'ILIKE', "%$description%");
+        }
+    }
+    
+    
 }

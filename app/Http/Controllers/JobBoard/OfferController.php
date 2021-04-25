@@ -14,8 +14,6 @@ use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
 use App\Http\Requests\JobBoard\Offer\UpdateOfferRequest;
 
-// PROBRANDO SUBIR CAMBIOS
-
 class OfferController extends Controller
 {
     function index(IndexOfferRequest $request)
@@ -24,6 +22,8 @@ class OfferController extends Controller
 
         if ($request->has('search')) {
             $offer = $company->offers()
+                ->aditional_information($request->input('search'))
+                ->code($request->input('search'))
                 ->description($request->input('search'))
                 ->get();
         } else {
@@ -65,7 +65,6 @@ class OfferController extends Controller
         $offer->activities = $request->input('offer.activities');
         $offer->requirements = $request->input('offer.requirements');
         $offer->company()->associate($company);
-        // llenar en la base todos estos catalogos
         $offer->location()->associate($location);
         $offer->contractType()->associate($contractType);
         $offer->position()->associate($position);
