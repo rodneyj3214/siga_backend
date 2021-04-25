@@ -52,7 +52,7 @@ class User extends Authenticatable implements Auditable
         'attempts'
     ];
 
-    protected $appends = ['full_name'];
+    //protected $appends = ['full_name'];
 
     protected $hidden = [
         'password', 'remember_token',
@@ -156,14 +156,10 @@ class User extends Authenticatable implements Auditable
 
     //Accessors
 
-    public function getFullNameAttribute()
-    {
-        return "{$this->attributes['first_name']} {$this->attributes['second_name']} {$this->attributes['first_lastname']} {$this->attributes['second_lastname']}";
-    }
+//    public function getFullNameAttribute()
+//    {
+//        return "{$this->attributes['first_name']} {$this->attributes['second_name']} {$this->attributes['first_lastname']} {$this->attributes['second_lastname']}";
+//    }
 
-    // Accessors
-    public function getFullDescriptionAttribute()
-    {
-        return "{$this->attributes['id']}.{$this->attributes['description']}";
-    }
+
 }

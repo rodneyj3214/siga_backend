@@ -10,14 +10,13 @@ use App\Http\Controllers\Controller;
 
 //Models
 use App\Models\App\Catalogue;
-use App\Models\App\Location;
+use App\Models\App\Address;
 use App\Models\Authentication\User;
 use App\Models\JobBoard\Company;
 
 
 // FormRequest
 use App\Http\Requests\JobBoard\Company\CreateCompanyRequest;
-use App\Http\Requests\JobBoard\Company\IndexCompanyRequest;
 use App\Http\Requests\JobBoard\Company\UpdateCompanyRequest;
 
 
@@ -203,46 +202,41 @@ class CompanyController extends Controller
                 'code' => '200'
             ]], 200);
     }
-    function store(CreateCompanyRequest  $request)
+    function register(CreateCompanyRequest  $request)
     {
+        //return 4;
         $address = Address::getInstance($request->input('address.id'));
         $identificationType = Catalogue::getInstance($request->input('identificationType.id'));
-        $sex = Catalogue::getInstance($request->input('sex.id'));
-        $gender = Catalogue::getInstance($request->input('gender.id'));
-        $bloodType = Catalogue::getInstance($request->input('bloodType.id'));
         $status = Status::getInstance($request->input('status.id'));
 
         $user = new User();
         $user->username = $request->input('user.username');
         $user->identification= $request->input('user.identification');
-        $user->first_name = $request->input('user.first_name');
-        $user->second_name = $request->input('user.second_name');
-        $user->first_lastname = $request->input('user.first_lastname');
-        $user->second_lastname = $request->input('user.second_lastname');
-        $user->personal_email = $request->input('user.personal_email');
         $user->email = $request->input('user.email');
         $user->password = $request->input('user.password');
         $user->address()->associate($address);
         $user->identificationType()->associate($identificationType);
-        $user->sex()->associate($sex);
-        $user->gender()->associate($gender);
-        $user->bloodType()->associate($bloodType);
         $user->status()->associate($status);
-        $user->save();
 
+        //$user->save();
 
         $type = Catalogue::getInstance($request->input('type.id'));
         $activityType = Catalogue::getInstance($request->input('activityType.id'));
         $personType = Catalogue::getInstance($request->input('personType.id'));
 
         $company = new Company();
-        $company->trade_name = $request->input('company.trade_name');
+
+        $company->trade_name =$request->input('company.trade_name');
+
         $company->comercial_activities = $request->input('company.comercial_activities');
         $company->web = $request->input('company.web');
+
         $company->user()->associate($user);
+        return $company;
         $company->activityType()->associate($activityType);
         $company->type()->associate($type);
         $company->personType()->associate($personType);
+
         $company->save();
 
         return response()->json([
@@ -257,10 +251,10 @@ class CompanyController extends Controller
     }
 
     function update(UpdateCompanyRequest $request, $companyId){
+
         $type = Catalogue::getInstance($request->input('type.id'));
         $activityType = Catalogue::getInstance($request->input('activityType.id'));
         $personType = Catalogue::getInstance($request->input('personType.id'));
-
 
         $company = Company:: find($companyId);
 

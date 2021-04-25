@@ -49,9 +49,9 @@ Route::group(['prefix' => 'company'], function () {
         return 'test';
 
     })->withoutMiddleware(['auth:api']);
-    Route::get('show/{id}',[CompanyController::class, 'show']);
-    Route::put('update/{id}',[CompanyController::class, 'update']);
-    Route::post('store',[CompanyController::class, 'store']);
+    Route::get('{id}',[CompanyController::class, 'show']);
+    Route::put('{id}',[CompanyController::class, 'update']);
+    Route::post('register',[CompanyController::class, 'register']);
 });
 
 Route::group(['prefix' => 'professional'], function () {
