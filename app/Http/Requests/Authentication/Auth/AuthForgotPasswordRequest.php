@@ -30,7 +30,7 @@ class AuthForgotPasswordRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'username' => 'username',
+            'username' => 'nombre de usuario',
         ];
         return $attributes;
     }

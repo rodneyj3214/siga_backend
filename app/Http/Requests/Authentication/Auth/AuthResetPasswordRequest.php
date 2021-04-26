@@ -21,10 +21,10 @@ class AuthResetPasswordRequest extends FormRequest
             ],
             'password' => [
                 'required',
-                'min:6',
-                'max:50'
+                'min:8',
+                'max:30'
             ],
-            'password_confirm' => [
+            'password_confirmation' => [
                 'required',
                 'same:password'
             ],
@@ -38,8 +38,8 @@ class AuthResetPasswordRequest extends FormRequest
             'password.required' => 'El campo :attribute es obligatorio',
             'password.min' => 'El campo :attribute debe tener al menos :min caracteres',
             'password.max' => 'El campo :attribute debe tener maximo :max caracteres',
-            'password_confirm.required' => 'El campo :attribute es obligatorio',
-            'password_confirm.same' => 'El campo :attribute no coincide',
+            'password_confirmation.required' => 'El campo :attribute es obligatorio',
+            'password_confirmation.same' => 'El campo :attribute no coincide',
         ];
         return AuthenticationFormRequest::messages($messages);
     }
@@ -48,8 +48,8 @@ class AuthResetPasswordRequest extends FormRequest
     {
         $attributes = [
             'token' => 'token',
-            'password' => 'password',
-            'password_confirm' => 'password confirm',
+            'password' => 'contraseña',
+            'password_confirmation' => 'confirmación de contraseña',
         ];
         return AuthenticationFormRequest::attributes($attributes);
     }

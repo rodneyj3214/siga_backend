@@ -17,53 +17,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class  UserController extends Controller
 {
-    
-    public function index(Request $request)
-    {
-        if ($request->has('conditions') && $request->conditions && $request->conditions != 'undefined') {
-            $users = User::where(function ($query) use ($request) {
-                $query->orWhere($this->filter($request->conditions));
-            })
-                ->whereHas('institutions', function ($institutions) use ($request) {
-                    $institutions->where('institutions.id', $request->institution_id);
-                })
-                ->with(['institutions' => function ($institutions) {
-                    $institutions->orderBy('name');
-                }])
-                ->with(['roles' => function ($roles) use ($request) {
-                    $roles
-                        ->with('system')
-                        ->with(['permissions' => function ($permissions) {
-                            $permissions->with(['route' => function ($route) {
-                                $route->with('module')->with('type')->with('images')->with('status');
-                            }])->with('institution');
-                        }]);
-                }])
-                ->orderBy('first_lastname')
-                ->paginate($request->per_page);
-        } else {
-            $users = User::
-            whereHas('institutions', function ($institutions) use ($request) {
-                $institutions->where('institutions.id', $request->institution);
-            })
-                ->with(['institutions' => function ($institutions) {
-                    $institutions->orderBy('name');
-                }])
-                ->with(['roles' => function ($roles) use ($request) {
-                    $roles
-                        ->with('system')
-                        ->with(['permissions' => function ($permissions) {
-                            $permissions->with(['route' => function ($route) {
-                                $route->with('module')->with('type')->with('images')->with('status');
-                            }])->with('institution');
-                        }]);
-                }])
-                ->orderBy('first_lastname')
-                ->paginate($request->per_page);
-        }
-        return response()->json($users, 200);
-    }
-
     public function show($username, Request $request)
     {
         $user = User::
@@ -95,42 +48,6 @@ class  UserController extends Controller
                 'detail' => '',
                 'code' => '200'
             ]], 200);
-    }
-
-    public function store(UserCreateRequest $request)
-    {
-        $data = $request->json()->all();
-        $dataUser = $data['user'];
-        $user = new User();
-
-        $user->identification = strtoupper(trim($dataUser['identification']));
-        $user->username = trim($dataUser['username']);
-        $user->first_name = strtoupper(trim($dataUser['first_name']));
-        $user->first_lastname = strtoupper(trim($dataUser['first_lastname']));
-        $user->birthdate = trim($dataUser['birthdate']);
-        $user->email = strtolower(trim($dataUser['email']));
-        $user->password = Hash::make(trim($dataUser['password']));
-
-        $ethnicOrigin = Catalogue::findOrFail($dataUser['ethnic_origin']['id']);
-        $location = Catalogue::findOrFail($dataUser['location']['id']);
-        $identificationType = Catalogue::findOrFail($dataUser['identification_type']['id']);
-        $sex = Catalogue::findOrFail($dataUser['sex']['id']);
-        $gender = Catalogue::findOrFail($dataUser['gender']['id']);
-        $state = Catalogue::where('code', '1')->first();
-        $user->ethnicOrigin()->associate($ethnicOrigin);
-        $user->location()->associate($location);
-        $user->identificationType()->associate($identificationType);
-        $user->sex()->associate($sex);
-        $user->gender()->associate($gender);
-        $user->state()->associate($state);
-        $user->save();
-        return response()->json([
-            'data' => $user,
-            'msg' => [
-                'summary' => 'success',
-                'detail' => '',
-                'code' => '201'
-            ]], 201);
     }
 
     public function update(Request $request)
@@ -167,16 +84,35 @@ class  UserController extends Controller
             ]], 201);
     }
 
-    public function destroy($id)
+    public function updateAuth(Request $request)
     {
-        $state = Catalogue::where('code', '3')->first();
-        $user = User::findOrFail($id);
+        $data = $request->json()->all();
+        $dataUser = $data['user'];
+        $user = User::findOrFail($dataUser['id']);
+        $user->identification = $dataUser['identification'];
+        $user->username = strtoupper(trim($dataUser['username']));
+        $user->first_name = strtoupper(trim($dataUser['first_name']));
+        $user->first_lastname = strtoupper(trim($dataUser['first_lastname']));
+        $user->birthdate = trim($dataUser['birthdate']);
+        $user->email = strtolower(trim($dataUser['email']));
+
+        $ethnicOrigin = Catalogue::findOrFail($dataUser['ethnic_origin']['id']);
+        $location = Catalogue::findOrFail($dataUser['location']['id']);
+        $identificationType = Catalogue::findOrFail($dataUser['identification_type']['id']);
+        $sex = Catalogue::findOrFail($dataUser['sex']['id']);
+        $gender = Catalogue::findOrFail($dataUser['gender']['id']);
+        $state = Catalogue::where('code', '1')->first();
+        $user->ethnicOrigin()->associate($ethnicOrigin);
+        $user->location()->associate($location);
+        $user->identificationType()->associate($identificationType);
+        $user->sex()->associate($sex);
+        $user->gender()->associate($gender);
         $user->state()->associate($state);
         $user->save();
         return response()->json([
             'data' => $user,
             'msg' => [
-                'summary' => 'deleted',
+                'summary' => 'update',
                 'detail' => '',
                 'code' => '201'
             ]], 201);
@@ -208,27 +144,5 @@ class  UserController extends Controller
                     'code' => '400'
                 ]], 400);
         }
-    }
-
-    public function export()
-    {
-        return Excel::download(new UsersExport, 'users.xlsx');
-    }
-
-    private function filter($conditions)
-    {
-        $filters = array();
-        foreach ($conditions as $condition) {
-            if ($condition['match_mode'] === 'contains') {
-                array_push($filters, array($condition['field'], $condition['logic_operator'], '%' . $condition['value'] . '%'));
-            }
-            if ($condition['match_mode'] === 'start') {
-                array_push($filters, array($condition['field'], $condition['logic_operator'], $condition['value'] . '%'));
-            }
-            if ($condition['match_mode'] === 'end') {
-                array_push($filters, array($condition['field'], $condition['logic_operator'], '%' . $condition['value']));
-            }
-        }
-        return $filters;
     }
 }

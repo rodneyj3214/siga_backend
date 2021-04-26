@@ -2,25 +2,21 @@
 
 namespace App\Models\Authentication;
 
-// Laravel
-use App\Models\JobBoard\Professional;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
-
-// Application
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\App\AdministrativeStaff;
-
 use App\Models\App\Catalogue;
 use App\Models\App\Image;
 use App\Models\App\Institution;
 use App\Models\App\Teacher;
 use App\Models\App\Status;
 use App\Models\App\File;
+use App\Models\JobBoard\Professional;
 
 class User extends Authenticatable implements Auditable
 {
@@ -31,27 +27,29 @@ class User extends Authenticatable implements Auditable
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.users';
 
+    protected static $instance;
+
     const ATTEMPTS = 3;
 
     protected $fillable = [
-        'identification',
-        'first_name',
-        'second_name',
-        'first_lastname',
-        'second_lastname',
+        'identification', //s
+        'first_name', //s
+        'second_name', //s
+        'first_lastname', //s
+        'second_lastname', //s
         'personal_email',
         'birthdate',
         'avatar',
         'username',
         'phone',
-        'email',
+        'email', //s
         'email_verified_at',
         'password',
-        'change_password',
+        'changed_password',
         'attempts'
     ];
 
-    protected $appends = ['full_name'];
+    protected $appends = ['full_name','parcial_name'];
 
     protected $hidden = [
         'password', 'remember_token',
@@ -63,16 +61,20 @@ class User extends Authenticatable implements Auditable
 
     public static function getInstance($id)
     {
-        $model = new Professional();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
 
+    // Definir el campo por el cual se valida con passport el usuario
     public function findForPassport($username)
     {
         return $this->firstWhere('username', $username);
     }
 
+    // Relationships
     public function professional()
     {
         $this->hasOne(Professional::class);
@@ -108,9 +110,9 @@ class User extends Authenticatable implements Auditable
         return $this->belongsTo(Catalogue::class);
     }
 
-    public function location()
+    public function Address()
     {
-        return $this->belongsTo(Catalogue::class);
+        return $this->belongsTo(Address::class);
     }
 
     public function identificationType()
@@ -160,9 +162,10 @@ class User extends Authenticatable implements Auditable
         return "{$this->attributes['first_name']} {$this->attributes['second_name']} {$this->attributes['first_lastname']} {$this->attributes['second_lastname']}";
     }
 
-    // Accessors
-    public function getFullDescriptionAttribute()
+    public function getParcialNameAttribute()
     {
-        return "{$this->attributes['id']}.{$this->attributes['description']}";
+        return "{$this->attributes['first_name']} {$this->attributes['first_lastname']}";
     }
+
+    // Scopes
 }
