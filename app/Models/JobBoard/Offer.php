@@ -65,6 +65,9 @@ class Offer extends Model implements Auditable
         static::$instance->id = $id;
         return static::$instance;
     }
+    public function categories(){
+        $this->belongsToMany(Category::class);
+    }
 
     public function company()
     {
@@ -132,6 +135,6 @@ class Offer extends Model implements Auditable
             return $query->orWhere('description', 'ILIKE', "%$description%");
         }
     }
-    
-    
+
+
 }

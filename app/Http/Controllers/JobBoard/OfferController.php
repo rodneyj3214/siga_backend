@@ -8,7 +8,7 @@ use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Offer;
 use App\Models\App\Status;
 use App\Models\App\Catalogue;
-use App\Models\App\Location; 
+use App\Models\App\Location;
 
 use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
@@ -55,8 +55,9 @@ class OfferController extends Controller
         $trainingHours = Catalogue::getInstance($request->input('trainingHours.id'));
         $status = Status::getInstance($request->input('status.id'));
 
+        $lastOffer = Offer::last();
         $offer = new Offer();
-        $offer->code = $request->input('offer.code');
+        $offer->code = $lastOffer->code + 1;
         $offer->description = $request->input('offer.description');
         $offer->contact_name = $request->input('offer.contact_name');
         $offer->contact_email = $request->input('offer.contact_email');
@@ -75,6 +76,9 @@ class OfferController extends Controller
         $offer->status()->associate($status);
         $offer->save();
 
+        foreach ($request->input('categories') as $category){
+            $offer->categories()->attach($category->id);
+        }
         return response()->json([
             'data' => $offer,
             'msg' => [
@@ -117,6 +121,11 @@ class OfferController extends Controller
 
     function update(UpdateOfferRequest $request, $offerId)
     {
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
+        $offer = Offer::find($offerId);
+        $offer->status()->associate(Status::firstWhere('code', $catalogues['status']['paused']));
+        $offer->save();
+
         $location = Location::getInstance($request->input('location.id'));
         $contractType = Catalogue::getInstance($request->input('contractType.id'));
         $position = Catalogue::getInstance($request->input('position.id'));
