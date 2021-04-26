@@ -2,16 +2,12 @@
 
 namespace App\Models\App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
-
-// Application
-use App\Models\Authentication\Role;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-
+use App\Models\Authentication\Role;
 
 class Catalogue extends Model implements Auditable
 {
@@ -30,9 +26,9 @@ class Catalogue extends Model implements Auditable
         'name',
         'type',
         'icon',
-        'state'
     ];
 
+    // Instance
     public static function getInstance($id)
     {
         if (is_null(static::$instance)) {
@@ -42,16 +38,7 @@ class Catalogue extends Model implements Auditable
         return static::$instance;
     }
 
-    public function setCodeAttribute($value)
-    {
-        $this->attributes['code'] = strtoupper($value);
-    }
-
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = strtoupper($value);
-    }
-
+    // Relationsships
     public function parent()
     {
         return $this->belongsTo(Catalogue::class, 'parent_id');
@@ -62,9 +49,19 @@ class Catalogue extends Model implements Auditable
         return $this->hasMany(Catalogue::class, 'parent_id');
     }
 
-    // Relaciones Polimorficas
     public function roles()
     {
         return $this->morphedByMany(Role::class, 'catalogueable');
+    }
+
+    // Mutators
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = strtoupper($value);
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtoupper($value);
     }
 }

@@ -29,7 +29,6 @@ class Role extends Model implements Auditable
     protected $fillable = [
         'code',
         'name',
-        'state',
     ];
 
     public static function getInstance($id)
