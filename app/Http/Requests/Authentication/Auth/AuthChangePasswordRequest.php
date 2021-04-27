@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Authentication\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
 class AuthChangePasswordRequest extends FormRequest
 {
@@ -27,13 +28,12 @@ class AuthChangePasswordRequest extends FormRequest
                 'same:user.password'
             ]
         ];
+        return AuthenticationFormRequest::messages($messages);
     }
 
     public function messages()
     {
         $messages = [
-            'user.id.required' => 'El campo :attribute es obligatorio',
-            'user.id.int' => 'El campo :attribute debe ser numérico',
             'user.password.required' => 'El campo :attribute es obligatorio',
             'user.new_password.required' => 'El campo :attribute es obligatorio',
             'user.new_password.min' => 'El campo :attribute debe tener al menos :min caracteres',
@@ -47,12 +47,11 @@ class AuthChangePasswordRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'user.id' => 'id del usuario',
             'user.password' => 'password',
             'user.new_password' => 'new password',
             'user.password_confirmation' => 'password confirmation',
 
         ];
-        return $attributes;
+        return AuthenticationFormRequest::attributes($attributes);
     }
 }

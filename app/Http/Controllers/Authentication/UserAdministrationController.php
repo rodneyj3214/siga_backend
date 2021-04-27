@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Authentication;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\User\UserCreateRequest;
+use App\Http\Requests\Authentication\UserAdministration\IndexUserAdministrationRequest;
 use App\Http\Requests\Authentication\UserRequest;
 use App\Models\Authentication\PassworReset;
 use App\Models\Authentication\Role;
@@ -16,51 +17,10 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class  UserAdministrationController extends Controller
-{
-    public function index(Request $request)
+{ 
+    public function index(IndexUserAdministrationRequest $request)
     {
-        if ($request->has('conditions') && $request->conditions && $request->conditions != 'undefined') {
-            $users = User::where(function ($query) use ($request) {
-                $query->orWhere($this->filter($request->conditions));
-            })
-                ->whereHas('institutions', function ($institutions) use ($request) {
-                    $institutions->where('institutions.id', $request->institution_id);
-                })
-                ->with(['institutions' => function ($institutions) {
-                    $institutions->orderBy('name');
-                }])
-                ->with(['roles' => function ($roles) use ($request) {
-                    $roles
-                        ->with('system')
-                        ->with(['permissions' => function ($permissions) {
-                            $permissions->with(['route' => function ($route) {
-                                $route->with('module')->with('type')->with('images')->with('status');
-                            }])->with('institution');
-                        }]);
-                }])
-                ->orderBy('first_lastname')
-                ->paginate($request->per_page);
-        } else {
-            $users = User::
-            whereHas('institutions', function ($institutions) use ($request) {
-                $institutions->where('institutions.id', $request->institution);
-            })
-                ->with(['institutions' => function ($institutions) {
-                    $institutions->orderBy('name');
-                }])
-                ->with(['roles' => function ($roles) use ($request) {
-                    $roles
-                        ->with('system')
-                        ->with(['permissions' => function ($permissions) {
-                            $permissions->with(['route' => function ($route) {
-                                $route->with('module')->with('type')->with('images')->with('status');
-                            }])->with('institution');
-                        }]);
-                }])
-                ->orderBy('first_lastname')
-                ->paginate($request->per_page);
-        }
-        return response()->json($users, 200);
+       
     }
 
     public function show($username, Request $request)

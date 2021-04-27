@@ -10,6 +10,9 @@ use App\Http\Requests\Authentication\Auth\AuthUnlockRequest;
 use App\Http\Requests\Authentication\Auth\AuthUnlockUserRequest;
 use App\Http\Requests\Authentication\Auth\AuthGetRolesRequest;
 use App\Http\Requests\Authentication\Auth\AuthGetPermissionsRequest;
+use App\Http\Requests\Authentication\Auth\AuthResetAttemptsRequest;
+use App\Http\Requests\Authentication\Auth\AuthLogoutRequest;
+use App\Http\Requests\Authentication\Auth\AuthLogoutAllRequest;
 use App\Mail\AuthMailable;
 use App\Mail\EmailMailable;
 use App\Models\Authentication\Client;
@@ -70,7 +73,7 @@ class  AuthController extends Controller
             ]], 401);
     }
 
-    public function resetAttempts(Request $request){
+    public function resetAttempts(AuthResetAttemptsRequest $request){
         $user = $request->user();
 
         if (!$user) {
@@ -95,7 +98,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function logout(Request $request){
+    public function logout(AuthLogoutRequest $request){
         $request->user()->token()->revoke();
 
         return response()->json([
@@ -107,7 +110,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function logoutAll(Request $request){
+    public function logoutAll(AuthLogoutAllRequest $request){
         DB::table('oauth_access_tokens')
             ->where('user_id', $request->user()->id)
             ->update([
@@ -198,7 +201,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    // revisar nombre
+    // revisar nombre 
     public function unlockUser(AuthUnlockUserRequest $request){
         $user = User::where('username', $request->input('username'))
             ->orWhere('email', $request->input('username'))
@@ -449,7 +452,13 @@ class  AuthController extends Controller
             ->get();
 
         if(sizeof($roles)===0){
-
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'No se encontraron los roles',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '404'
+                ]], 404);
         }
 
         return response()->json([
@@ -466,7 +475,13 @@ class  AuthController extends Controller
         $role = Role::find($request->input('role'));
 
         if(!$role){
-
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'No se encontraron los permisos',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '404'
+                ]], 404);
         }
 
         $permissions = $role->permissions()
