@@ -37,7 +37,6 @@ class Offer extends Model implements Auditable
 
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.offers';
-
     protected $fillable = [
         'code',
         'description',
@@ -51,12 +50,14 @@ class Offer extends Model implements Auditable
         'end_date',
         'aditional_information',
     ];
+    protected $with = ['categories'];
 
     protected $casts = [
         'activities' => 'array',
         'requirements' => 'array',
     ];
 
+    // Instance
     public static function getInstance($id)
     {
         if (is_null(static::$instance)) {
@@ -65,8 +66,11 @@ class Offer extends Model implements Auditable
         static::$instance->id = $id;
         return static::$instance;
     }
-    public function categories(){
-        $this->belongsToMany(Category::class);
+
+    // Relationships
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
     public function company()
@@ -115,10 +119,10 @@ class Offer extends Model implements Auditable
     }
 
     // Scopes
-    public function scopeAditional_information($query, $aditional_information)
+    public function scopeAditionalInformation($query, $aditionalInformation)
     {
-        if ($aditional_information) {
-            return $query->Where('aditional_information', 'ILIKE', "%$aditional_information%");
+        if ($aditionalInformation) {
+            return $query->where('aditional_information', 'ILIKE', "%$aditionalInformation%");
         }
     }
 

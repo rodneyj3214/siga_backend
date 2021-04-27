@@ -15,9 +15,10 @@ class Category extends Model implements Auditable
     use HasFactory;
 
     private static $instance;
+
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.categories';
-
+    protected $with = ['parent'];
     protected $fillable = [
         'code',
         'name',
@@ -32,6 +33,7 @@ class Category extends Model implements Auditable
         static::$instance->id = $id;
         return static::$instance;
     }
+
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
@@ -46,5 +48,4 @@ class Category extends Model implements Auditable
     {
         return $this->belongsTo(Catalogue::class);
     }
-
 }

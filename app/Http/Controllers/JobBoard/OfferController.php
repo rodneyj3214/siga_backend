@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\JobBoard;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Offer;
 use App\Models\App\Status;
 use App\Models\App\Catalogue;
 use App\Models\App\Location;
-
 use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
 use App\Http\Requests\JobBoard\Offer\UpdateOfferRequest;
+use Illuminate\Database\Eloquent\Model;
 
 class OfferController extends Controller
 {
@@ -55,9 +54,10 @@ class OfferController extends Controller
         $trainingHours = Catalogue::getInstance($request->input('trainingHours.id'));
         $status = Status::getInstance($request->input('status.id'));
 
-        $lastOffer = Offer::last();
+        $lastOffer = Offer::orderBy('id', 'desc')->first();
+
         $offer = new Offer();
-        $offer->code = $lastOffer->code + 1;
+        $offer->code = $lastOffer ? ($lastOffer->code + 1) : 1;
         $offer->description = $request->input('offer.description');
         $offer->contact_name = $request->input('offer.contact_name');
         $offer->contact_email = $request->input('offer.contact_email');
@@ -76,16 +76,18 @@ class OfferController extends Controller
         $offer->status()->associate($status);
         $offer->save();
 
-        foreach ($request->input('categories') as $category){
-            $offer->categories()->attach($category->id);
+        foreach ($request->input('categories') as $category) {
+            $offer->categories()->attach($category);
         }
+
         return response()->json([
             'data' => $offer,
             'msg' => [
                 'summary' => 'Oferta creada',
                 'detail' => 'El registro fue creado',
                 'code' => '201'
-            ]], 201);
+            ]
+        ], 201);
     }
 
     function show($offerId)
