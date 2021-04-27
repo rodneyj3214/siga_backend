@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Authentication;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\User\UserCreateRequest;
-use App\Http\Requests\Authentication\UserAdministration\IndexUserAdministrationRequest;
+use App\Http\Requests\Authentication\UserAdministration\UserAdminIndexRequest;
 use App\Http\Requests\Authentication\UserRequest;
 use App\Models\Authentication\PassworReset;
 use App\Models\Authentication\Role;
@@ -18,9 +18,37 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class  UserAdministrationController extends Controller
 { 
-    public function index(IndexUserAdministrationRequest $request)
+    public function index(Request $request)
     {
-       
+        if ($request->has('search')) {
+            $users = User::email($request->input('search'))
+            ->firstlastname($request->input('search'))
+            ->firstname($request->input('search'))
+            ->identification($request->input('search'))
+            ->secondlastname($request->input('search'))
+            ->secondname($request->input('search'))
+            ->get();
+        }else{
+            $users = User::paginate($request->input('per_page'));
+        }
+
+        if(sizeof($users)===0){
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'No se encontraron usuarios',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '404'
+                ]], 404);
+        }else{
+            return response()->json([
+                'data' => $users,
+                'msg' => [
+                    'summary' => 'success',
+                    'detail' => '',
+                    'code' => '200'
+                ]], 200);
+        }
     }
 
     public function show($username, Request $request)

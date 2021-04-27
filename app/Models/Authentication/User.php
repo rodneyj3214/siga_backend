@@ -180,35 +180,35 @@ class User extends Authenticatable implements Auditable
     public function scopeFirstLastName($query, $first_lastname)
     {
         if ($first_lastname) {
-            return $query->where('first_lastname', 'ILIKE', "%$first_lastname%");
+            return $query->orWhere('first_lastname', 'ILIKE', "%$first_lastname%");
         }
     } 
 
     public function scopeFirstName($query, $first_name)
     {
         if ($first_name) {
-            return $query->where('first_name', 'ILIKE', "%$first_name%");
+            return $query->orWhere('first_name', 'ILIKE', "%$first_name%");
         }
     }
 
     public function scopeIdentification($query, $identification)
     {
         if ($identification) {
-            return $query->where('identification', 'ILIKE', "%$identification%");
+            return $query->orWhere('identification', 'ILIKE', "%$identification%");
         }
     }
 
     public function scopeSecondLastName($query, $second_lastname)
     {
         if ($second_lastname) {
-            return $query->where('second_lastname', 'ILIKE', "%$second_lastname%");
+            return $query->orWhere('second_lastname', 'ILIKE', "%$second_lastname%");
         }
     }
 
     public function scopeSecondName($query, $second_name)
     {
         if ($second_name) {
-            return $query->where('second_name', 'ILIKE', "%$second_name%");
+            return $query->orWhere('second_name', 'ILIKE', "%$second_name%");
         }
     }
 

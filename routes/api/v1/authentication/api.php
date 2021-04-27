@@ -8,7 +8,10 @@ use App\Http\Controllers\Authentication\UserTestController;
 use App\Http\Controllers\Authentication\RouteController;
 use App\Http\Controllers\Authentication\ShortcutController;
 use App\Http\Controllers\Authentication\SystemController;
+use App\Http\Controllers\Authentication\UserAdministrationController;
 use Illuminate\Support\Facades\Route;
+
+
 
 // Without Authentication
 Route::group(['prefix' => 'auth'], function () {
@@ -31,6 +34,12 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('logout_all', [AuthController::class, 'logoutAll']);
     Route::post('permissions', [AuthController::class, 'getPermissions']);
+});
+
+// User Administration
+
+Route::group(['prefix' => 'useradmin'], function () {
+    Route::get('users', [UserAdministrationController::class, 'index']);
 });
 
 Route::apiResource('permissions', PermissionController::class);
