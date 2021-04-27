@@ -9,6 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
 use App\Models\App\Catalogue;
 use App\Models\App\Status;
+use App\Models\App\Location;
 
 /**
  * @property BigInteger id
@@ -64,6 +65,9 @@ class Offer extends Model implements Auditable
         static::$instance->id = $id;
         return static::$instance;
     }
+    public function categories(){
+        $this->belongsToMany(Category::class);
+    }
 
     public function company()
     {
@@ -109,5 +113,28 @@ class Offer extends Model implements Auditable
     {
         return $this->belongsTo(Status::class);
     }
+
+    // Scopes
+    public function scopeAditional_information($query, $aditional_information)
+    {
+        if ($aditional_information) {
+            return $query->Where('aditional_information', 'ILIKE', "%$aditional_information%");
+        }
+    }
+
+    public function scopeCode($query, $code)
+    {
+        if ($code) {
+            return $query->orWhere('code', 'ILIKE', "%$code%");
+        }
+    }
+
+    public function scopeDescription($query, $description)
+    {
+        if ($description) {
+            return $query->orWhere('description', 'ILIKE', "%$description%");
+        }
+    }
+
 
 }

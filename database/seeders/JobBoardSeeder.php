@@ -19,6 +19,7 @@ class JobBoardSeeder extends Seeder
         $this->createLanguageCatalogues();
         $this->createCourseCatalogues();
         $this->createSkillCatalogues();
+        $this->createOfferCatalogues();
         $this->createProfessionals();
         $this->createCompanies();
         $this->createSkills();
@@ -144,5 +145,29 @@ class JobBoardSeeder extends Seeder
                 ]);
             }
         }
+    }
+
+    private function createOfferCatalogues()
+    {
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
+        Catalogue::factory()->count(4)->create([
+            'type' => $catalogues['catalogue']['offer_contract_type']['type']
+        ]);
+
+        Catalogue::factory()->count(20)->create([
+            'type' => $catalogues['catalogue']['offer_position']['type'],
+        ]);
+
+        Catalogue::factory()->count(20)->create([
+            'type' => $catalogues['catalogue']['offer_working_day']['type'],
+        ]);
+
+        Catalogue::factory()->count(20)->create([
+            'type' => $catalogues['catalogue']['offer_experience_time']['type'],
+        ]);
+
+        Catalogue::factory()->count(20)->create([
+            'type' => $catalogues['catalogue']['offer_training_hours']['type'],
+        ]);
     }
 }
