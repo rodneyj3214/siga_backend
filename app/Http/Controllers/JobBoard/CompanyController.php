@@ -202,12 +202,13 @@ class CompanyController extends Controller
                 'code' => '200'
             ]], 200);
     }
+
     function register(CreateCompanyRequest  $request)
     {
-        //return 4;
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         $address = Address::getInstance($request->input('address.id'));
         $identificationType = Catalogue::getInstance($request->input('identificationType.id'));
-        $status = Status::getInstance($request->input('status.id'));
+        $status = Status::firstWhere('code',$catalogues['status']['inactive']);
 
         $user = new User();
         $user->username = $request->input('user.username');
@@ -217,8 +218,7 @@ class CompanyController extends Controller
         $user->address()->associate($address);
         $user->identificationType()->associate($identificationType);
         $user->status()->associate($status);
-
-        //$user->save();
+        $user->save();
 
         $type = Catalogue::getInstance($request->input('type.id'));
         $activityType = Catalogue::getInstance($request->input('activityType.id'));
@@ -230,13 +230,10 @@ class CompanyController extends Controller
 
         $company->comercial_activities = $request->input('company.comercial_activities');
         $company->web = $request->input('company.web');
-
         $company->user()->associate($user);
-        return $company;
         $company->activityType()->associate($activityType);
         $company->type()->associate($type);
         $company->personType()->associate($personType);
-
         $company->save();
 
         return response()->json([
@@ -251,11 +248,9 @@ class CompanyController extends Controller
     }
 
     function update(UpdateCompanyRequest $request, $companyId){
-
         $type = Catalogue::getInstance($request->input('type.id'));
         $activityType = Catalogue::getInstance($request->input('activityType.id'));
         $personType = Catalogue::getInstance($request->input('personType.id'));
-
         $company = Company:: find($companyId);
 
         // Valida que exista el registro, si no encuentra el registro en la base devuelve un mensaje de error

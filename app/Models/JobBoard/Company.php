@@ -2,12 +2,12 @@
 
 namespace App\Models\JobBoard;
 
-use Brick\Math\BigInteger;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
+use Brick\Math\BigInteger;
 use App\Models\Authentication\User;
 use App\Models\App\Catalogue;
 
@@ -28,13 +28,13 @@ class Company extends Model implements Auditable
 
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.companies';
-
     protected $fillable = [
         'trade_name',
         'comercial_activities',
         'web',
     ];
 
+    // Instance
     public static function getInstance($id)
     {
         if (is_null(static::$instance)) {
@@ -44,11 +44,7 @@ class Company extends Model implements Auditable
         return static::$instance;
     }
 
-    public function offers()
-    {
-        return $this->hasMany(Offer::class);
-    }
-
+    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -74,17 +70,15 @@ class Company extends Model implements Auditable
         return $this->belongsToMany(Professional::class)->withTimestamps();
     }
 
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
     // Mutators
     public function setDescriptionAttribute($value)
     {
         $this->attributes['description'] = strtoupper($value);
     }
 
-    // Scopes
-    public function scopeDescription($query, $description)
-    {
-        if ($description) {
-            return $query->where('description', 'ILIKE', "%$description%");
-        }
-    }
 }

@@ -60,9 +60,8 @@ Route::group(['prefix' => 'professional'], function () {
 
 Route::group(['prefix' => 'offer'], function () {
 });
+
 Route::apiResource('professionals',ProfessionalController::class);
-
-
 
 Route::group(['prefix' => 'academic_formation'], function () {
     // ruta para hcer pruebas
