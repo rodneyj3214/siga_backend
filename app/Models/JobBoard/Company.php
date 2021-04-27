@@ -2,6 +2,7 @@
 
 namespace App\Models\JobBoard;
 
+use Brick\Math\BigInteger;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,6 +10,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
 use App\Models\Authentication\User;
 use App\Models\App\Catalogue;
+
+/**
+ * @property BigInteger id
+ * @property string trade_name
+ * @property string comercial_activity
+ * @property string web
+ */
 
 class Company extends Model implements Auditable
 {
@@ -64,5 +72,19 @@ class Company extends Model implements Auditable
     public function professionals()
     {
         return $this->belongsToMany(Professional::class)->withTimestamps();
+    }
+
+    // Mutators
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = strtoupper($value);
+    }
+
+    // Scopes
+    public function scopeDescription($query, $description)
+    {
+        if ($description) {
+            return $query->where('description', 'ILIKE', "%$description%");
+        }
     }
 }

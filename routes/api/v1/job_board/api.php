@@ -23,6 +23,7 @@ Route::apiResources([
     'languages' => LanguageController::class,
     'experiences' => ExperienceController::class,
     'references' => ReferenceController::class,
+    'companies' => CompanyController::class,
 ]);
 
 Route::group(['prefix' => 'skill'], function () {
@@ -46,7 +47,11 @@ Route::group(['prefix' => 'company'], function () {
     // ruta para hcer pruebas
     Route::get('test', function () {
         return 'test';
+
     })->withoutMiddleware(['auth:api']);
+    Route::get('{id}',[CompanyController::class, 'show']);
+    Route::put('{id}',[CompanyController::class, 'update']);
+    Route::post('register',[CompanyController::class, 'register']);
 });
 
 Route::group(['prefix' => 'professional'], function () {
