@@ -22,6 +22,20 @@ class PasswordReset extends Model implements Auditable
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.password_resets';
 
-    protected $fillable = ['username', 'is_valid', 'token'];
+    protected static $instance;
+
+    protected $fillable = [
+        'username', 
+        'is_valid',
+        'token'];
+
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }   
 }
 

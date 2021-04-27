@@ -23,6 +23,9 @@ class Module extends Model implements Auditable
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.modules';
 
+    protected static $instance;
+   
+
     protected $fillable = [
     'code',
     'name',
@@ -32,9 +35,11 @@ class Module extends Model implements Auditable
 
     public static function getInstance($id)
     {
-        $model = new Module();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
 
     public function status()
