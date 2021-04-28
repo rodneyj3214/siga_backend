@@ -20,7 +20,6 @@ class Module extends Model implements Auditable
     use Auditing;
     use SoftDeletes;
 
-
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.modules';
 

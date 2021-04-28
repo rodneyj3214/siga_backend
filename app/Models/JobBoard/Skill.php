@@ -23,6 +23,7 @@ class Skill extends Model implements Auditable
     use SoftDeletes;
 
     protected static $instance;
+
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.skills';
 

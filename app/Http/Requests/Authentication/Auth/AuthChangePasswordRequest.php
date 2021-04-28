@@ -14,21 +14,17 @@ class AuthChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'user.id' => [
-                'required',
-                'integer'
-            ],
-            'user.password' => [
+            'password_old' => [
                 'required'
             ],
-            'user.new_password' => [
+            'password' => [
                 'required',
                 'min:8',
                 'max:30'
             ],
-            'user.password_confirmation' => [
+            'password_confirmation' => [
                 'required',
-                'same:user.new_password'
+                'same:user.password'
             ]
         ];
     }
