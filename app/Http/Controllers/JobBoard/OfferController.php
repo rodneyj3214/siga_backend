@@ -101,6 +101,7 @@ class OfferController extends Controller
                     'code' => '400'
                 ]], 400);
         }
+
         $offer = Offer::find($offerId);
 
         if (!$offer) {
@@ -112,6 +113,7 @@ class OfferController extends Controller
                     'code' => '404'
                 ]], 404);
         }
+
         return response()->json([
             'data' => $offer,
             'msg' => [
