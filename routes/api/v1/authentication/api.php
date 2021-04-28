@@ -40,6 +40,10 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'useradmin'], function () {
     Route::get('users', [UserAdministrationController::class, 'index']);
+    Route::get('users/{usename}', [UserAdministrationController::class, 'show']);
+    Route::post('users', [UserAdministrationController::class, 'store']);
+    Route::put('users/{userId}', [UserAdministrationController::class, 'update']);
+    Route::delete('users/{userId}', [UserAdministrationController::class, 'destroy']);
 });
 
 Route::apiResource('permissions', PermissionController::class);

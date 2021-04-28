@@ -77,26 +77,31 @@ class  UserAdministrationController extends Controller
             ]], 200);
     }
 
-    public function store(UserCreateRequest $request)
+
+    public function store(Request $request)
     {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
-        $data = $request->json()->all();
-        $dataUser = $data['user'];
+
         $user = new User();
+        $user->identification = $request->input('identification');
+        $user->username = $request->input('username');
+        $user->first_name = $request->input('first_name');
+        $user->first_name = $request->input('second_name');
+        $user->first_lastname = $request->input('first_lastname');
+        $user->first_lastname = $request->input('second_lastname');
+        $user->birthdate = $request->input('birthdate');
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user->phone = $request->input('phone');
+        $suer->personal_email = $request->input('personal_email');
 
-        $user->identification = strtoupper(trim($dataUser['identification']));
-        $user->username = trim($dataUser['username']);
-        $user->first_name = $catalogues['catalogue']['civil_status']['married'];
-        $user->first_lastname = strtoupper(trim($dataUser['first_lastname']));
-        $user->birthdate = trim($dataUser['birthdate']);
-        $user->email = strtolower(trim($dataUser['email']));
-        $user->password = Hash::make(trim($dataUser['password']));
-
-        $ethnicOrigin = Catalogue::findOrFail($dataUser['ethnic_origin']['id']);
-        $location = Catalogue::findOrFail($dataUser['location']['id']);
-        $identificationType = Catalogue::findOrFail($dataUser['identification_type']['id']);
-        $sex = Catalogue::findOrFail($dataUser['sex']['id']);
-        $gender = Catalogue::findOrFail($dataUser['gender']['id']);
+        $blood_type = $catalogues['catalogue']['blood_type']['o+'];
+        $civil_status = $catalogues['catalogue']['civil_status']['married'];
+        $ethnicOrigin = $catalogues['catalogue']['ethnic_origin']['mestizo'];
+        $location = $catalogues['catalogue']['location']['country'];
+        $identificationType = $catalogues['catalogue']['identification_type']['cc'];
+        $sex = $catalogues['catalogue']['sex']['male'];
+        $gender = $catalogues['catalogue']['gender']['male'];
         $user->ethnicOrigin()->associate($ethnicOrigin);
         $user->address()->associate($location);
         $user->identificationType()->associate($identificationType);
@@ -114,17 +119,15 @@ class  UserAdministrationController extends Controller
 
     public function update(Request $request,$userId)
     {
-        $data = $request->json()->all();
-        $dataUser = $data['user'];
         $user = User::find($userId);
 
-        $user->identification = $dataUser['identification'];
-        $user->username = strtoupper(trim($dataUser['username']));
-        $user->first_name = strtoupper(trim($dataUser['first_name']));
-        $user->first_lastname = strtoupper(trim($dataUser['first_lastname']));
-        $user->birthdate = trim($dataUser['birthdate']);
-        $user->email = strtolower(trim($dataUser['email']));
-        $user->phone = strtolower(trim($dataUser['email']));
+        $user->identification = $request->input('identification');
+        $user->username = $request->input('username');
+        $user->first_name = $request->input('first_name');
+        $user->first_lastname = $request->input('first_lastname');
+        $user->birthdate = $request->input('birthdate');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
 
         $user->save();
         return response()->json([
