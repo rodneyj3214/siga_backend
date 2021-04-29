@@ -27,9 +27,11 @@ Route::group(['prefix' => 'auth'], function () {
 $middlewares = ['auth:api'];
 
 // With Middleware
-Route::middleware([$middlewares])
+Route::middleware($middlewares)
+    ->prefix('/')
     ->group(function () {
         Route::apiResources([
+            'users' => UserController::class,
             'permissions' => PermissionController::class,
             'routes' => RouteController::class,
             'shortcuts' => ShortcutController::class,
@@ -51,10 +53,11 @@ Route::middleware([$middlewares])
             Route::post('reset-password', [AuthController::class, 'resetPassword']);
             Route::post('unlock', [AuthController::class, 'unlock']);
             Route::put('change-password', [AuthController::class, 'changePassword']);
-            Route::get('transactional-code/{username}', [AuthController::class, 'transactionalCode']);
+            Route::post('transactional-code', [AuthController::class, 'generateTransactionalCode']);
             Route::get('logout', [AuthController::class, 'logout']);
             Route::get('logout-all', [AuthController::class, 'logoutAll']);
             Route::post('permissions', [AuthController::class, 'getPermissions']);
+            Route::get('reset-attempts', [AuthController::class, 'resetAttempts']);
         });
 
 // User Administration
@@ -83,12 +86,12 @@ Route::apiResource('systems', SystemController::class)->withoutMiddleware(['auth
     });
 
 // Without Middleware
-Route::prefix('/')->group(function () {
-    // Auth
-    Route::prefix('auth')->group(function () {
-        Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
-        Route::post('user-unlock', [AuthController::class, 'unlockUser']);
-        Route::get('attempts/{username}', [AuthController::class, 'attempts']);
-        Route::get('reset-attempts/{username}', [AuthController::class, 'resetAttempts']);
+Route::prefix('/')
+    ->group(function () {
+        // Auth
+        Route::prefix('auth')->group(function () {
+            Route::get('validate-attempts/{username}', [AuthController::class, 'validateAttempts']);
+            Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+            Route::post('user-unlock', [AuthController::class, 'unlockUser']);
+        });
     });
-});

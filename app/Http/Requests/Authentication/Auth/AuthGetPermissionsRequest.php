@@ -18,10 +18,6 @@ class AuthGetPermissionsRequest extends FormRequest
             'role' => [
                 'required',
                 'integer'
-            ],
-            'institution' => [
-                'required',
-                'integer'
             ]
         ];
     }
@@ -31,8 +27,6 @@ class AuthGetPermissionsRequest extends FormRequest
         $messages = [
             'role.required' => 'El campo :attribute es obligatorio',
             'role.integer' => 'El campo :attribute debe ser numérico',
-            'institution.required' => 'El campo :attribute es obligatorio',
-            'institution.integer' => 'El campo :attribute debe ser numérico',
         ];
         return AuthenticationFormRequest::messages($messages);
     }
@@ -41,7 +35,6 @@ class AuthGetPermissionsRequest extends FormRequest
     {
         $attributes = [
             'role' => 'role',
-            'institution' => 'institution',
         ];
         return AuthenticationFormRequest::attributes($attributes);
     }

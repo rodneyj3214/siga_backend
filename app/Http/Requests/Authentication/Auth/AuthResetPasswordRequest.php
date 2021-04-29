@@ -16,9 +16,6 @@ class AuthResetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => [
-                'required'
-            ],
             'password' => [
                 'required',
                 'min:8',
@@ -34,7 +31,6 @@ class AuthResetPasswordRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'token.required' => 'El campo :attribute es obligatorio',
             'password.required' => 'El campo :attribute es obligatorio',
             'password.min' => 'El campo :attribute debe tener al menos :min caracteres',
             'password.max' => 'El campo :attribute debe tener maximo :max caracteres',

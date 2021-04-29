@@ -49,7 +49,7 @@ class User extends Authenticatable implements Auditable
         'email',
         'email_verified_at',
         'password',
-        'changed_password',
+        'is_changed_password',
         'attempts'
     ];
 
