@@ -17,7 +17,6 @@ use App\Http\Requests\JobBoard\Course\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
-
     // Devuelve un array de objetos y paginados
     function index(IndexCourseRequest $request)
     {

@@ -5,7 +5,7 @@ namespace App\Http\Requests\JobBoard\Skill;
 use App\Http\Requests\JobBoard\JobBoardFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateSkillRequest extends FormRequest
+class StoreSkillRequest extends FormRequest
 {
     public function authorize()
     {

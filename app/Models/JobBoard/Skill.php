@@ -4,9 +4,10 @@ namespace App\Models\JobBoard;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Brick\Math\BigInteger;
 use App\Models\App\File;
 use App\Models\App\Image;
@@ -16,6 +17,7 @@ use App\Models\App\Catalogue;
  * @property BigInteger id
  * @property string description
  */
+
 class Skill extends Model implements Auditable
 {
     use HasFactory;
@@ -61,6 +63,12 @@ class Skill extends Model implements Auditable
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    // Accessors
+    public function getFullDescriptionAttribute()
+    {
+        return "{$this->attributes['id']}.{$this->attributes['description']}";
+    }
+    
     // Mutators
     public function setDescriptionAttribute($value)
     {
@@ -73,11 +81,5 @@ class Skill extends Model implements Auditable
         if ($description) {
             return $query->where('description', 'ILIKE', "%$description%");
         }
-    }
-
-    // Accessors
-    public function getFullDescriptionAttribute()
-    {
-        return "{$this->attributes['id']}.{$this->attributes['description']}";
     }
 }

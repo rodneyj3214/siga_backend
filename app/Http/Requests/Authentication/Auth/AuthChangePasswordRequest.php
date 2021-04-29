@@ -24,7 +24,7 @@ class AuthChangePasswordRequest extends FormRequest
             ],
             'password_confirmation' => [
                 'required',
-                'same:user.password'
+                'same:password'
             ]
         ];
     }

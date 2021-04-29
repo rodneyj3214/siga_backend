@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Storage;
 
 //$middlewares = ['auth:api', 'check-institution', 'check-role', 'check-status', 'check-attempts', 'check-permissions'];
 $middlewares = ['auth:api'];
+
+// With Middleware
 Route::middleware($middlewares)
     ->group(function () {
+        // index show store update destroy (crud)
         Route::apiResources([
             'catalogues' => SkillController::class,
             'categories' => CategoryController::class,
@@ -31,7 +34,7 @@ Route::middleware($middlewares)
             'professionals' => ProfessionalController::class,
         ]);
 
-        Route::group(['prefix' => 'skill'], function () {
+        Route::prefix('skill')->group(function () {
             // ruta para hcer pruebas
             Route::get('test', [SkillController::class, 'test']);
 
@@ -48,7 +51,7 @@ Route::middleware($middlewares)
             Route::get('file/{file}', [SkillController::class, 'showFile']);
         });
 
-        Route::group(['prefix' => 'company'], function () {
+        Route::prefix('company')->group( function () {
             // ruta para hcer pruebas
             Route::get('test', function () {
                 return 'test';
@@ -59,46 +62,63 @@ Route::middleware($middlewares)
             Route::post('register', [CompanyController::class, 'register']);
         });
 
-        Route::group(['prefix' => 'professional'], function () {
-            Route::get('test', [ProfessionalController::class, 'test']);
+        Route::prefix('professional')->group(function () {
+            Route::get('test', function () {
+                return 'test';
+            });
         });
 
-        Route::group(['prefix' => 'offer'], function () {
+        Route::prefix('offer')->group(function () {
+            Route::get('test', function () {
+                return 'test';
+            });
         });
 
-        Route::group(['prefix' => 'academic_formation'], function () {
+        Route::prefix('academic_formation')->group(function () {
             // ruta para hcer pruebas
             Route::get('test', function () {
                 return 'test';
-            })->withoutMiddleware(['auth:api']);
+            });
         });
 
-        Route::group(['prefix' => 'course'], function () {
+        Route::prefix('course')->group(function () {
             // ruta para hcer pruebas
             Route::get('test', function () {
                 return 'test';
-            })->withoutMiddleware(['auth:api']);
+            });
         });
 
-        Route::group(['prefix' => 'language'], function () {
+        Route::prefix('language')->group(function () {
             // ruta para hcer pruebas
             Route::get('test', function () {
                 return 'test';
-            })->withoutMiddleware(['auth:api']);
+            });
         });
 
-        Route::group(['prefix' => 'experience'], function () {
+        Route::prefix('experience')->group(function () {
             // ruta para hcer pruebas
             Route::get('test', function () {
                 return 'test';
-            })->withoutMiddleware(['auth:api']);
+            });
         });
 
-        Route::group(['prefix' => 'reference'], function () {
+        Route::prefix('reference')->group(function () {
             // ruta para hcer pruebas
             Route::get('test', function () {
                 return 'test';
-            })->withoutMiddleware(['auth:api']);
+            });
+        });
+    });
+
+// Without Middleware
+Route::prefix('/')
+    ->group(function () {
+        // ruta para hcer pruebas
+        Route::prefix('test')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
+            });
         });
     });
 

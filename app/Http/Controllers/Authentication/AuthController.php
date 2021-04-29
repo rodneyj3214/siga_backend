@@ -29,7 +29,8 @@ use Illuminate\Support\Str;
 
 class  AuthController extends Controller
 {
-    public function validateAttempts($username){
+    public function validateAttempts($username)
+    {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
 
         $user = User::firstWhere('username', $username);
@@ -44,7 +45,7 @@ class  AuthController extends Controller
                 ]], 404);
         }
 
-        $user->attempts =$user->attempts - 1;
+        $user->attempts = $user->attempts - 1;
         $user->save();
 
         if ($user->attempts <= 0) {
@@ -70,7 +71,8 @@ class  AuthController extends Controller
             ]], 401);
     }
 
-    public function resetAttempts(Request $request){
+    public function resetAttempts(Request $request)
+    {
         $user = $request->user();
 
         if (!$user) {
@@ -95,7 +97,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $request->user()->token()->revoke();
 
         return response()->json([
@@ -107,7 +110,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function logoutAll(Request $request){
+    public function logoutAll(Request $request)
+    {
         DB::table('oauth_access_tokens')
             ->where('user_id', $request->user()->id)
             ->update([
@@ -123,7 +127,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function changePassword(AuthChangePasswordRequest $request){
+    public function changePassword(AuthChangePasswordRequest $request)
+    {
 
         $user = $request->user();
 
@@ -137,18 +142,18 @@ class  AuthController extends Controller
                 ]], 404);
         }
 
-        if (!Hash::check(trim($request->input('user.password_old')), $user->password)) {
+        if (!Hash::check(trim($request->input('password_old')), $user->password)) {
             return response()->json([
                 'data' => null,
                 'msg' => [
-                    'summary' => 'La contraseña actual no coincide con la nueva contraseña',
+                    'summary' => 'La contraseña actual no coincide con la contraseña enviada',
                     'detail' => 'Intente de nuevo',
                     'code' => '400'
                 ]], 400);
         }
 
-        $user->password=Hash::make(trim($request->input('user.password')));
-        $user->changed_password=true;
+        $user->password = Hash::make(trim($request->input('password')));
+        $user->is_changed_password = true;
         $user->save();
 
         return response()->json([
@@ -160,7 +165,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function forgotPassword(AuthForgotPasswordRequest $request){
+    public function forgotPassword(AuthForgotPasswordRequest $request)
+    {
         $user = User::where('username', $request->input('username'))
             ->orWhere('email', $request->input('username'))
             ->orWhere('personal_email', $request->input('username'))
@@ -199,7 +205,8 @@ class  AuthController extends Controller
     }
 
     // revisar nombre
-    public function unlockUser(AuthUnlockUserRequest $request){
+    public function unlockUser(AuthUnlockUserRequest $request)
+    {
         $user = User::where('username', $request->input('username'))
             ->orWhere('email', $request->input('username'))
             ->orWhere('personal_email', $request->input('username'))
@@ -235,7 +242,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function generateTransactionalCode(Request $request){
+    public function generateTransactionalCode(Request $request)
+    {
         $user = $request->user();
 
         if (!$user) {
@@ -269,7 +277,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function resetPassword(AuthResetPasswordRequest $request){
+    public function resetPassword(AuthResetPasswordRequest $request)
+    {
         $passworReset = PasswordReset::where('token', $request->token)->first();
 
         if (!$passworReset) {
@@ -326,7 +335,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function unlock(AuthUnlockRequest $request){
+    public function unlock(AuthUnlockRequest $request)
+    {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         $userUnlock = UserUnlock::where('token', $request->token)->first();
         if (!$userUnlock) {
@@ -382,7 +392,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function verifyTransactionalCode(AuthUnlockRequest $request){
+    public function verifyTransactionalCode(AuthUnlockRequest $request)
+    {
         $transactionalCode = TransactionalCode::firstWhere('token', $request->token);
 
         if (!$transactionalCode) {
@@ -433,7 +444,8 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    private function hiddenStringEmail($email, $start = 3){
+    private function hiddenStringEmail($email, $start = 3)
+    {
         $end = strlen($email) - strpos($email, "@");
         $len = strlen($email);
         return substr($email, 0, $start) . str_repeat('*', $len - ($start + $end)) . substr($email, $len - $end, $end);
@@ -448,7 +460,7 @@ class  AuthController extends Controller
             ->where('system_id', $request->input('system'))
             ->get();
 
-        if(sizeof($roles)===0){
+        if (sizeof($roles) === 0) {
 
         }
 
@@ -465,8 +477,14 @@ class  AuthController extends Controller
     {
         $role = Role::find($request->input('role'));
 
-        if(!$role){
-
+        if (!$role) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Rol no encontrado',
+                    'detail' => 'Vuelva a intentar',
+                    'code' => '404'
+                ]], 404);
         }
 
         $permissions = $role->permissions()
@@ -474,7 +492,6 @@ class  AuthController extends Controller
                 $route->with('module')->with('type')->with('status');
             }])
             ->with('institution')
-            ->where('institution_id', $request->input('institution'))
             ->get();
         return response()->json([
             'data' => $permissions,
