@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\JobBoard;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Offer;
 use App\Models\App\Status;
-
+use App\Models\App\Catalogue;
+use App\Models\App\Location;
 use App\Http\Requests\JobBoard\Offer\IndexOfferRequest;
 use App\Http\Requests\JobBoard\Offer\CreateOfferRequest;
 use App\Http\Requests\JobBoard\Offer\UpdateOfferRequest;
+use Illuminate\Database\Eloquent\Model;
 
 class OfferController extends Controller
 {
@@ -20,6 +21,8 @@ class OfferController extends Controller
 
         if ($request->has('search')) {
             $offer = $company->offers()
+                ->aditional_information($request->input('search'))
+                ->code($request->input('search'))
                 ->description($request->input('search'))
                 ->get();
         } else {
@@ -42,7 +45,7 @@ class OfferController extends Controller
     function store(CreateOfferRequest $request)
     {
         $company = Company::getInstance($request->input('company.id'));
-        $location = Catalogue::getInstance($request->input('location.id'));
+        $location = Location::getInstance($request->input('location.id'));
         $contractType = Catalogue::getInstance($request->input('contractType.id'));
         $position = Catalogue::getInstance($request->input('position.id'));
         $sector = Catalogue::getInstance($request->input('sector.id'));
@@ -51,8 +54,10 @@ class OfferController extends Controller
         $trainingHours = Catalogue::getInstance($request->input('trainingHours.id'));
         $status = Status::getInstance($request->input('status.id'));
 
+        $lastOffer = Offer::orderBy('id', 'desc')->first();
+
         $offer = new Offer();
-        $offer->code = $request->input('offer.code');
+        $offer->code = $lastOffer ? ($lastOffer->code + 1) : 1;
         $offer->description = $request->input('offer.description');
         $offer->contact_name = $request->input('offer.contact_name');
         $offer->contact_email = $request->input('offer.contact_email');
@@ -60,6 +65,7 @@ class OfferController extends Controller
         $offer->end_date = $request->input('offer.end_date');
         $offer->activities = $request->input('offer.activities');
         $offer->requirements = $request->input('offer.requirements');
+        $offer->company()->associate($company);
         $offer->location()->associate($location);
         $offer->contractType()->associate($contractType);
         $offer->position()->associate($position);
@@ -70,13 +76,18 @@ class OfferController extends Controller
         $offer->status()->associate($status);
         $offer->save();
 
+        foreach ($request->input('categories') as $category) {
+            $offer->categories()->attach($category);
+        }
+
         return response()->json([
             'data' => $offer,
             'msg' => [
                 'summary' => 'Oferta creada',
                 'detail' => 'El registro fue creado',
                 'code' => '201'
-            ]], 201);
+            ]
+        ], 201);
     }
 
     function show($offerId)
@@ -90,6 +101,7 @@ class OfferController extends Controller
                     'code' => '400'
                 ]], 400);
         }
+
         $offer = Offer::find($offerId);
 
         if (!$offer) {
@@ -101,6 +113,7 @@ class OfferController extends Controller
                     'code' => '404'
                 ]], 404);
         }
+
         return response()->json([
             'data' => $offer,
             'msg' => [
@@ -112,7 +125,12 @@ class OfferController extends Controller
 
     function update(UpdateOfferRequest $request, $offerId)
     {
-        $location = Catalogue::getInstance($request->input('location.id'));
+        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
+        $offer = Offer::find($offerId);
+        $offer->status()->associate(Status::firstWhere('code', $catalogues['status']['paused']));
+        $offer->save();
+
+        $location = Location::getInstance($request->input('location.id'));
         $contractType = Catalogue::getInstance($request->input('contractType.id'));
         $position = Catalogue::getInstance($request->input('position.id'));
         $sector = Catalogue::getInstance($request->input('sector.id'));

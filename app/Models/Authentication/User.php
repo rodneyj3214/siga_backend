@@ -2,6 +2,10 @@
 
 namespace App\Models\Authentication;
 
+
+// Laravel
+use App\Models\App\Address;
+use App\Models\JobBoard\Professional;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -16,7 +20,7 @@ use App\Models\App\Institution;
 use App\Models\App\Teacher;
 use App\Models\App\Status;
 use App\Models\App\File;
-use App\Models\JobBoard\Professional;
+
 
 class User extends Authenticatable implements Auditable
 {
@@ -49,7 +53,8 @@ class User extends Authenticatable implements Auditable
         'attempts'
     ];
 
-    protected $appends = ['full_name','parcial_name'];
+    protected $appends = ['full_name', 'parcial_name'];
+
 
     protected $hidden = [
         'password', 'remember_token',
@@ -157,7 +162,6 @@ class User extends Authenticatable implements Auditable
     }
 
     //Accessors
-
     public function getFullNameAttribute()
     {
         return "{$this->attributes['first_name']} {$this->attributes['second_name']} {$this->attributes['first_lastname']} {$this->attributes['second_lastname']}";
@@ -167,7 +171,6 @@ class User extends Authenticatable implements Auditable
     {
         return "{$this->attributes['first_name']} {$this->attributes['first_lastname']}";
     }
-
     // Scopes
 
     public function scopeEmail($query, $email)

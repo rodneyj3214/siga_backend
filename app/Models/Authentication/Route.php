@@ -33,7 +33,6 @@ class Route extends Model implements Auditable
         'icon',
         'order',
         'logo',
-        'state'
     ];
 
     

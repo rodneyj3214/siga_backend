@@ -10,8 +10,8 @@ class CreateJobboardCategoryOfferTable extends Migration
     {
         Schema::connection('pgsql-job-board')->create('category_offer', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('job_board.categories');;
-            $table->foreignId('offer_id')->constrained('job_board.offers');;
+            $table->foreignId('category_id')->constrained('job_board.categories');
+            $table->foreignId('offer_id')->constrained('job_board.offers');
             $table->timestamps();
         });
     }
