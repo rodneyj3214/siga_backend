@@ -2,6 +2,10 @@
 
 namespace App\Models\Authentication;
 
+
+// Laravel
+use App\Models\App\Address;
+use App\Models\JobBoard\Professional;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -16,7 +20,7 @@ use App\Models\App\Institution;
 use App\Models\App\Teacher;
 use App\Models\App\Status;
 use App\Models\App\File;
-use App\Models\JobBoard\Professional;
+
 
 class User extends Authenticatable implements Auditable
 {
@@ -32,24 +36,25 @@ class User extends Authenticatable implements Auditable
     const ATTEMPTS = 3;
 
     protected $fillable = [
-        'identification', //s
-        'first_name', //s
-        'second_name', //s
-        'first_lastname', //s
-        'second_lastname', //s
+        'identification',
+        'first_name',
+        'second_name',
+        'first_lastname',
+        'second_lastname',
         'personal_email',
         'birthdate',
         'avatar',
         'username',
         'phone',
-        'email', //s
+        'email',
         'email_verified_at',
         'password',
-        'changed_password',
+        'is_changed_password',
         'attempts'
     ];
 
-    protected $appends = ['full_name','parcial_name'];
+    protected $appends = ['full_name', 'parcial_name'];
+
 
     protected $hidden = [
         'password', 'remember_token',
@@ -75,79 +80,10 @@ class User extends Authenticatable implements Auditable
     }
 
     // Relationships
-    public function professional()
-    {
-        $this->hasOne(Professional::class);
-    }
-
-    public function securityQuestions()
-    {
-        $this->belongsToMany(SecurityQuestion::class)->withPivot('answer')->withTimestamps();
-    }
-
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
-
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
-
-    public function teacher()
-    {
-        return $this->hasOne(Teacher::class);
-    }
-
-    public function ethnicOrigin()
-    {
-        return $this->belongsTo(Catalogue::class);
-    }
 
     public function Address()
     {
         return $this->belongsTo(Address::class);
-    }
-
-    public function identificationType()
-    {
-        return $this->belongsTo(Catalogue::class);
-    }
-
-    public function sex()
-    {
-        return $this->belongsTo(Catalogue::class);
-    }
-
-    public function gender()
-    {
-        return $this->belongsTo(Catalogue::class);
-    }
-
-    public function bloodType()
-    {
-        return $this->belongsTo(Catalogue::class);
-    }
-
-    public function images()
-    {
-        return $this->morphMany(Image::class, 'imageable');
-    }
-
-    public function files()
-    {
-        return $this->morphMany(File::class, 'fileable');
-    }
-
-    public function institutions()
-    {
-        return $this->morphToMany(Institution::class, 'institutionable', 'app.institutionables');
     }
 
     public function administrativeStaff()
@@ -155,8 +91,77 @@ class User extends Authenticatable implements Auditable
         return $this->hasOne(AdministrativeStaff::class);
     }
 
-    //Accessors
+    public function bloodType()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
 
+    public function ethnicOrigin()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function identificationType()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+        public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function institutions()
+    {
+        return $this->morphToMany(Institution::class, 'institutionable', 'app.institutionables');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function professional()
+    {
+        $this->hasOne(Professional::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function securityQuestions()
+    {
+        $this->belongsToMany(SecurityQuestion::class)->withPivot('answer')->withTimestamps();
+    }
+
+    public function sex()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+    //Accessors
     public function getFullNameAttribute()
     {
         return "{$this->attributes['first_name']} {$this->attributes['second_name']} {$this->attributes['first_lastname']} {$this->attributes['second_lastname']}";
@@ -166,6 +171,48 @@ class User extends Authenticatable implements Auditable
     {
         return "{$this->attributes['first_name']} {$this->attributes['first_lastname']}";
     }
-
     // Scopes
+
+    public function scopeEmail($query, $email)
+    {
+        if ($email) {
+            return $query->where('email', 'ILIKE', "%$email%");
+        }
+    }
+
+    public function scopeFirstLastName($query, $first_lastname)
+    {
+        if ($first_lastname) {
+            return $query->orWhere('first_lastname', 'ILIKE', "%$first_lastname%");
+        }
+    } 
+
+    public function scopeFirstName($query, $first_name)
+    {
+        if ($first_name) {
+            return $query->orWhere('first_name', 'ILIKE', "%$first_name%");
+        }
+    }
+
+    public function scopeIdentification($query, $identification)
+    {
+        if ($identification) {
+            return $query->orWhere('identification', 'ILIKE', "%$identification%");
+        }
+    }
+
+    public function scopeSecondLastName($query, $second_lastname)
+    {
+        if ($second_lastname) {
+            return $query->orWhere('second_lastname', 'ILIKE', "%$second_lastname%");
+        }
+    }
+
+    public function scopeSecondName($query, $second_name)
+    {
+        if ($second_name) {
+            return $query->orWhere('second_name', 'ILIKE', "%$second_name%");
+        }
+    }
+
 }

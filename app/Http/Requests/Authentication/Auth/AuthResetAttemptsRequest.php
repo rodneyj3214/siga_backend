@@ -5,7 +5,7 @@ namespace App\Http\Requests\Authentication\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
-class AuthGetPermissionsRequest extends FormRequest
+class ResetAttemptsRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,9 +15,8 @@ class AuthGetPermissionsRequest extends FormRequest
     public function rules()
     {
         return [
-            'role' => [
-                'required',
-                'integer'
+            'token' => [
+                'required'
             ]
         ];
     }
@@ -25,8 +24,8 @@ class AuthGetPermissionsRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'role.required' => 'El campo :attribute es obligatorio',
-            'role.integer' => 'El campo :attribute debe ser numérico',
+            'token.required' => 'El campo :attribute es obligatorio',
+           
         ];
         return AuthenticationFormRequest::messages($messages);
     }
@@ -34,7 +33,8 @@ class AuthGetPermissionsRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'role' => 'role',
+            'token' => 'usuario',
+           
         ];
         return AuthenticationFormRequest::attributes($attributes);
     }

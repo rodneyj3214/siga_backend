@@ -8,12 +8,13 @@ use App\Http\Controllers\App\FileController;
 use App\Http\Controllers\App\ImageController;
 
 // Models
+use App\Http\Requests\JobBoard\Skill\StoreSkillRequest;
 use App\Models\App\Catalogue;
+use App\Models\JobBoard\Company;
 use App\Models\JobBoard\Professional;
 use App\Models\JobBoard\Skill;
 
 // FormRequest
-use App\Http\Requests\JobBoard\Skill\CreateSkillRequest;
 use App\Http\Requests\JobBoard\Skill\IndexSkillRequest;
 use App\Http\Requests\JobBoard\Skill\UpdateSkillRequest;
 use App\Http\Requests\App\Image\UpdateImageRequest;
@@ -26,30 +27,30 @@ use App\Http\Requests\App\Image\IndexImageRequest;
 class SkillController extends Controller
 {
     function index(IndexSkillRequest $request)
-    {
-        // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
-        $professional = Professional::getInstance($request->input('professional_id'));
+{
+    // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
+    $professional = Professional::getInstance($request->input('professional_id'));
 
-        if ($request->has('search')) {
-            $skills = $professional->skills()
-                ->description($request->input('search'))
-                ->get();
-        } else {
-            $skills = $professional->skills()->paginate($request->input('per_page'));
-        }
-
-        if (sizeof($skills) === 0) {
-            return response()->json([
-                'data' => null,
-                'msg' => [
-                    'summary' => 'No se encontraron Habilidades',
-                    'detail' => 'Intente de nuevo',
-                    'code' => '404'
-                ]], 404);
-        }
-
-        return response()->json($skills, 200);
+    if ($request->has('search')) {
+        $skills = $professional->skills()
+            ->description($request->input('search'))
+            ->paginate($request->input('per_page'));
+    } else {
+        $skills = $professional->skills()->paginate($request->input('per_page'));
     }
+
+    if (sizeof($skills) === 0) {
+        return response()->json([
+            'data' => null,
+            'msg' => [
+                'summary' => 'No se encontraron Habilidades',
+                'detail' => 'Intente de nuevo',
+                'code' => '404'
+            ]], 404);
+    }
+
+    return response()->json($skills, 200);
+}
 
     function show($skillId)
     {
@@ -75,6 +76,7 @@ class SkillController extends Controller
                     'code' => '404'
                 ]], 404);
         }
+
         return response()->json([
             'data' => $skill,
             'msg' => [
@@ -84,7 +86,7 @@ class SkillController extends Controller
             ]], 200);
     }
 
-    function store(CreateSkillRequest $request)
+    function store(StoreSkillRequest $request)
     {
         // Crea una instanacia del modelo Professional para poder insertar en el modelo skill.
         $professional = Professional::getInstance($request->input('professional.id'));

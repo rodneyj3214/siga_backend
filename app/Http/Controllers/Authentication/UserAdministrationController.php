@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Authentication;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\User\UserCreateRequest;
+use App\Http\Requests\Authentication\UserAdministration\UserAdminIndexRequest;
 use App\Http\Requests\Authentication\UserRequest;
 use App\Models\Authentication\PassworReset;
 use App\Models\Authentication\Role;
@@ -16,51 +17,38 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class  UserAdministrationController extends Controller
-{
+{ 
     public function index(Request $request)
     {
-        if ($request->has('conditions') && $request->conditions && $request->conditions != 'undefined') {
-            $users = User::where(function ($query) use ($request) {
-                $query->orWhere($this->filter($request->conditions));
-            })
-                ->whereHas('institutions', function ($institutions) use ($request) {
-                    $institutions->where('institutions.id', $request->institution_id);
-                })
-                ->with(['institutions' => function ($institutions) {
-                    $institutions->orderBy('name');
-                }])
-                ->with(['roles' => function ($roles) use ($request) {
-                    $roles
-                        ->with('system')
-                        ->with(['permissions' => function ($permissions) {
-                            $permissions->with(['route' => function ($route) {
-                                $route->with('module')->with('type')->with('images')->with('status');
-                            }])->with('institution');
-                        }]);
-                }])
-                ->orderBy('first_lastname')
-                ->paginate($request->per_page);
-        } else {
-            $users = User::
-            whereHas('institutions', function ($institutions) use ($request) {
-                $institutions->where('institutions.id', $request->institution);
-            })
-                ->with(['institutions' => function ($institutions) {
-                    $institutions->orderBy('name');
-                }])
-                ->with(['roles' => function ($roles) use ($request) {
-                    $roles
-                        ->with('system')
-                        ->with(['permissions' => function ($permissions) {
-                            $permissions->with(['route' => function ($route) {
-                                $route->with('module')->with('type')->with('images')->with('status');
-                            }])->with('institution');
-                        }]);
-                }])
-                ->orderBy('first_lastname')
-                ->paginate($request->per_page);
+        if ($request->has('search')) {
+            $users = User::email($request->input('search'))
+            ->firstlastname($request->input('search'))
+            ->firstname($request->input('search'))
+            ->identification($request->input('search'))
+            ->secondlastname($request->input('search'))
+            ->secondname($request->input('search'))
+            ->get();
+        }else{
+            $users = User::paginate($request->input('per_page'));
         }
-        return response()->json($users, 200);
+
+        if(sizeof($users)===0){
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'No se encontraron usuarios',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '404'
+                ]], 404);
+        }else{
+            return response()->json([
+                'data' => $users,
+                'msg' => [
+                    'summary' => 'success',
+                    'detail' => '',
+                    'code' => '200'
+                ]], 200);
+        }
     }
 
     public function show($username, Request $request)
@@ -89,26 +77,31 @@ class  UserAdministrationController extends Controller
             ]], 200);
     }
 
-    public function store(UserCreateRequest $request)
+
+    public function store(Request $request)
     {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
-        $data = $request->json()->all();
-        $dataUser = $data['user'];
+
         $user = new User();
+        $user->identification = $request->input('identification');
+        $user->username = $request->input('username');
+        $user->first_name = $request->input('first_name');
+        $user->first_name = $request->input('second_name');
+        $user->first_lastname = $request->input('first_lastname');
+        $user->first_lastname = $request->input('second_lastname');
+        $user->birthdate = $request->input('birthdate');
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user->phone = $request->input('phone');
+        $suer->personal_email = $request->input('personal_email');
 
-        $user->identification = strtoupper(trim($dataUser['identification']));
-        $user->username = trim($dataUser['username']);
-        $user->first_name = $catalogues['catalogue']['civil_status']['married'];
-        $user->first_lastname = strtoupper(trim($dataUser['first_lastname']));
-        $user->birthdate = trim($dataUser['birthdate']);
-        $user->email = strtolower(trim($dataUser['email']));
-        $user->password = Hash::make(trim($dataUser['password']));
-
-        $ethnicOrigin = Catalogue::findOrFail($dataUser['ethnic_origin']['id']);
-        $location = Catalogue::findOrFail($dataUser['location']['id']);
-        $identificationType = Catalogue::findOrFail($dataUser['identification_type']['id']);
-        $sex = Catalogue::findOrFail($dataUser['sex']['id']);
-        $gender = Catalogue::findOrFail($dataUser['gender']['id']);
+        $blood_type = $catalogues['catalogue']['blood_type']['o+'];
+        $civil_status = $catalogues['catalogue']['civil_status']['married'];
+        $ethnicOrigin = $catalogues['catalogue']['ethnic_origin']['mestizo'];
+        $location = $catalogues['catalogue']['location']['country'];
+        $identificationType = $catalogues['catalogue']['identification_type']['cc'];
+        $sex = $catalogues['catalogue']['sex']['male'];
+        $gender = $catalogues['catalogue']['gender']['male'];
         $user->ethnicOrigin()->associate($ethnicOrigin);
         $user->address()->associate($location);
         $user->identificationType()->associate($identificationType);
@@ -126,17 +119,15 @@ class  UserAdministrationController extends Controller
 
     public function update(Request $request,$userId)
     {
-        $data = $request->json()->all();
-        $dataUser = $data['user'];
         $user = User::find($userId);
 
-        $user->identification = $dataUser['identification'];
-        $user->username = strtoupper(trim($dataUser['username']));
-        $user->first_name = strtoupper(trim($dataUser['first_name']));
-        $user->first_lastname = strtoupper(trim($dataUser['first_lastname']));
-        $user->birthdate = trim($dataUser['birthdate']);
-        $user->email = strtolower(trim($dataUser['email']));
-        $user->phone = strtolower(trim($dataUser['email']));
+        $user->identification = $request->input('identification');
+        $user->username = $request->input('username');
+        $user->first_name = $request->input('first_name');
+        $user->first_lastname = $request->input('first_lastname');
+        $user->birthdate = $request->input('birthdate');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
 
         $user->save();
         return response()->json([

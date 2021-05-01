@@ -32,7 +32,7 @@ class CreateAuthUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('changed_password')->default(false);
+            $table->boolean('is_changed_password')->default(false);
             $table->integer('attempts')->default(\App\Models\Authentication\User::ATTEMPTS);
             $table->rememberToken();
             $table->softDeletes();

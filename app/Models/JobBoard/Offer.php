@@ -9,6 +9,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
 use App\Models\App\Catalogue;
 use App\Models\App\Status;
+use App\Models\App\Location;
 
 /**
  * @property BigInteger id
@@ -36,7 +37,6 @@ class Offer extends Model implements Auditable
 
     protected $connection = 'pgsql-job-board';
     protected $table = 'job_board.offers';
-
     protected $fillable = [
         'code',
         'description',
@@ -50,12 +50,14 @@ class Offer extends Model implements Auditable
         'end_date',
         'aditional_information',
     ];
+    protected $with = ['categories'];
 
     protected $casts = [
         'activities' => 'array',
         'requirements' => 'array',
     ];
 
+    // Instance
     public static function getInstance($id)
     {
         if (is_null(static::$instance)) {
@@ -63,6 +65,12 @@ class Offer extends Model implements Auditable
         }
         static::$instance->id = $id;
         return static::$instance;
+    }
+
+    // Relationships
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
     public function company()
@@ -109,5 +117,28 @@ class Offer extends Model implements Auditable
     {
         return $this->belongsTo(Status::class);
     }
+
+    // Scopes
+    public function scopeAditionalInformation($query, $aditionalInformation)
+    {
+        if ($aditionalInformation) {
+            return $query->where('aditional_information', 'ILIKE', "%$aditionalInformation%");
+        }
+    }
+
+    public function scopeCode($query, $code)
+    {
+        if ($code) {
+            return $query->orWhere('code', 'ILIKE', "%$code%");
+        }
+    }
+
+    public function scopeDescription($query, $description)
+    {
+        if ($description) {
+            return $query->orWhere('description', 'ILIKE', "%$description%");
+        }
+    }
+
 
 }

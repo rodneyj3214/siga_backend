@@ -13,85 +13,112 @@ use App\Http\Controllers\JobBoard\ExperienceController;
 use App\Http\Controllers\JobBoard\ReferenceController;
 use Illuminate\Support\Facades\Storage;
 
-Route::apiResources([
-    'catalogues' => SkillController::class,
-    'categories' => CategoryController::class,
-    'offers' => OfferController::class,
-    'skills' => SkillController::class,
-    'academic-formations' => AcademicFormationController::class,
-    'courses' => CourseController::class,
-    'languages' => LanguageController::class,
-    'experiences' => ExperienceController::class,
-    'references' => ReferenceController::class,
-]);
+//$middlewares = ['auth:api', 'check-institution', 'check-role', 'check-status', 'check-attempts', 'check-permissions'];
+$middlewares = ['auth:api'];
 
-Route::group(['prefix' => 'skill'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return \App\Models\JobBoard\Skill::find(1);
-    })->withoutMiddleware(['auth:api']);
+// With Middleware
+Route::middleware($middlewares)
+    ->group(function () {
+        // index show store update destroy (crud)
+        Route::apiResources([
+            'catalogues' => SkillController::class,
+            'categories' => CategoryController::class,
+            'offers' => OfferController::class,
+            'skills' => SkillController::class,
+            'academic-formations' => AcademicFormationController::class,
+            'courses' => CourseController::class,
+            'languages' => LanguageController::class,
+            'experiences' => ExperienceController::class,
+            'references' => ReferenceController::class,
+            'companies' => CompanyController::class,
+            'professionals' => ProfessionalController::class,
+        ]);
 
-    Route::post('image', [SkillController::class, 'uploadImages']);
-    Route::post('image/{image}', [SkillController::class, 'updateImage']);
-    Route::delete('image/{image}', [SkillController::class, 'deleteImage']);
-    Route::get('image', [SkillController::class, 'indexImage']);
-    Route::get('image/{image}', [SkillController::class, 'showImage']);
+        Route::prefix('skill')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', [SkillController::class, 'test']);
 
-    Route::post('file', [SkillController::class, 'uploadFiles']);
-    Route::post('file/{image}', [SkillController::class, 'updateFile']);
-    Route::delete('file/{image}', [SkillController::class, 'deleteFile']);
-    Route::get('file', [SkillController::class, 'indexFile']);
-    Route::get('file/{file}', [SkillController::class, 'showFile']);
-});
+            Route::post('image', [SkillController::class, 'uploadImages']);
+            Route::post('image/{image}', [SkillController::class, 'updateImage']);
+            Route::delete('image/{image}', [SkillController::class, 'deleteImage']);
+            Route::get('image', [SkillController::class, 'indexImage']);
+            Route::get('image/{image}', [SkillController::class, 'showImage']);
 
-Route::group(['prefix' => 'company'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
-});
+            Route::post('file', [SkillController::class, 'uploadFiles']);
+            Route::post('file/{image}', [SkillController::class, 'updateFile']);
+            Route::delete('file/{image}', [SkillController::class, 'deleteFile']);
+            Route::get('file', [SkillController::class, 'indexFile']);
+            Route::get('file/{file}', [SkillController::class, 'showFile']);
+        });
 
-Route::group(['prefix' => 'professional'], function () {
-    Route::get('test', [ProfessionalController::class, 'test']);
-});
+        Route::prefix('company')->group( function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
 
-Route::group(['prefix' => 'offer'], function () {
-});
-Route::apiResource('professionals',ProfessionalController::class);
+            })->withoutMiddleware(['auth:api']);
+            Route::get('{id}', [CompanyController::class, 'show']);
+            Route::put('{id}', [CompanyController::class, 'update']);
+            Route::post('register', [CompanyController::class, 'register']);
+        });
 
+        Route::prefix('professional')->group(function () {
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
 
+        Route::prefix('offer')->group(function () {
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
 
-Route::group(['prefix' => 'academic_formation'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
-});
+        Route::prefix('academic_formation')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
 
-Route::group(['prefix' => 'course'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
-});
+        Route::prefix('course')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
 
-Route::group(['prefix' => 'language'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
-});
+        Route::prefix('language')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
 
-Route::group(['prefix' => 'experience'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
-});
+        Route::prefix('experience')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
 
-Route::group(['prefix' => 'reference'], function () {
-    // ruta para hcer pruebas
-    Route::get('test', function () {
-        return 'test';
-    })->withoutMiddleware(['auth:api']);
-});
+        Route::prefix('reference')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
+    });
+
+// Without Middleware
+Route::prefix('/')
+    ->group(function () {
+        // ruta para hcer pruebas
+        Route::prefix('test')->group(function () {
+            // ruta para hcer pruebas
+            Route::get('test', function () {
+                return 'test';
+            });
+        });
+    });
+

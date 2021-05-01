@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\JobBoard\Offer;
+
+namespace App\Http\Requests\JobBoard\Company;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\JobBoard\JobBoardFormRequest;
 
-class IndexOfferRequest extends FormRequest
+class IndexCompanyRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,9 +16,9 @@ class IndexOfferRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'company.id' => [
+            'company_id' => [
                 'required',
-                'integer',
+                'integer'
             ],
         ];
         return JobBoardFormRequest::rules($rules);
@@ -26,8 +27,8 @@ class IndexOfferRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'company.id.required' => 'El campo :company.id es obligatorio',
-            'company.id.integer' => 'El campo :company.id debe ser numérico',
+            'company_id.required' => 'El campo :attribute es obligatorio',
+            'company_id.integer' =>'El campo :attribute debe ser numérico',
         ];
         return JobBoardFormRequest::messages($messages);
     }
@@ -35,7 +36,7 @@ class IndexOfferRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'company.id' => 'compania-id',
+            'company_id' => 'empresa-ID',
         ];
         return JobBoardFormRequest::attributes($attributes);
     }

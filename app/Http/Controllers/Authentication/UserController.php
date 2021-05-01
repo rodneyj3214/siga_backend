@@ -21,7 +21,7 @@ class  UserController extends Controller
     {
         $user = User::
         with('ethnicOrigin')
-            ->with('location')
+            ->with('address')
             ->with('identificationType')
             ->with('sex')
             ->with('gender')
