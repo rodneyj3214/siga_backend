@@ -9,20 +9,7 @@ use App\Http\Controllers\Authentication\RouteController;
 use App\Http\Controllers\Authentication\ShortcutController;
 use App\Http\Controllers\Authentication\SystemController;
 use App\Http\Controllers\Authentication\UserAdministrationController;
-use Illuminate\Support\Facades\Route;
 
-
-
-// Without Authentication
-Route::group(['prefix' => 'auth'], function () {
-    Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::post('user-unlock', [AuthController::class, 'unlockUser'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::post('reset-password', [AuthController::class, 'resetPassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::post('unlock', [AuthController::class, 'unlock'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::get('attempts/{username}', [AuthController::class, 'attempts'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::put('change-password', [AuthController::class, 'changePassword'])->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
-    Route::get('reset-attempts/{username}', [AuthController::class, 'resetAttempts'])->withoutMiddleware(['check-institution', 'check-role', 'check-permissions']);
-});
 //$middlewares = ['auth:api', 'check-institution', 'check-role', 'check-status', 'check-attempts', 'check-permissions'];
 $middlewares = ['auth:api'];
 
@@ -50,8 +37,6 @@ Route::middleware($middlewares)
         Route::prefix('auth')->group(function () {
             Route::get('roles', [AuthController::class, 'getRoles'])->withoutMiddleware(['check-permissions']);
             Route::get('permissions', [AuthController::class, 'getPermissions']);
-            Route::post('reset-password', [AuthController::class, 'resetPassword']);
-            Route::post('unlock', [AuthController::class, 'unlock']);
             Route::put('change-password', [AuthController::class, 'changePassword']);
             Route::post('transactional-code', [AuthController::class, 'generateTransactionalCode']);
             Route::get('logout', [AuthController::class, 'logout']);
@@ -91,7 +76,9 @@ Route::prefix('/')
         // Auth
         Route::prefix('auth')->group(function () {
             Route::get('validate-attempts/{username}', [AuthController::class, 'validateAttempts']);
-            Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+            Route::post('password-forgot', [AuthController::class, 'passwordForgot']);
             Route::post('user-unlock', [AuthController::class, 'unlockUser']);
+            Route::post('reset-password', [AuthController::class, 'resetPassword']);
+            Route::post('unlock', [AuthController::class, 'unlock']);
         });
     });

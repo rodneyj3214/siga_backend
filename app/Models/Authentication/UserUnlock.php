@@ -17,10 +17,11 @@ class UserUnlock extends Model implements Auditable
 
     protected static $instance;
 
-    protected $fillable = ['
-    username', 
-    'is_valid', 
-    'token'];
+    protected $fillable = [
+        'username',
+        'is_valid',
+        'token'
+    ];
 
     public static function getInstance($id)
     {

@@ -2,22 +2,15 @@
 
 namespace App\Models\Authentication;
 
-// Laravel
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
 
-// Application
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-
 class PasswordReset extends Model implements Auditable
 {
     use HasFactory;
     use Auditing;
-    use SoftDeletes;
-
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.password_resets';
@@ -25,7 +18,7 @@ class PasswordReset extends Model implements Auditable
     protected static $instance;
 
     protected $fillable = [
-        'username', 
+        'username',
         'is_valid',
         'token'];
 
@@ -36,6 +29,6 @@ class PasswordReset extends Model implements Auditable
         }
         static::$instance->id = $id;
         return static::$instance;
-    }   
+    }
 }
 

@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\Auth\AuthChangePasswordRequest;
-use App\Http\Requests\Authentication\Auth\AuthForgotPasswordRequest;
+use App\Http\Requests\Authentication\Auth\AuthPasswordForgotRequest;
 use App\Http\Requests\Authentication\Auth\AuthResetPasswordRequest;
 use App\Http\Requests\Authentication\Auth\AuthUnlockRequest;
-use App\Http\Requests\Authentication\Auth\AuthUnlockUserRequest;
+use App\Http\Requests\Authentication\Auth\AuthUserUnlockRequest;
 use App\Http\Requests\Authentication\Auth\AuthGetRolesRequest;
 use App\Http\Requests\Authentication\Auth\AuthGetPermissionsRequest;
 use App\Http\Requests\Authentication\Auth\AuthResetAttemptsRequest;
-use App\Http\Requests\Authentication\Auth\AuthLogoutRequest;
 use App\Http\Requests\Authentication\Auth\AuthLogoutAllRequest;
-use App\Mail\AuthMailable;
 use App\Mail\EmailMailable;
+use App\Mail\Authentication\PasswordForgotMailable;
+use App\Mail\Authentication\UserUnlockMailable;
 use App\Models\Authentication\Client;
 use App\Models\Authentication\PasswordReset;
 use App\Models\App\Status;
@@ -168,7 +168,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function forgotPassword(AuthForgotPasswordRequest $request)
+    public function passwordForgot(AuthPasswordForgotRequest $request)
     {
         $user = User::where('username', $request->input('username'))
             ->orWhere('email', $request->input('username'))
@@ -184,6 +184,7 @@ class  AuthController extends Controller
                     'code' => '404'
                 ]], 404);
         }
+
         $token = Str::random(70);
         PasswordReset::create([
             'username' => $user->username,
@@ -191,24 +192,24 @@ class  AuthController extends Controller
         ]);
 
         Mail::to($user->email)
-            ->send(new EmailMailable(
+            ->send(new PasswordForgotMailable(
                 'Notificación de restablecimiento de contraseña',
-                json_encode(['user' => $user, 'token' => $token])
+                json_encode(['user' => $user, 'token' => $token]),
+                null,
+                $request->input('system')
             ));
 
-        $domainEmail = strlen($user->email) - strpos($user->email, "@");
-
         return response()->json([
-            'data' => $this->hiddenString($user->email, 3, $domainEmail),
+            'data' => $this->hiddenStringEmail($user->email),
             'msg' => [
                 'summary' => 'Correo enviado',
-                'detail' => $this->hiddenString($user->email, 3, $domainEmail),
+                'detail' => $this->hiddenStringEmail($user->email),
                 'code' => '201'
             ]], 201);
     }
 
     // revisar nombre
-    public function unlockUser(AuthUnlockUserRequest $request)
+    public function unlockUser(AuthUserUnlockRequest $request)
     {
         $user = User::where('username', $request->input('username'))
             ->orWhere('email', $request->input('username'))
@@ -231,9 +232,11 @@ class  AuthController extends Controller
         ]);
 
         Mail::to($user->email)
-            ->send(new AuthMailable(
+            ->send(new UserUnlockMailable(
                 'Notificación de desbloqueo de usuario',
-                json_encode(['user' => $user, 'token' => $token])
+                json_encode(['user' => $user, 'token' => $token]),
+                null,
+                $request->input('system')
             ));
 
         return response()->json([
@@ -371,7 +374,7 @@ class  AuthController extends Controller
         }
         $user = User::firstWhere('username', $userUnlock->username);
 
-        if (!user) {
+        if (!$user) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -384,7 +387,9 @@ class  AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->status()->associate(Status::firstWhere('code', $catalogues['status']['active']));
         $user->attempts = User::ATTEMPTS;
+
         $user->save();
+
         $userUnlock->update(['is_valid' => false]);
         return response()->json([
             'data' => null,
@@ -463,7 +468,7 @@ class  AuthController extends Controller
             ->where('system_id', $request->input('system'))
             ->get();
 
-        if(sizeof($roles)===0){
+        if (sizeof($roles) === 0) {
             return response()->json([
                 'data' => null,
                 'msg' => [
@@ -486,7 +491,7 @@ class  AuthController extends Controller
     {
         $role = Role::find($request->input('role'));
 
-        if(!$role){
+        if (!$role) {
             return response()->json([
                 'data' => null,
                 'msg' => [

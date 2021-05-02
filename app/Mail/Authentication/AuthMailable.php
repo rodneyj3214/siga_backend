@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Authentication;
 
 use App\Models\Authentication\System;
 use Illuminate\Bus\Queueable;
@@ -22,10 +22,7 @@ class AuthMailable extends Mailable
         $this->subject = $subject;
         $this->data = $data;
         $this->pathAttaches = $pathAttaches;
-
-        $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
-
-        $this->system = $system ? System::firstWhere('code', $catalogues['system']['code']) : $system;
+        $this->system = System::find($system);
     }
 
     public function build()

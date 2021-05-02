@@ -2,7 +2,7 @@
 @section('content')
     <div class="row">
         <div class="col-12 text-muted ">
-            <h3 class="text-center">Recuperación de contraseña</h3>
+            <h3 class="text-center">Restablecimiento de contraseña</h3>
             <br>
             <p>Recibimos una solicitud de restablecimiento de contraseña para su cuenta.
             </p>
@@ -21,7 +21,7 @@
                 Si no puede acceder, copie la siguiente url:
             </p>
             <p class="text-muted">
-                {{$system->redirect}}/#/auth/password-reset?token={{$data->user->token}}&username={{$data->user->username}}
+                {{$system->redirect}}/#/auth/password-reset?token={{$data->token}}&username={{$data->user->username}}
             </p>
             <br>
             <p>Si no ha solicitado este servicio, repórtelo a su Institución.</p>

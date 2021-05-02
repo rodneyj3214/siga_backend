@@ -5,7 +5,7 @@ namespace App\Http\Requests\Authentication\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
-class ResetAttemptsRequest extends FormRequest
+class AuthUserUnlockRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,19 +15,14 @@ class ResetAttemptsRequest extends FormRequest
     public function rules()
     {
         return [
-            'user.id' => [
-                'required',
-                'integer'
-            ]
+            'username' => 'required'
         ];
     }
 
     public function messages()
     {
         $messages = [
-            'token.required' => 'El campo :attribute es obligatorio',
-            'token.integer' => 'El campo :attribute debe ser numérico'
-           
+            'username.required' => 'El campo :attribute es obligatorio',
         ];
         return AuthenticationFormRequest::messages($messages);
     }
@@ -35,8 +30,7 @@ class ResetAttemptsRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'token.id' => 'id de usuario',
-           
+            'username' => 'username',
         ];
         return AuthenticationFormRequest::attributes($attributes);
     }

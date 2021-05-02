@@ -5,8 +5,9 @@ namespace App\Http\Requests\Authentication\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
-class AuthUnlockUserRequest extends FormRequest
+class AuthPasswordForgotRequest extends FormRequest
 {
+
     public function authorize()
     {
         return true;
@@ -30,7 +31,7 @@ class AuthUnlockUserRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'username' => 'username',
+            'username' => 'nombre de usuario',
         ];
         return AuthenticationFormRequest::attributes($attributes);
     }
