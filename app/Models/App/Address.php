@@ -2,11 +2,10 @@
 
 namespace App\Models\App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Auditable as Auditing;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Address extends Model implements Auditable
@@ -15,6 +14,7 @@ class Address extends Model implements Auditable
     use Auditing;
     use SoftDeletes;
 
+    protected static $instance;
 
     protected $connection = 'pgsql-app';
     protected $table = 'app.address';
@@ -26,9 +26,19 @@ class Address extends Model implements Auditable
         'secondary_street',
         'number',
         'post_code',
-        'state',
     ];
 
+    // Instance
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }
+
+    // Mutators
     public function setMainStreetAttribute($value)
     {
         $this->attributes['main_street'] = strtoupper($value);

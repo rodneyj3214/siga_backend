@@ -34,7 +34,6 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
@@ -42,7 +41,6 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -62,7 +60,6 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-
         'pgsql-authentication' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -77,7 +74,6 @@ return [
             'schema' => env('DB_SCHEMA_AUTHENTICATION', 'public'),
             'sslmode' => 'prefer',
         ],
-
         'pgsql-app' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -92,7 +88,6 @@ return [
             'schema' => env('DB_SCHEMA_APP', 'public'),
             'sslmode' => 'prefer',
         ],
-
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
@@ -105,7 +100,6 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
-
     ],
 
     /*

@@ -39,7 +39,10 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             $this->mapApiRoutes();
+<<<<<<< HEAD
 
+=======
+>>>>>>> auth
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
@@ -63,6 +66,14 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware("api")
             ->namespace($this->namespace)
             ->group(base_path("routes/api/$version/app/api.php"));
+<<<<<<< HEAD
+=======
+
+        Route::prefix("$version/job_board")
+            ->middleware("api")
+            ->namespace($this->namespace)
+            ->group(base_path("routes/api/$version/job_board/api.php"));
+>>>>>>> auth
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Authentication\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
 class AuthChangePasswordRequest extends FormRequest
 {
@@ -14,49 +15,43 @@ class AuthChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'user.id' => [
-                'required',
-                'integer'
-            ],
-            'user.password' => [
+            'password_old' => [
                 'required'
             ],
-            'user.new_password' => [
+            'password' => [
                 'required',
                 'min:8',
                 'max:30'
             ],
-            'user.password_confirmation' => [
+            'password_confirmation' => [
                 'required',
-                'same:user.new_password'
+                'same:password'
             ]
         ];
+        return AuthenticationFormRequest::messages($messages);
     }
 
     public function messages()
     {
         $messages = [
-            'user.id.required' => 'El campo :attribute es obligatorio',
-            'user.id.int' => 'El campo :attribute debe ser numérico',
-            'user.password.required' => 'El campo :attribute es obligatorio',
-            'user.new_password.required' => 'El campo :attribute es obligatorio',
-            'user.new_password.min' => 'El campo :attribute debe tener al menos :min caracteres',
-            'user.new_password.max' => 'El campo :attribute debe tener maximo :max caracteres',
-            'user.password_confirmation.required' => 'El campo :attribute es obligatorio',
-            'user.password_required.same' => 'El campo :attribute coincide',
+            'password_old.required' => 'El campo :attribute es obligatorio',
+            'password.required' => 'El campo :attribute es obligatorio',
+            'password.min' => 'El campo :attribute debe tener al menos :min caracteres',
+            'password.max' => 'El campo :attribute debe tener maximo :max caracteres',
+            'password_confirmation.required' => 'El campo :attribute es obligatorio',
+            'password_confirmation.same' => 'El campo :attribute coincide',
         ];
-        return JobBoardFormRequest::messages($messages);
+        return $messages;
     }
 
     public function attributes()
     {
         $attributes = [
-            'user.id' => 'id del usuario',
-            'user.password' => 'password',
-            'user.new_password' => 'new password',
-            'user.password_confirmation' => 'password confirmation',
+            'password_old' => 'Password Old',
+            'password' => 'Password',
+            'password_confirmation' => 'Password Confirmation',
 
         ];
-        return JobBoardFormRequest::attributes($attributes);
+        return AuthenticationFormRequest::attributes($attributes);
     }
 }

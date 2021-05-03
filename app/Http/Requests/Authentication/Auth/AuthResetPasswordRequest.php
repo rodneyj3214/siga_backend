@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Authentication\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
 class AuthResetPasswordRequest extends FormRequest
 {
@@ -15,15 +16,12 @@ class AuthResetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => [
-                'required'
-            ],
             'password' => [
                 'required',
-                'min:6',
-                'max:50'
+                'min:8',
+                'max:30'
             ],
-            'password_confirm' => [
+            'password_confirmation' => [
                 'required',
                 'same:password'
             ],
@@ -33,23 +31,22 @@ class AuthResetPasswordRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'token.required' => 'El campo :attribute es obligatorio',
             'password.required' => 'El campo :attribute es obligatorio',
             'password.min' => 'El campo :attribute debe tener al menos :min caracteres',
             'password.max' => 'El campo :attribute debe tener maximo :max caracteres',
-            'password_confirm.required' => 'El campo :attribute es obligatorio',
-            'password_confirm.same' => 'El campo :attribute no coincide',
+            'password_confirmation.required' => 'El campo :attribute es obligatorio',
+            'password_confirmation.same' => 'El campo :attribute no coincide',
         ];
-        return JobBoardFormRequest::messages($messages);
+        return AuthenticationFormRequest::messages($messages);
     }
 
     public function attributes()
     {
         $attributes = [
             'token' => 'token',
-            'password' => 'password',
-            'password_confirm' => 'password confirm',
+            'password' => 'contraseña',
+            'password_confirmation' => 'confirmación de contraseña',
         ];
-        return JobBoardFormRequest::attributes($attributes);
+        return AuthenticationFormRequest::attributes($attributes);
     }
 }

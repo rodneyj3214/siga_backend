@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Authentication\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
-class AuthForgotPasswordRequest extends FormRequest
+class AuthPasswordForgotRequest extends FormRequest
 {
 
     public function authorize()
@@ -24,14 +25,14 @@ class AuthForgotPasswordRequest extends FormRequest
         $messages = [
             'username.required' => 'El campo :attribute es obligatorio',
         ];
-        return JobBoardFormRequest::messages($messages);
+        return AuthenticationFormRequest::messages($messages);
     }
 
     public function attributes()
     {
         $attributes = [
-            'username' => 'username',
+            'username' => 'nombre de usuario',
         ];
-        return JobBoardFormRequest::attributes($attributes);
+        return AuthenticationFormRequest::attributes($attributes);
     }
 }

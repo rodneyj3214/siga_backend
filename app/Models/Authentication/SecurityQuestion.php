@@ -20,7 +20,21 @@ class SecurityQuestion extends Model implements Auditable
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.security_questions';
 
-    protected $fillable = ['name', 'state'];
+    protected static $instance;
+
+    protected $fillable = [
+        'name',
+        'state'];
+
+        
+    public static function getInstance($id)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
+    }
 
     public function users()
     {

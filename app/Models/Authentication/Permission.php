@@ -15,6 +15,9 @@ use App\Models\App\Institution;
 
 class Permission extends Model implements Auditable
 {
+
+    use HasFactory;
+    use SoftDeletes;
     use HasFactory;
     use Auditing;
     use SoftDeletes;
@@ -22,6 +25,9 @@ class Permission extends Model implements Auditable
 
     protected $connection = 'pgsql-authentication';
     protected $table = 'authentication.permissions';
+
+    protected static $instance;
+    
 
     protected $fillable = [
         'state',
@@ -34,9 +40,11 @@ class Permission extends Model implements Auditable
 
     public static function getInstance($id)
     {
-        $model = new Permission();
-        $model->id = $id;
-        return $model;
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+        static::$instance->id = $id;
+        return static::$instance;
     }
 
     public function route()
