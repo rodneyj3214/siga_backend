@@ -10,6 +10,7 @@ use App\Http\Requests\Authentication\UserRequest;
 use App\Models\Authentication\PassworReset;
 use App\Models\Authentication\Role;
 use App\Models\App\Catalogue;
+use App\Models\App\Status;
 use App\Models\Authentication\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +41,7 @@ class  UserAdministrationController extends Controller
                     'detail' => 'Intente de nuevo',
                     'code' => '404'
                 ]], 404);
-        }else{
+        }
             return response()->json([
                 'data' => $users,
                 'msg' => [
@@ -48,7 +49,6 @@ class  UserAdministrationController extends Controller
                     'detail' => '',
                     'code' => '200'
                 ]], 200);
-        }
     }
 
     public function show($username, Request $request)
@@ -67,14 +67,22 @@ class  UserAdministrationController extends Controller
             }])
             ->where('username', $username)
             ->first();
-
-        return response()->json([
-            'data' => $user,
-            'msg' => [
-                'summary' => 'success',
-                'detail' => '',
-                'code' => '200'
-            ]], 200);
+            if(!$user){
+                return response()->json([
+                    'data' => null,
+                    'msg' => [
+                        'summary' => 'No se encontraró al usuario',
+                        'detail' => 'Intente de nuevo',
+                        'code' => '404'
+                    ]], 404);
+            }
+                return response()->json([
+                    'data' => $user,
+                    'msg' => [
+                        'summary' => 'success',
+                        'detail' => '',
+                        'code' => '200'
+                    ]], 200);
     }
 
     public function store(Request $request)
@@ -85,27 +93,29 @@ class  UserAdministrationController extends Controller
         $user->identification = $request->input('identification');
         $user->username = $request->input('username');
         $user->first_name = $request->input('first_name');
-        $user->first_name = $request->input('second_name');
+        $user->second_name = $request->input('second_name');
         $user->first_lastname = $request->input('first_lastname');
-        $user->first_lastname = $request->input('second_lastname');
+        $user->second_lastname = $request->input('second_lastname');
         $user->birthdate = $request->input('birthdate');
         $user->email = $request->input('email');
         $user->password = Hash::make($request->input('password'));
-        $user->phone = $request->input('phone');
-        $suer->personal_email = $request->input('personal_email');
 
-        $blood_type = $catalogues['catalogue']['blood_type']['o+'];
-        $civil_status = $catalogues['catalogue']['civil_status']['married'];
+        //$blood_type = $catalogues['catalogue']['blood_type']['o+'];
+        //$civil_status = $catalogues['catalogue']['civil_status']['married'];
         $ethnicOrigin = $catalogues['catalogue']['ethnic_origin']['mestizo'];
-        $location = $catalogues['catalogue']['location']['country'];
-        $identificationType = $catalogues['catalogue']['identification_type']['cc'];
-        $sex = $catalogues['catalogue']['sex']['male'];
-        $gender = $catalogues['catalogue']['gender']['male'];
+        //$location = $catalogues['catalogue']['location']['country'];
+        //$identificationType = $catalogues['catalogue']['identification_type']['cc'];
+        //$sex = $catalogues['catalogue']['sex']['male'];
+        //$gender = $catalogues['catalogue']['gender']['male'];
+
+        //$user->bloodType()->associate($blood_type);
+        //$user->civilStatus()->associate($civil_status);
         $user->ethnicOrigin()->associate($ethnicOrigin);
-        $user->address()->associate($location);
-        $user->identificationType()->associate($identificationType);
-        $user->sex()->associate($sex);
-        $user->gender()->associate($gender);
+        //$user->address()->associate($location);
+        //$user->identificationType()->associate($identificationType);
+        //$user->sex()->associate($sex);
+        //$user->gender()->associate($gender);
+        $user->status()->associate(Status::find($request->input('status')));
         $user->save();
         return response()->json([
             'data' => $user,

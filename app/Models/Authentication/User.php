@@ -96,6 +96,11 @@ class User extends Authenticatable implements Auditable
         return $this->belongsTo(Catalogue::class);
     }
 
+    public function civilStatus()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
     public function ethnicOrigin()
     {
         return $this->belongsTo(Catalogue::class);
