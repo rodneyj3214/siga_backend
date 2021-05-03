@@ -80,7 +80,6 @@ class User extends Authenticatable implements Auditable
     }
 
     // Relationships
-
     public function Address()
     {
         return $this->belongsTo(Address::class);
@@ -185,7 +184,7 @@ class User extends Authenticatable implements Auditable
         if ($first_lastname) {
             return $query->orWhere('first_lastname', 'ILIKE', "%$first_lastname%");
         }
-    } 
+    }
 
     public function scopeFirstName($query, $first_name)
     {
