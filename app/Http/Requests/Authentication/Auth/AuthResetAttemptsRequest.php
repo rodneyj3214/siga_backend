@@ -16,25 +16,15 @@ class AuthResetAttemptsRequest extends FormRequest
     {
         return [
             'token' => [
-                'required'
-            ]
+                'string',
+            ],
         ];
-    }
-
-    public function messages()
-    {
-        $messages = [
-            'token.required' => 'El campo :attribute es obligatorio',
-           
-        ];
-        return AuthenticationFormRequest::messages($messages);
     }
 
     public function attributes()
     {
         $attributes = [
-            'token' => 'usuario',
-           
+            'token' => 'token',
         ];
         return AuthenticationFormRequest::attributes($attributes);
     }

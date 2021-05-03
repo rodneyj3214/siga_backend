@@ -122,7 +122,7 @@ class Handler extends ExceptionHandler
                 'data' => $e->errors(),
                 'msg' => [
                     'summary' => 'Error en la validación de campos',
-                    'detail' => 'Intente de nuevo',
+                    'detail' => $e->errors(),
                     'code' => $e->getCode()
                 ]], 422);
         }
