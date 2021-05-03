@@ -34,12 +34,12 @@ class AuthChangePasswordRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'user.password.required' => 'El campo :attribute es obligatorio',
-            'user.new_password.required' => 'El campo :attribute es obligatorio',
-            'user.new_password.min' => 'El campo :attribute debe tener al menos :min caracteres',
-            'user.new_password.max' => 'El campo :attribute debe tener maximo :max caracteres',
-            'user.password_confirmation.required' => 'El campo :attribute es obligatorio',
-            'user.password_required.same' => 'El campo :attribute coincide',
+            'password_old.required' => 'El campo :attribute es obligatorio',
+            'password.required' => 'El campo :attribute es obligatorio',
+            'password.min' => 'El campo :attribute debe tener al menos :min caracteres',
+            'password.max' => 'El campo :attribute debe tener maximo :max caracteres',
+            'password_confirmation.required' => 'El campo :attribute es obligatorio',
+            'password_confirmation.same' => 'El campo :attribute coincide',
         ];
         return $messages;
     }
@@ -47,9 +47,9 @@ class AuthChangePasswordRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'user.password' => 'password',
-            'user.new_password' => 'new password',
-            'user.password_confirmation' => 'password confirmation',
+            'password_old' => 'Password Old',
+            'password' => 'Password',
+            'password_confirmation' => 'Password Confirmation',
 
         ];
         return AuthenticationFormRequest::attributes($attributes);

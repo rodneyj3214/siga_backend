@@ -12,6 +12,8 @@ use App\Http\Requests\Authentication\Auth\AuthGetRolesRequest;
 use App\Http\Requests\Authentication\Auth\AuthGetPermissionsRequest;
 use App\Http\Requests\Authentication\Auth\AuthResetAttemptsRequest;
 use App\Http\Requests\Authentication\Auth\AuthLogoutAllRequest;
+use App\Http\Requests\Authentication\Auth\AuthLogoutRequest;
+use App\Http\Requests\Authentication\Auth\AuthGenerateTransactionalCodeRequest;
 use App\Mail\EmailMailable;
 use App\Mail\Authentication\PasswordForgotMailable;
 use App\Mail\Authentication\UserUnlockMailable;
@@ -74,7 +76,7 @@ class  AuthController extends Controller
             ]], 401);
     }
 
-    public function resetAttempts(Request $request)
+    public function resetAttempts(AuthResetAttemptsRequest $request)
     {
         $user = $request->user();
 
@@ -100,7 +102,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function logout(Request $request)
+    public function logout(AuthLogoutRequest $request)
     {
         $request->user()->token()->revoke();
 
@@ -113,7 +115,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function logoutAll(Request $request)
+    public function logoutAll(AuthLogoutRequest $request)
     {
         DB::table('oauth_access_tokens')
             ->where('user_id', $request->user()->id)
@@ -248,7 +250,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function generateTransactionalCode(Request $request)
+    public function generateTransactionalCode(AuthGenerateTransactionalCodeRequest $request)
     {
         $user = $request->user();
 

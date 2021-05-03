@@ -77,7 +77,6 @@ class  UserAdministrationController extends Controller
             ]], 200);
     }
 
-
     public function store(Request $request)
     {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);

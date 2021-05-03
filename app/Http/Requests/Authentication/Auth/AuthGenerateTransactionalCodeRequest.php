@@ -5,7 +5,7 @@ namespace App\Http\Requests\Authentication\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Authentication\AuthenticationFormRequest;
 
-class AuthResetAttemptsRequest extends FormRequest
+class AuthGenerateTransactionalCodeRequest extends FormRequest
 {
     public function authorize()
     {
