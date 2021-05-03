@@ -21,7 +21,7 @@ class TransactionalCode extends Model implements Auditable
         'username',
         'is_valid',
         'token'];
-    
+
     public static function getInstance($id)
     {
         if (is_null(static::$instance)) {
