@@ -47,7 +47,7 @@ Route::middleware($middlewares)
 
 // User Administration
 
-Route::group(['prefix' => 'useradmin'], function () {
+Route::group(['prefix' => 'useradmin'], function () { 
     Route::get('users', [UserAdministrationController::class, 'index']);
     Route::get('users/{usename}', [UserAdministrationController::class, 'show']);
     Route::post('users', [UserAdministrationController::class, 'store']);
