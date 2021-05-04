@@ -17,7 +17,9 @@ $middlewares = ['auth:api'];
 Route::middleware($middlewares)
     ->prefix('/')
     ->group(function () {
+        // ApiResources
         Route::apiResources([
+            'user-admins' => UserAdministrationController::class,
             'users' => UserController::class,
             'permissions' => PermissionController::class,
             'routes' => RouteController::class,
@@ -25,13 +27,6 @@ Route::middleware($middlewares)
             'roles' => RoleController::class,
             'systems' => SystemController::class,
         ]);
-        // Roles
-        Route::prefix('roles')->group(function () {
-            Route::post('users', [RoleController::class, 'getUsers']);
-            Route::post('permissions', [RoleController::class, 'getPermissions']);
-            Route::post('assign-role', [RoleController::class, 'assignRole']);
-            Route::post('remove-role', [RoleController::class, 'removeRole']);
-        });
 
         // Auth
         Route::prefix('auth')->group(function () {
@@ -45,28 +40,20 @@ Route::middleware($middlewares)
             Route::get('reset-attempts', [AuthController::class, 'resetAttempts']);
         });
 
-// User Administration
-
-Route::group(['prefix' => 'useradmin'], function () { 
-    Route::get('users', [UserAdministrationController::class, 'index']);
-    Route::get('users/{usename}', [UserAdministrationController::class, 'show']);
-    Route::post('users', [UserAdministrationController::class, 'store']);
-    Route::put('users/{userId}', [UserAdministrationController::class, 'update']);
-    Route::delete('users/{userId}', [UserAdministrationController::class, 'destroy']);
-});
-
-Route::apiResource('permissions', PermissionController::class);
-Route::apiResource('routes', RouteController::class);
-Route::apiResource('shortcuts', ShortcutController::class);
-Route::apiResource('users', UserController::class);
-Route::apiResource('roles', RoleController::class);
-Route::apiResource('systems', SystemController::class)->withoutMiddleware(['auth:api', 'check-institution', 'check-role', 'check-attempts', 'check-status', 'check-permissions']);
         // User
         Route::prefix('user')->group(function () {
             Route::get('{username}', [UserController::class, 'show']);
             Route::post('filters', [UserController::class, 'index']);
             Route::post('avatars', [UserController::class, 'uploadAvatar']);
             Route::get('export', [UserController::class, 'export']);
+        });
+
+        // Role
+        Route::prefix('roles')->group(function () {
+            Route::post('users', [RoleController::class, 'getUsers']);
+            Route::post('permissions', [RoleController::class, 'getPermissions']);
+            Route::post('assign-role', [RoleController::class, 'assignRole']);
+            Route::post('remove-role', [RoleController::class, 'removeRole']);
         });
     });
 
