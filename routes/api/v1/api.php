@@ -14,6 +14,9 @@ Route::get('init', function (CreateClientRequest $request) {
     DB::select('drop schema if exists authentication cascade;');
     DB::select('drop schema if exists app cascade;');
 
+    DB::select('create schema authentication;');
+    DB::select('create schema app;');
+
     Artisan::call('migrate --seed');
     Artisan::call('passport:client', [
         '--password' => true,
