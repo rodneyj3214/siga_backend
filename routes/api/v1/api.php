@@ -31,8 +31,7 @@ Route::get('init', function (CreateClientRequest $request) {
             'Los esquemas fueron creados correctamente.',
             'Las migraciones fueron creadas correctamente',
             'Cliente para la aplicación creado correctamente',
-            'Cliente Secret: ',
-            $clientSecret,
+            'client' => $clientSecret[0]->secret,
         ]
     ]);
 });

@@ -64,8 +64,8 @@ Route::prefix('/')
         Route::prefix('auth')->group(function () {
             Route::get('validate-attempts/{username}', [AuthController::class, 'validateAttempts']);
             Route::post('password-forgot', [AuthController::class, 'passwordForgot']);
-            Route::post('user-unlock', [AuthController::class, 'unlockUser']);
             Route::post('reset-password', [AuthController::class, 'resetPassword']);
-            Route::post('unlock', [AuthController::class, 'unlock']);
+            Route::post('user-locked', [AuthController::class, 'userLocked']);
+            Route::post('unlock-user', [AuthController::class, 'unlockUser']);
         });
     });

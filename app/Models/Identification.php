@@ -25,7 +25,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * @package     ValidarIdentificacion
+ * @package     Identification
  * @subpackage
  * @author      Ing. Mauricio Lopez <mlopez@dixian.info>
  * @copyright   2012 Ing. Mauricio Lopez (diaspar)
@@ -38,7 +38,7 @@ namespace App\Models;
 use Exception;
 
 /**
- * ValidarIdentificacion contiene metodos para validar cédula, RUC de persona natural, RUC de sociedad privada y
+ * Identification contiene metodos para validar cédula, RUC de persona natural, RUC de sociedad privada y
  * RUC de socieda pública en el Ecuador.
  *
  * Los métodos públicos para realizar validaciones son:
@@ -47,7 +47,7 @@ use Exception;
  * validarRucPersonaNatural()
  * validarRucSociedadPrivada()
  */
-class ValidarIdentificacion
+class Identification
 {
 
     /**

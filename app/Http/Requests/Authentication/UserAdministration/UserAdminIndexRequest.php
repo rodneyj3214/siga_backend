@@ -17,12 +17,6 @@ class UserAdminIndexRequest extends FormRequest
         return [];
     }
 
-    public function messages()
-    {
-        $messages = [];
-        return AuthenticationFormRequest::messages($messages);
-    }
-
     public function attributes()
     {
         $attributes = [];

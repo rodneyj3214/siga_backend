@@ -210,8 +210,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    // revisar nombre
-    public function unlockUser(AuthUserUnlockRequest $request)
+    public function userLocked(AuthUserUnlockRequest $request)
     {
         $user = User::where('username', $request->input('username'))
             ->orWhere('email', $request->input('username'))
@@ -246,41 +245,6 @@ class  AuthController extends Controller
             'msg' => [
                 'summary' => 'Correo enviado',
                 'detail' => $this->hiddenStringEmail($user->email),
-                'code' => '201'
-            ]], 201);
-    }
-
-    public function generateTransactionalCode(AuthGenerateTransactionalCodeRequest $request)
-    {
-        $user = $request->user();
-
-        if (!$user) {
-            return response()->json([
-                'data' => null,
-                'msg' => [
-                    'summary' => 'Usuario no encontrando',
-                    'detail' => 'Intente de nuevo',
-                    'code' => '404'
-                ]], 404);
-        }
-        $token = mt_rand(100000, 999999);
-        TransactionalCode::create([
-            'username' => $user->username,
-            'token' => $token
-        ]);
-
-        Mail::to($user->email)
-            ->send(new EmailMailable(
-                'Información Código de Seguridad',
-                json_encode(['user' => $user])
-            ));
-        $domainEmail = strlen($user->email) - strpos($user->email, "@");
-
-        return response()->json([
-            'data' => $this->hiddenString($user->email, 3, $domainEmail),
-            'msg' => [
-                'summary' => 'Correo enviado',
-                'detail' => $this->hiddenString($user->email, 3, $domainEmail),
                 'code' => '201'
             ]], 201);
     }
@@ -343,7 +307,7 @@ class  AuthController extends Controller
             ]], 201);
     }
 
-    public function unlock(AuthUnlockRequest $request)
+    public function unlockUser(AuthUnlockRequest $request)
     {
         $catalogues = json_decode(file_get_contents(storage_path() . "/catalogues.json"), true);
         $userUnlock = UserUnlock::where('token', $request->token)->first();
@@ -398,6 +362,41 @@ class  AuthController extends Controller
             'msg' => [
                 'summary' => 'Su usuario fue desbloqueado',
                 'detail' => 'Regrese al Login',
+                'code' => '201'
+            ]], 201);
+    }
+
+    public function generateTransactionalCode(AuthGenerateTransactionalCodeRequest $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'data' => null,
+                'msg' => [
+                    'summary' => 'Usuario no encontrando',
+                    'detail' => 'Intente de nuevo',
+                    'code' => '404'
+                ]], 404);
+        }
+        $token = mt_rand(100000, 999999);
+        TransactionalCode::create([
+            'username' => $user->username,
+            'token' => $token
+        ]);
+
+        Mail::to($user->email)
+            ->send(new EmailMailable(
+                'Información Código de Seguridad',
+                json_encode(['user' => $user])
+            ));
+        $domainEmail = strlen($user->email) - strpos($user->email, "@");
+
+        return response()->json([
+            'data' => $this->hiddenString($user->email, 3, $domainEmail),
+            'msg' => [
+                'summary' => 'Correo enviado',
+                'detail' => $this->hiddenString($user->email, 3, $domainEmail),
                 'code' => '201'
             ]], 201);
     }
